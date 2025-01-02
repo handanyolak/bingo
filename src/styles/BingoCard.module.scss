@@ -5,6 +5,11 @@
   padding: 1.5rem;
   width: 300px;
   background-color: var(--card-color);
+  background: repeating-conic-gradient(
+    from 0deg,
+    var(--card-color) 0deg 15deg,
+    var(--card-light-color) 15deg 30deg
+  );
 
   .bingoTitle {
     font-size: 2rem;
@@ -20,15 +25,15 @@
   .cardGrid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 2px;
+    border: 1px solid var(--card-dark-color);
   }
 
   .gridCell {
     background-color: var(--card-color);
-    filter: brightness(1.2);
     display: flex;
     align-items: center;
     justify-content: center;
     height: 60px;
+    border: 1px solid var(--card-dark-color);
   }
 }

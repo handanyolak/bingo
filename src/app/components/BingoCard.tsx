@@ -1,4 +1,5 @@
 import styles from "@/styles/BingoCard.module.scss";
+import { lighten, darken } from "polished";
 
 type BingoCardProps = {
   numbers: number[];
@@ -7,12 +8,21 @@ type BingoCardProps = {
 
 const BingoCard: React.FC<BingoCardProps> = ({
   numbers,
-  color = "#ef4444",
+  color = "#6b7280",
 }) => {
+  const lightColor = lighten(0.2, color);
+  const darkColor = darken(0.2, color);
+
   return (
     <div
       className={styles.bingoCard}
-      style={{ "--card-color": color } as React.CSSProperties}
+      style={
+        {
+          "--card-color": color,
+          "--card-light-color": lightColor,
+          "--card-dark-color": darkColor,
+        } as React.CSSProperties
+      }
     >
       <h1 className={styles.bingoTitle}>BINGO</h1>
       <div className={styles.cardGrid}>
