@@ -1,0 +1,34 @@
+.bingoCard {
+  background-color: var(--card-color);
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 300px;
+  background-color: var(--card-color);
+
+  .bingoTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    background-color: var(--card-color);
+    filter: brightness(1.2);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .cardGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+  }
+
+  .gridCell {
+    background-color: var(--card-color);
+    filter: brightness(1.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+  }
+}
