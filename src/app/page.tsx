@@ -8,7 +8,7 @@ export default function Home() {
     () => Math.floor(Math.random() * 75) + 1
   );
 
-  const cardColor = "#3b82f6";
+  const cardColor = "#ff99ff";
 
   return (
     <div className={styles.homePage}>
