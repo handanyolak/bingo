@@ -10,8 +10,8 @@ const BingoCard: React.FC<BingoCardProps> = ({
   numbers,
   color = "#6b7280",
 }) => {
-  const lightColor = lighten(0.2, color);
-  const darkColor = darken(0.2, color);
+  const lightColor = lighten(0.1, color);
+  const darkColor = darken(0.1, color);
 
   return (
     <div
