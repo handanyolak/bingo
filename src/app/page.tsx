@@ -54,7 +54,7 @@ export default function Home() {
     setIsDrawing(true);
     intervalRef.current = window.setInterval(() => {
       drawNumber();
-    }, 1000);
+    }, 3000);
   };
 
   const stopDrawing = () => {
