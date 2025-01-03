@@ -29,6 +29,7 @@ const BingoCard: React.FC<BingoCardProps> = ({
         {numbers.map((num, index) => (
           <div key={index} className={styles.gridCell}>
             {num}
+            <span className={styles.marker} />
           </div>
         ))}
       </div>
