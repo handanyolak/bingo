@@ -19,7 +19,7 @@ const DrawnNumbers: React.FC<DrawnNumbersProps> = ({ numbers }) => {
           <div
             key={`placeholder-${index}`}
             className={styles.placeholderCell}
-          ></div>
+          />
         ))}
       </div>
     </div>
