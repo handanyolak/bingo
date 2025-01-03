@@ -2,19 +2,23 @@ import styles from "@/styles/BingoCard.module.scss";
 
 type BingoCardProps = {
   numbers: number[];
+  drawnNumbers: number[];
 };
 
-const BingoCard: React.FC<BingoCardProps> = ({ numbers }) => {
+const BingoCard: React.FC<BingoCardProps> = ({ numbers, drawnNumbers }) => {
   return (
     <div className={styles.bingoCard}>
       <h1 className={styles.bingoTitle}>BINGO</h1>
       <div className={styles.cardGrid}>
-        {numbers.map((num, index) => (
-          <div key={index} className={styles.gridCell}>
-            {num}
-            <span className={styles.marker} />
-          </div>
-        ))}
+        {numbers.map((num, index) => {
+          const isDrawn = drawnNumbers.includes(num);
+          return (
+            <div key={index} className={styles.gridCell}>
+              {num}
+              {isDrawn && <span className={styles.marker} />}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -82,7 +82,7 @@ export default function Home() {
       <div className={styles.homePage}>
         <div className={styles.container}>
           <div className={styles.innerWrapper}>
-            <BingoCard numbers={bingoNumbers} />
+            <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
             <button
               onClick={startDrawing}
               disabled={isDrawing || drawnNumbers.length >= 75}
