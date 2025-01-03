@@ -4,6 +4,7 @@ import BingoCard from "@/app/components/BingoCard";
 import DrawnNumbers from "@/app/components/DrawnNumbers";
 import styles from "@/styles/page.module.scss";
 import { useEffect, useState, useRef } from "react";
+import { ColorProvider } from "@/app/contexts/ColorContext";
 
 export default function Home() {
   const generateUniqueNumbers = (
@@ -27,7 +28,7 @@ export default function Home() {
 
   const intervalRef = useRef<number | null>(null);
 
-  const cardColor = "#ff99ff";
+  const color = "#ff99ff";
 
   const drawNumber = () => {
     if (drawnNumbers.length >= 75) {
@@ -77,19 +78,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.homePage}>
-      <div className={styles.container}>
-        <div className={styles.innerWrapper}>
-          <BingoCard numbers={bingoNumbers} color={cardColor} />
-          <button
-            onClick={startDrawing}
-            disabled={isDrawing || drawnNumbers.length >= 75}
-          >
-            {isDrawing ? "Drawing..." : "Draw numbers"}
-          </button>
-          <DrawnNumbers numbers={drawnNumbers} color={cardColor} />
+    <ColorProvider color={color}>
+      <div className={styles.homePage}>
+        <div className={styles.container}>
+          <div className={styles.innerWrapper}>
+            <BingoCard numbers={bingoNumbers} />
+            <button
+              onClick={startDrawing}
+              disabled={isDrawing || drawnNumbers.length >= 75}
+            >
+              {isDrawing ? "Drawing..." : "Draw numbers"}
+            </button>
+            <DrawnNumbers numbers={drawnNumbers} />
+          </div>
         </div>
       </div>
-    </div>
+    </ColorProvider>
   );
 }
