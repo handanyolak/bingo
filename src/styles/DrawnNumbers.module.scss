@@ -40,7 +40,6 @@
 
     .drawnNumbersCell,
     .placeholderCell {
-      opacity: 0.5;
       border-radius: 100%;
       display: flex;
       justify-content: center;
@@ -48,8 +47,7 @@
       height: 50px;
       width: 50px;
       font-weight: 700;
-      background-color: var(--card-dark-color);
-      border: 6px solid var(--card-color);
+      background-color: var(--card-color);
     }
 
     .placeholderCell {
