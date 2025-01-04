@@ -5,7 +5,10 @@ type BingoCardProps = {
   drawnNumbers: number[];
 };
 
-const BingoCard: React.FC<BingoCardProps> = ({ numbers, drawnNumbers }) => {
+export const BingoCard: React.FC<BingoCardProps> = ({
+  numbers,
+  drawnNumbers,
+}) => {
   return (
     <div className={styles.bingoCard}>
       <h1 className={styles.bingoTitle}>BINGO</h1>
@@ -23,5 +26,3 @@ const BingoCard: React.FC<BingoCardProps> = ({ numbers, drawnNumbers }) => {
     </div>
   );
 };
-
-export default BingoCard;

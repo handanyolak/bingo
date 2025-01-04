@@ -4,7 +4,7 @@ type DrawnNumbersProps = {
   numbers: number[];
 };
 
-const DrawnNumbers: React.FC<DrawnNumbersProps> = ({ numbers }) => {
+export const DrawnNumbers: React.FC<DrawnNumbersProps> = ({ numbers }) => {
   const totalCells = 15 * 5;
   return (
     <div className={styles.drawnNumbersContainer}>
@@ -32,5 +32,3 @@ const DrawnNumbers: React.FC<DrawnNumbersProps> = ({ numbers }) => {
     </div>
   );
 };
-
-export default DrawnNumbers;
