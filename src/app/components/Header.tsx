@@ -1,12 +1,12 @@
-import styles from "@/styles/Header.module.scss";
+"use client";
 
-const Header = () => {
+import styles from "@/styles/Header.module.scss";
+import { ConnectButton } from "./ConnectButton";
+
+export const Header = () => {
   return (
     <header className={styles.header}>
-      {/* @ts-ignore */}
-      <appkit-button />
+      <ConnectButton />
     </header>
   );
 };
-
-export default Header;
