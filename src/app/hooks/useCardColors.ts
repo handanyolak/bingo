@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { keccak256 } from "viem";
 
-const useCardColors = (address: string | undefined): string[] => {
+const useCardColors = (address: string | null | undefined): string[] => {
   const generateCardColors = useMemo(() => {
     if (!address) return [];
 
