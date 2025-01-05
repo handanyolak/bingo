@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { ColorProvider } from "@/app/contexts/ColorContext";
 import { useAppKitAccount } from "@reown/appkit/react";
 import useCardColors from "@/app/hooks/useCardColors";
+import { Loader } from "@/app/components/Loader";
 
 export const Bingo = () => {
   const { address } = useAppKitAccount();
@@ -83,7 +84,7 @@ export const Bingo = () => {
   }, []);
 
   if (colors.length < 2) {
-    return <div>Loading colors...</div>;
+    return <Loader />;
   }
 
   return (
