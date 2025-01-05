@@ -5,15 +5,15 @@ import { DrawnNumbers } from "./DrawnNumbers";
 import styles from "@/styles/page.module.scss";
 import { useEffect, useState, useRef } from "react";
 import { ColorProvider } from "@/app/contexts/ColorContext";
-import { useAppKitAccount } from "@reown/appkit/react";
 import useCardColors from "@/app/hooks/useCardColors";
 import { Loader } from "@/app/components/Loader";
+import { useWallet } from "@/lib/features/wallet/hooks";
 
 export const Bingo = () => {
-  const { address } = useAppKitAccount();
+  const { address } = useWallet();
 
-  const colors = useCardColors(address);
-  const color = colors[1];
+  const colors = useCardColors(address || undefined);
+  const color = colors[1] || "#fff";
 
   const generateUniqueNumbers = (
     count: number,
