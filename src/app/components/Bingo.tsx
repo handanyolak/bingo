@@ -5,8 +5,15 @@ import { DrawnNumbers } from "./DrawnNumbers";
 import styles from "@/styles/page.module.scss";
 import { useEffect, useState, useRef } from "react";
 import { ColorProvider } from "@/app/contexts/ColorContext";
+import { useAppKitAccount } from "@reown/appkit/react";
+import useCardColors from "@/app/hooks/useCardColors";
 
 export const Bingo = () => {
+  const { address } = useAppKitAccount();
+
+  const colors = useCardColors(address);
+  const color = colors[1];
+
   const generateUniqueNumbers = (
     count: number,
     min: number,
@@ -27,8 +34,6 @@ export const Bingo = () => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
   const intervalRef = useRef<number | null>(null);
-
-  const color = "#ff99ff";
 
   const drawNumber = () => {
     if (drawnNumbers.length >= 75) {
@@ -76,6 +81,10 @@ export const Bingo = () => {
       stopDrawing();
     };
   }, []);
+
+  if (colors.length < 2) {
+    return <div>Loading colors...</div>;
+  }
 
   return (
     <ColorProvider color={color}>
