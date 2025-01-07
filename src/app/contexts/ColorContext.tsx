@@ -1,4 +1,6 @@
-import React, { createContext, useContext, ReactNode } from "react";
+"use client";
+
+import React, { createContext, ReactNode } from "react";
 import { lighten, darken } from "polished";
 
 type ColorContextType = {
@@ -12,6 +14,7 @@ const ColorContext = createContext<ColorContextType | undefined>(undefined);
 type ColorProviderProps = {
   color: string;
   children: ReactNode;
+  loading?: boolean;
 };
 
 export const ColorProvider: React.FC<ColorProviderProps> = ({
@@ -36,12 +39,4 @@ export const ColorProvider: React.FC<ColorProviderProps> = ({
       </div>
     </ColorContext.Provider>
   );
-};
-
-export const useColor = (): ColorContextType => {
-  const context = useContext(ColorContext);
-  if (!context) {
-    throw new Error("useColor must be used within a ColorProvider");
-  }
-  return context;
 };

@@ -1,20 +1,11 @@
 "use client";
 
-import { BingoCard } from "./BingoCard";
-import { DrawnNumbers } from "./DrawnNumbers";
+import { BingoCard } from "@/app/components/BingoCard";
+import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import styles from "@/styles/page.module.scss";
 import { useEffect, useState, useRef } from "react";
-import { ColorProvider } from "@/app/contexts/ColorContext";
-import useCardColors from "@/app/hooks/useCardColors";
-import { Loader } from "@/app/components/Loader";
-import { useWallet } from "@/lib/features/wallet/hooks";
 
 export const Bingo = () => {
-  const { address } = useWallet();
-
-  const colors = useCardColors(address || undefined);
-  const color = colors[1] || "#fff";
-
   const generateUniqueNumbers = (
     count: number,
     min: number,
@@ -83,26 +74,20 @@ export const Bingo = () => {
     };
   }, []);
 
-  if (colors.length < 2) {
-    return <Loader />;
-  }
-
   return (
-    <ColorProvider color={color}>
-      <div className={styles.homePage}>
-        <div className={styles.container}>
-          <div className={styles.innerWrapper}>
-            <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
-            <button
-              onClick={startDrawing}
-              disabled={isDrawing || drawnNumbers.length >= 75}
-            >
-              {isDrawing ? "Drawing..." : "Draw numbers"}
-            </button>
-            <DrawnNumbers numbers={drawnNumbers} />
-          </div>
+    <div className={styles.homePage}>
+      <div className={styles.container}>
+        <div className={styles.innerWrapper}>
+          <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
+          <button
+            onClick={startDrawing}
+            disabled={isDrawing || drawnNumbers.length >= 75}
+          >
+            {isDrawing ? "Drawing..." : "Draw numbers"}
+          </button>
+          <DrawnNumbers numbers={drawnNumbers} />
         </div>
       </div>
-    </ColorProvider>
+    </div>
   );
 };

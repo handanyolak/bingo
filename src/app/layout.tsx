@@ -4,6 +4,7 @@ import { Comfortaa } from "next/font/google";
 import { headers } from "next/headers";
 import ContextProvider from "@/app/contexts/ReownContext";
 import StoreProvider from "@/app/StoreProvider";
+import { ClientColorProvider } from "@/app/components/ClientColorProvider";
 
 const comfortaa = Comfortaa({
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default async function RootLayout({
       <body className={comfortaa.className}>
         <StoreProvider>
           <Header />
-          <ContextProvider cookies={cookies}>{children}</ContextProvider>
+          <ContextProvider cookies={cookies}>
+            <ClientColorProvider>{children}</ClientColorProvider>
+          </ContextProvider>
         </StoreProvider>
       </body>
     </html>
