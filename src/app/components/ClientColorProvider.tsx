@@ -12,7 +12,13 @@ export function ClientColorProvider({
 }) {
   const { address } = useWallet();
   const { colors, isLoading } = useCardColors(address || undefined);
-  const color = colors[1] || "#fff";
+
+  const DEFAULT_COLOR = "rgb(209, 213, 219)";
+
+  const isValidColor = (color?: string): color is string =>
+    typeof color === "string" && !color.includes("NaN");
+
+  const color = isValidColor(colors?.[0]) ? colors[0] : DEFAULT_COLOR;
 
   if (isLoading) {
     return <Loader />;
