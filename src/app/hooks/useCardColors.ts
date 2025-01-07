@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { keccak256 } from "viem";
+import { keccak256, zeroAddress } from "viem";
 
 const useCardColors = (
   address: string | null | undefined
@@ -7,9 +7,8 @@ const useCardColors = (
   const [isLoading, setIsLoading] = useState(true);
 
   const colors = useMemo(() => {
-    if (!address) return [];
-
-    const cleanAddress = address.slice(2);
+    const addressToUse = address || zeroAddress;
+    const cleanAddress = addressToUse.slice(2);
     const addressBuffer = Buffer.from(cleanAddress, "hex");
     const hash = keccak256(addressBuffer);
     const hexSegment = hash.slice(0, 30);
@@ -30,11 +29,7 @@ const useCardColors = (
   }, [address]);
 
   useEffect(() => {
-    if (!address) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
+    setIsLoading(false);
   }, [address]);
 
   return { colors, isLoading };
