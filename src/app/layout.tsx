@@ -28,9 +28,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={comfortaa.className}>
         <StoreProvider>
-          <Header />
           <ContextProvider cookies={cookies}>
-            <ClientColorProvider>{children}</ClientColorProvider>
+            <ClientColorProvider>
+              <Header />
+              {children}
+            </ClientColorProvider>
           </ContextProvider>
         </StoreProvider>
       </body>
