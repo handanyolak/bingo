@@ -1,31 +1,54 @@
 "use client";
 
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, useContext } from "react";
 import { lighten, darken } from "polished";
 
 type ColorContextType = {
   color: string;
   lightColor: string;
   darkColor: string;
+  cycleColor: () => void;
 };
 
-const ColorContext = createContext<ColorContextType | undefined>(undefined);
+export const ColorContext = createContext<ColorContextType | undefined>(
+  undefined
+);
+
+export const useColor = () => {
+  const context = useContext(ColorContext);
+  if (!context) {
+    throw new Error("useColor must be used within ColorProvider");
+  }
+  return context;
+};
 
 type ColorProviderProps = {
   color: string;
-  children: ReactNode;
-  loading?: boolean;
+  colors: string[];
+  currentIndex: number;
+  setCurrentIndex: (index: number) => void;
+  children: React.ReactNode;
 };
 
 export const ColorProvider: React.FC<ColorProviderProps> = ({
   color,
+  colors,
+  currentIndex,
+  setCurrentIndex,
   children,
 }) => {
   const lightColor = lighten(0.1, color);
   const darkColor = darken(0.1, color);
 
+  const cycleColor = () => {
+    if (!colors?.length) return;
+    const nextIndex = (currentIndex + 1) % colors.length;
+    setCurrentIndex(nextIndex);
+    localStorage.setItem("selectedColorIndex", nextIndex.toString());
+  };
+
   return (
-    <ColorContext.Provider value={{ color, lightColor, darkColor }}>
+    <ColorContext.Provider value={{ color, lightColor, darkColor, cycleColor }}>
       <div
         style={
           {

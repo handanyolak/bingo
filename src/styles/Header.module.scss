@@ -1,6 +1,45 @@
 .header {
   padding: 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--card-color);
+  }
+
+  .changeColorButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.02);
+    color: #374151;
+    border-radius: 100px;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease;
+    float: right;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .colorBall {
+      width: 20px;
+      height: 20px;
+      border-radius: 100px;
+      box-shadow: 0 0 0 2px
+        color-mix(in srgb, hsla(231, 100%, 70%, 1) 10%, transparent);
+      background: radial-gradient(
+        circle at 65% 40%,
+        var(--card-light-color) 0%,
+        var(--card-color) 25%,
+        var(--card-dark-color) 100%
+      );
+    }
+  }
 }
