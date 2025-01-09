@@ -1,11 +1,14 @@
 "use client";
 
+import { useEffect, useState, useRef } from "react";
 import { BingoCard } from "@/app/components/BingoCard";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import styles from "@/styles/page.module.scss";
-import { useEffect, useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export const Bingo = () => {
+  const t = useTranslations("controls");
+
   const generateUniqueNumbers = (
     count: number,
     min: number,
@@ -83,7 +86,7 @@ export const Bingo = () => {
             onClick={startDrawing}
             disabled={isDrawing || drawnNumbers.length >= 75}
           >
-            {isDrawing ? "Drawing..." : "Draw numbers"}
+            {t("drawnNumbers")}
           </button>
           <DrawnNumbers numbers={drawnNumbers} />
         </div>

@@ -3,16 +3,20 @@
 import styles from "@/styles/Header.module.scss";
 import { ConnectButton } from "@/app/components/ConnectButton";
 import { useColor } from "@/app/contexts/ColorContext";
+import { useTranslations } from "next-intl";
 
 export const Header = () => {
+  const t = useTranslations("controls");
+
   const { cycleColor } = useColor();
+
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>Bingo</h1>
       <ConnectButton />
       <button className={styles.changeColorButton} onClick={cycleColor}>
         <div className={styles.colorBall}></div>
-        <span>Change card color</span>
+        <span>{t("changeCardColor")}</span>
       </button>
     </header>
   );
