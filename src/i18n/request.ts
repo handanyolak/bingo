@@ -1,14 +1,24 @@
 import { getRequestConfig } from "next-intl/server";
+import { cookies } from "next/headers";
 
-const locales = ["en", "de", "tr"];
+const DEFAULT_LOCALE = "en";
+
+const getMessages = async (locale: string) => {
+  try {
+    return (await import(`../../messages/${locale}.json`)).default;
+  } catch (error) {
+    console.error(`Failed to load messages for locale: ${locale}`, error);
+    return (await import(`../../messages/${DEFAULT_LOCALE}.json`)).default;
+  }
+};
 
 export default getRequestConfig(async () => {
-  const locale = "en";
-
-  const validLocale = locales.includes(locale) ? locale : "en";
+  const locale =
+    (await cookies()).get("preferred-locale")?.value ?? DEFAULT_LOCALE;
+  const messages = await getMessages(locale);
 
   return {
-    locale: validLocale,
-    messages: (await import(`../../messages/${validLocale}.json`)).default,
+    locale,
+    messages,
   };
 });
