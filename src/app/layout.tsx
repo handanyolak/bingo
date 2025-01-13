@@ -6,7 +6,8 @@ import ContextProvider from "@/app/contexts/ReownContext";
 import StoreProvider from "@/app/StoreProvider";
 import { ClientColorProvider } from "@/app/components/ClientColorProvider";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getMessages } from "next-intl/server";
+import { LocaleProvider } from "@/app/contexts/LocaleContext";
 
 const comfortaa = Comfortaa({
   subsets: ["latin"],
@@ -25,21 +26,23 @@ export default async function RootLayout({
 }>) {
   const headersObj = await headers();
   const cookies = headersObj.get("cookie") || null;
-  const locale = await getLocale();
+
   const messages = await getMessages();
 
   return (
     <html lang="en">
       <body className={comfortaa.className}>
         <NextIntlClientProvider messages={messages}>
-          <StoreProvider>
-            <ContextProvider cookies={cookies}>
-              <ClientColorProvider>
-                <Header />
-                {children}
-              </ClientColorProvider>
-            </ContextProvider>
-          </StoreProvider>
+          <LocaleProvider defaultMessages={messages}>
+            <StoreProvider>
+              <ContextProvider cookies={cookies}>
+                <ClientColorProvider>
+                  <Header />
+                  {children}
+                </ClientColorProvider>
+              </ContextProvider>
+            </StoreProvider>
+          </LocaleProvider>
         </NextIntlClientProvider>
       </body>
     </html>
