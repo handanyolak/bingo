@@ -3,7 +3,7 @@
 export const ConnectButton = () => {
   return (
     <div>
-      {/* @ts-ignore */}
+      {/* @ts-expect-error appkit issue */}
       <appkit-button />
     </div>
   );
