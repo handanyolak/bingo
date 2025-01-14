@@ -11,20 +11,15 @@ export const DrawnNumbers: React.FC<DrawnNumbersProps> = ({ numbers }) => {
       <div className={styles.drawnNumbers}>
         <div className={styles.drawnNumbersGrid}>
           {numbers.map((number, index) => (
-            <div>
-              <div key={index} className={styles.drawnNumbersCell}>
-                {number}
-              </div>
+            <div key={index}>
+              <div className={styles.drawnNumbersCell}>{number}</div>
               <span className={styles.risingMarker}>{number}</span>
             </div>
           ))}
 
           {Array.from({ length: totalCells - numbers.length }).map(
             (_, index) => (
-              <div
-                key={`placeholder-${index}`}
-                className={styles.placeholderCell}
-              />
+              <div key={index} className={styles.placeholderCell} />
             )
           )}
         </div>
