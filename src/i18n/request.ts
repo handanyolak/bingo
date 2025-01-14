@@ -1,7 +1,6 @@
 import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
-
-const DEFAULT_LOCALE = "en";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 
 const getMessages = async (locale: string) => {
   try {
@@ -17,8 +16,5 @@ export default getRequestConfig(async () => {
     (await cookies()).get("preferred-locale")?.value ?? DEFAULT_LOCALE;
   const messages = await getMessages(locale);
 
-  return {
-    locale,
-    messages,
-  };
+  return { locale, messages };
 });

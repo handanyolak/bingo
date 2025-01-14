@@ -1,64 +1,38 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
-import { NextIntlClientProvider } from "next-intl";
+import { createContext, useContext, useState } from "react";
+import { setLocale } from "@/lib/actions";
+import { LanguageCode } from "@/i18n/config";
 
 type ContextType = {
-  locale: string;
-  messages: any;
-  updateLocale: (newLocale: string) => Promise<void>;
+  locale: LanguageCode;
+  updateLocale: (newLocale: LanguageCode) => Promise<void>;
 };
 
-type ProviderProps = {
-  defaultMessages: any;
-  children: React.ReactNode;
-};
-
-const LocaleContext = createContext<ContextType>({
-  locale: "",
-  messages: {},
-  updateLocale: async () => {},
-});
+const LocaleContext = createContext<ContextType>({} as ContextType);
 
 export const useLocale = () => useContext(LocaleContext);
 
-export function LocaleProvider({ defaultMessages, children }: ProviderProps) {
-  const [locale, setLocale] = useState<string>("en");
-  const [messages, setMessages] = useState<any>(defaultMessages);
+type Props = {
+  locale: LanguageCode;
+  children: React.ReactNode;
+};
 
-  const loadMessages = async (newLocale: string) => {
+export const LocaleProvider = ({ locale: initialLocale, children }: Props) => {
+  const [locale, setCurrentLocale] = useState(initialLocale);
+
+  const updateLocale = async (newLocale: LanguageCode) => {
     try {
-      const newMessages = (await import(`../../../messages/${newLocale}.json`))
-        .default;
-      return newMessages;
+      setCurrentLocale(newLocale);
+      await setLocale(newLocale);
     } catch (error) {
-      console.error("Error loading messages:", error);
-      return null;
+      console.error("Error updating locale:", error);
     }
   };
-
-  const updateLocale = async (newLocale: string) => {
-    const newMessages = await loadMessages(newLocale);
-    if (newMessages) {
-      setLocale(newLocale);
-      setMessages(newMessages);
-      localStorage.setItem("preferred-locale", newLocale);
-      document.cookie = `preferred-locale=${newLocale};path=/`;
-    }
-  };
-
-  useEffect(() => {
-    const savedLocale = localStorage.getItem("preferred-locale");
-    if (savedLocale && savedLocale !== locale) {
-      void updateLocale(savedLocale);
-    }
-  }, []);
 
   return (
-    <LocaleContext.Provider value={{ locale, messages, updateLocale }}>
-      <NextIntlClientProvider locale={locale} messages={messages}>
-        {children}
-      </NextIntlClientProvider>
+    <LocaleContext.Provider value={{ locale, updateLocale }}>
+      {children}
     </LocaleContext.Provider>
   );
-}
+};
