@@ -27,7 +27,7 @@
     border-radius: inherit;
   }
 
-  .bingoTitle {
+  &__bingoTitle {
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
@@ -40,7 +40,7 @@
     border: 2px solid var(--card-dark-color);
   }
 
-  .cardGrid {
+  &__cardGrid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     border: 0.5px solid var(--card-dark-color);
@@ -50,7 +50,7 @@
     overflow: hidden;
   }
 
-  .gridCell {
+  &__gridCell {
     background-color: var(--card-light-color);
     display: flex;
     align-items: center;
@@ -61,7 +61,7 @@
     z-index: 1;
     font-weight: 500;
 
-    .marker {
+    .bingoCard__marker {
       position: absolute;
       top: 0;
       left: 0;
