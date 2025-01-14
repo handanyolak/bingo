@@ -8,18 +8,24 @@ import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 
 export const Header = () => {
   const t = useTranslations("controls");
-
   const { cycleColor } = useColor();
 
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>Bingo</h1>
-      <ConnectButton />
-      <LanguageSwitcher />
-      <button className={styles.changeColorButton} onClick={cycleColor}>
-        <div className={styles.colorBall}></div>
-        <span>{t("changeCardColor")}</span>
-      </button>
+      <div className={styles.header__top}>
+        <h1 className={styles.header__title}>Bingo</h1>
+        <div className={styles.header__settings}>
+          <LanguageSwitcher />
+          <button className={styles.header__colorButton} onClick={cycleColor}>
+            <div className={styles.header__colorIndicator}></div>
+            <span>{t("changeCardColor")}</span>
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.header__bottom}>
+        <ConnectButton />
+      </div>
     </header>
   );
 };
