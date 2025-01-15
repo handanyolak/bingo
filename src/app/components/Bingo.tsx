@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { BingoCard } from "@/app/components/BingoCard";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
-import styles from "@/styles/page.module.scss";
+import styles from "@/styles/Bingo.module.scss";
 import { useTranslations } from "next-intl";
 
 export const Bingo = () => {
@@ -78,9 +78,9 @@ export const Bingo = () => {
   }, []);
 
   return (
-    <div className={styles.homePage}>
-      <div className={styles.container}>
-        <div className={styles.innerWrapper}>
+    <div className={styles.bingo__page}>
+      <div className={styles.bingo__container}>
+        <div className={styles.bingo__wrapper}>
           <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
           <button
             onClick={startDrawing}
