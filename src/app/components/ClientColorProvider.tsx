@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWallet } from "@/lib/features/wallet/hooks";
 import useCardColors from "@/app/hooks/useCardColors";
 import { Loader } from "@/app/components/Loader";
@@ -13,10 +13,14 @@ export function ClientColorProvider({
 }) {
   const { address } = useWallet();
   const { colors, isLoading } = useCardColors(address || undefined);
+  const [mounted, setMounted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [currentIndex, setCurrentIndex] = useState(() => {
-    return Number(localStorage.getItem("selectedColorIndex") || 0);
-  });
+  useEffect(() => {
+    const savedIndex = localStorage?.getItem("selectedColorIndex");
+    setCurrentIndex(savedIndex ? Number(savedIndex) : 0);
+    setMounted(true);
+  }, []);
 
   const DEFAULT_COLOR = "rgb(209, 213, 219)";
 
@@ -27,9 +31,8 @@ export function ClientColorProvider({
     ? colors[currentIndex]
     : DEFAULT_COLOR;
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (!mounted) return null;
+  if (isLoading) return <Loader />;
 
   return (
     <ColorProvider
