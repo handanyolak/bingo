@@ -5,6 +5,7 @@ import { ConnectButton } from "@/app/components/ConnectButton";
 import { useColor } from "@/app/contexts/ColorContext";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
+import { AppButton } from "@/app/components/AppButton";
 
 export const Header = () => {
   const t = useTranslations("controls");
@@ -16,10 +17,12 @@ export const Header = () => {
         <h1 className={styles.header__title}>Bingo</h1>
         <div className={styles.header__settings}>
           <LanguageSwitcher />
-          <button className={styles.header__colorButton} onClick={cycleColor}>
-            <div className={styles.header__colorIndicator}></div>
-            <span>{t("changeCardColor")}</span>
-          </button>
+          <AppButton
+            text={t("changeCardColor")}
+            content={<div className={styles.header__colorIndicator}></div>}
+            contentPosition="left"
+            onClick={cycleColor}
+          />
         </div>
       </div>
 
