@@ -8,6 +8,7 @@ interface AppButtonProps {
   iconPosition?: "left" | "right";
   content?: React.ReactNode;
   contentPosition?: "left" | "right";
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -17,10 +18,14 @@ export const AppButton = ({
   iconPosition = "right",
   content,
   contentPosition = "right",
+  disabled,
   onClick,
 }: AppButtonProps) => {
   return (
-    <button className={styles.button} onClick={onClick}>
+    <button
+      className={`${styles.button} ${disabled ? styles.button__disabled : ""}`}
+      onClick={onClick}
+    >
       {contentPosition === "left" && content}
       {iconPosition === "left" && icon}
       {text}

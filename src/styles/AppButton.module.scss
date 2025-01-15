@@ -13,4 +13,11 @@
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);
   }
+
+  &__disabled {
+    color: #999;
+    border-color: rgba(0, 0, 0, 0.05);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
