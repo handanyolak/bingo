@@ -5,6 +5,7 @@ import { BingoCard } from "@/app/components/BingoCard";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import styles from "@/styles/Bingo.module.scss";
 import { useTranslations } from "next-intl";
+import { AppButton } from "@/app/components/AppButton";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
@@ -82,12 +83,11 @@ export const Bingo = () => {
       <div className={styles.bingo__container}>
         <div className={styles.bingo__wrapper}>
           <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
-          <button
-            onClick={startDrawing}
+          <AppButton
+            text={t("drawnNumbers")}
             disabled={isDrawing || drawnNumbers.length >= 75}
-          >
-            {t("drawnNumbers")}
-          </button>
+            onClick={startDrawing}
+          />
           <DrawnNumbers numbers={drawnNumbers} />
         </div>
       </div>
