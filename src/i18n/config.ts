@@ -6,4 +6,12 @@ export const LANGUAGES = {
 
 export type LanguageCode = keyof typeof LANGUAGES;
 export const DEFAULT_LOCALE: LanguageCode = "en";
-export const COOKIE_NAME = "preferred-locale";
+export const LOCAL_STORAGE_NAME = "preferred-locale";
+
+export const getStaticMessages = async () => {
+  return {
+    en: (await import(`../../messages/en.json`)).default,
+    tr: (await import(`../../messages/tr.json`)).default,
+    de: (await import(`../../messages/de.json`)).default,
+  };
+};

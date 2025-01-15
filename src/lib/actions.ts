@@ -1,14 +1,12 @@
-"use server";
+import { LOCAL_STORAGE_NAME, DEFAULT_LOCALE } from "@/i18n/config";
 
-import { cookies } from "next/headers";
-import { COOKIE_NAME, DEFAULT_LOCALE } from "@/i18n/config";
-
-export const setLocale = async (locale: string): Promise<void> => {
-  (await cookies()).set(COOKIE_NAME, locale, {
-    path: "/",
-  });
+export const setLocale = (locale: string): void => {
+  localStorage.setItem(LOCAL_STORAGE_NAME, locale);
 };
 
-export const getLocale = async (): Promise<string> => {
-  return (await cookies()).get(COOKIE_NAME)?.value ?? DEFAULT_LOCALE;
+export const getLocale = (): string => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(LOCAL_STORAGE_NAME) ?? DEFAULT_LOCALE;
+  }
+  return DEFAULT_LOCALE;
 };
