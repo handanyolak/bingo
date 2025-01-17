@@ -8,6 +8,7 @@ const COUNTDOWN_DURATION = 120;
 
 export const CardManager = () => {
   const t = useTranslations("controls");
+
   const [timeRemaining, setTimeRemaining] = useState(COUNTDOWN_DURATION);
   const [isStarted, setIsStarted] = useState(false);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
@@ -49,18 +50,23 @@ export const CardManager = () => {
     setIsStarted(true);
   };
 
+  const isTimeUp = timeRemaining === 0;
+
   return (
     <div className="flex flex-col items-center justify-center">
       {!isStarted && <AppButton text={t("buyTheCard")} onClick={handleStart} />}
-      <div className={`w-40 ${!isStarted ? "hidden" : ""}`}>
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={timer}
-          loop={false}
-          autoplay={false}
-        />
-      </div>
-      {isStarted && (
+      {isTimeUp && <AppButton text={t("submitCard")} />}
+      {!isTimeUp && (
+        <div className={`w-40 ${!isStarted ? "hidden" : ""}`}>
+          <Lottie
+            lottieRef={lottieRef}
+            animationData={timer}
+            loop={false}
+            autoplay={false}
+          />
+        </div>
+      )}
+      {isStarted && !isTimeUp && (
         <div>
           Time Remaining: {minutes}:{seconds.toString().padStart(2, "0")}
         </div>
