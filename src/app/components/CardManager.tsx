@@ -3,6 +3,7 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import timer from "../../../public/animations/timer.json";
 import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/AppButton";
+import styles from "@/styles/CardManager.module.scss";
 
 const COUNTDOWN_DURATION = 120;
 
@@ -53,11 +54,11 @@ export const CardManager = () => {
   const isTimeUp = timeRemaining === 0;
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className={styles.cardManager__container}>
       {!isStarted && <AppButton text={t("buyTheCard")} onClick={handleStart} />}
       {isTimeUp && <AppButton text={t("submitCard")} />}
-      {!isTimeUp && (
-        <div className={`w-40 ${!isStarted ? "hidden" : ""}`}>
+      {!isTimeUp && isStarted && (
+        <div className={styles.cardManager__timer}>
           <Lottie
             lottieRef={lottieRef}
             animationData={timer}
@@ -67,12 +68,10 @@ export const CardManager = () => {
         </div>
       )}
       {isStarted && !isTimeUp && (
-        <div>
+        <div className={styles.cardManager__time}>
           Time Remaining: {minutes}:{seconds.toString().padStart(2, "0")}
         </div>
       )}
     </div>
   );
 };
-
-export default CardManager;

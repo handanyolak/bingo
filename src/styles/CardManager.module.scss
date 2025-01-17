@@ -1,0 +1,16 @@
+.cardManager {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__timer {
+    width: 160px;
+  }
+
+  &__time {
+    margin-top: 1rem;
+  }
+}
