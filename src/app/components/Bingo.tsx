@@ -6,6 +6,7 @@ import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import styles from "@/styles/Bingo.module.scss";
 import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/AppButton";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
@@ -81,13 +82,29 @@ export const Bingo = () => {
   return (
     <div className={styles.bingo__page}>
       <div className={styles.bingo__container}>
+        <AppButton
+          text={t("drawnNumbers")}
+          disabled={isDrawing || drawnNumbers.length >= 75}
+          onClick={startDrawing}
+        />
         <div className={styles.bingo__wrapper}>
-          <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
-          <AppButton
-            text={t("drawnNumbers")}
-            disabled={isDrawing || drawnNumbers.length >= 75}
-            onClick={startDrawing}
-          />
+          <div className={styles.bingo__game}>
+            <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
+            <div className={styles.bingo__controls}>
+              <AppButton
+                text={t("previousGame")}
+                contentPosition="left"
+                content={<ChevronsLeft />}
+                className={styles.bingo__control}
+              />
+              <AppButton
+                text={t("nextGame")}
+                contentPosition="right"
+                content={<ChevronsRight />}
+                className={styles.bingo__control}
+              />
+            </div>
+          </div>
           <DrawnNumbers numbers={drawnNumbers} />
         </div>
       </div>
