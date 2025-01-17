@@ -3,7 +3,7 @@
   border-radius: 1rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
-  width: 30%;
+  width: 100%;
   background-color: var(--card-color);
   background: repeating-conic-gradient(
     from 0deg,
@@ -55,7 +55,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 60px;
+    height: 5rem;
+    width: 5rem;
     border: 1px solid var(--card-dark-color);
     position: relative;
     z-index: 1;
