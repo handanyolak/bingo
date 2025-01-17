@@ -4,6 +4,7 @@
     "drawnNumbers": "Drawn Numbers",
     "previousGame": "Previous Game",
     "nextGame": "Next Game",
-    "buyTheCard": "Buy the card"
+    "buyTheCard": "Buy the card",
+    "submitCard": "Submit your card for validation"
   }
 }
