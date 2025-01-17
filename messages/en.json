@@ -1,6 +1,8 @@
 {
   "controls": {
     "changeCardColor": "Change Card Color",
-    "drawnNumbers": "Drawn Numbers"
+    "drawnNumbers": "Drawn Numbers",
+    "previousGame": "Previous Game",
+    "nextGame": "Next Game"
   }
 }

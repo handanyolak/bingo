@@ -1,6 +1,8 @@
 {
   "controls": {
     "changeCardColor": "Kart Rengini Değiştir",
-    "drawnNumbers": "Çekilen Sayılar"
+    "drawnNumbers": "Çekilen Sayılar",
+    "previousGame": "Önceki Oyun",
+    "nextGame": "Sonraki Oyun"
   }
 }

@@ -1,6 +1,8 @@
 {
   "controls": {
     "changeCardColor": "Karte Farbe ändern",
-    "drawnNumbers": "Gezogene Zahlen"
+    "drawnNumbers": "Gezogene Zahlen",
+    "previousGame": "Vorheriges Spiel",
+    "nextGame": "Nächstes Spiel"
   }
 }
