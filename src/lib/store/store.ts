@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import walletReducer from "@/lib/features/wallet/walletSlice";
+import walletReducer from "@/lib/store/features/wallet/walletSlice";
 
 export const makeStore = () => {
   return configureStore({

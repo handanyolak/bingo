@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAppKitAccount } from "@reown/appkit/react";
-import { AppDispatch } from "@/lib/store";
-import { setAddress } from "@/lib/features/wallet/walletSlice";
-import { selectAddress } from "@/lib/features/wallet/walletSelector";
+import { AppDispatch } from "@/lib/store/store";
+import { setAddress } from "@/lib/store/features/wallet/walletSlice";
+import { selectAddress } from "@/lib/store/features/wallet/walletSelector";
 
 export const useWallet = () => {
   const dispatch = useDispatch<AppDispatch>();
