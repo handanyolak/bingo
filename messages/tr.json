@@ -5,6 +5,7 @@
     "previousGame": "Önceki Oyun",
     "nextGame": "Sonraki Oyun",
     "buyTheCard": "Kartı Satın Al",
-    "submitCard": "Kartınızı doğrulama için gönderin"
+    "submitCard": "Kartınızı doğrulama için gönderin",
+    "requestRandomNumbers": "Rastgele Sayı İste"
   }
 }

@@ -5,6 +5,7 @@
     "previousGame": "Previous Game",
     "nextGame": "Next Game",
     "buyTheCard": "Buy the card",
-    "submitCard": "Submit your card for validation"
+    "submitCard": "Submit your card for validation",
+    "requestRandomNumbers": "Request Random Numbers"
   }
 }
