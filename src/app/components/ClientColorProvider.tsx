@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useWallet } from "@/lib/store/features/wallet/hooks";
+import { useWallet } from "@/lib/store/features/wallet";
 import useCardColors from "@/app/hooks/useCardColors";
 import { Loader } from "@/app/components/Loader";
 import { ColorProvider } from "@/app/contexts/ColorContext";

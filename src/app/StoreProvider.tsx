@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import { Provider } from "react-redux";
-import { makeStore } from "@/lib/store/store";
+import { makeStore } from "@/lib/store";
 import type { Store } from "@reduxjs/toolkit";
-import type { WalletState } from "@/lib/store/features/wallet/walletSlice";
+import type { WalletState } from "@/lib/store/features/wallet";
 
 interface RootState {
   wallet: WalletState;
