@@ -7,6 +7,7 @@ import styles from "@/styles/Bingo.module.scss";
 import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/AppButton";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { CardManager } from "@/app/components/CardManager";
 
 const generateUniqueNumbers = (
   count: number,
@@ -76,11 +77,13 @@ export const Bingo = () => {
   return (
     <div className={styles.bingo__page}>
       <div className={styles.bingo__container}>
+        <CardManager />
         <AppButton
           text={t("drawnNumbers")}
           disabled={isDrawing || drawnNumbers.length >= 75}
           onClick={startDrawing}
         />
+
         <div className={styles.bingo__wrapper}>
           <div className={styles.bingo__game}>
             <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
