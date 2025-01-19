@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "@/lib/store";
+import type { RootState } from "@/lib/store";
 
 export const selectWallet = (state: RootState) => state.wallet;
 

@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface WalletState {
-  address: string | null;
-}
+import type { WalletState, SetAddressPayload } from "./types";
 
 const initialState: WalletState = {
   address: null,
@@ -12,7 +9,7 @@ export const walletSlice = createSlice({
   name: "wallet",
   initialState,
   reducers: {
-    setAddress: (state, action: PayloadAction<string | null>) => {
+    setAddress: (state, action: PayloadAction<SetAddressPayload>) => {
       state.address = action.payload;
     },
   },

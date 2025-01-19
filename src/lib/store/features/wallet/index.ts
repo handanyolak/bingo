@@ -1,11 +1,5 @@
-export { useWallet } from "./hooks";
-
-// Selector exports
+export type { WalletState, SetAddressPayload } from "./types";
+export { setAddress } from "./walletSlice";
 export { selectWallet, selectAddress } from "./walletSelector";
-
-// Slice exports
-export { setAddress, type WalletState } from "./walletSlice";
+export { useWallet } from "./hooks";
 export { default as walletReducer } from "./walletSlice";
-
-// Re-export everything that needs to be public
-export * from "./walletSlice";
