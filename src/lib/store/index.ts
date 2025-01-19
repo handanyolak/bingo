@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { walletReducer } from "@/lib/store/features/wallet";
+import { bingoReducer } from "@/lib/store/features/bingo";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       wallet: walletReducer,
+      bingo: bingoReducer,
     },
   });
 };
