@@ -4,11 +4,19 @@ import timer from "../../../public/animations/timer.json";
 import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/AppButton";
 import styles from "@/styles/CardManager.module.scss";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { startDrawing } from "@/lib/store/features/bingo";
 
 const COUNTDOWN_DURATION = 120;
 
 export const CardManager = () => {
+  const dispatch = useAppDispatch();
+
   const t = useTranslations("controls");
+
+  const handleStartDrawing = () => {
+    dispatch(startDrawing());
+  };
 
   const [timeRemaining, setTimeRemaining] = useState(COUNTDOWN_DURATION);
   const [isStarted, setIsStarted] = useState(false);
@@ -57,6 +65,10 @@ export const CardManager = () => {
     <div className={styles.cardManager__container}>
       {!isStarted && <AppButton text={t("buyTheCard")} onClick={handleStart} />}
       {isTimeUp && <AppButton text={t("submitCard")} />}
+      <AppButton
+        text={t("requestRandomNumbers")}
+        onClick={handleStartDrawing}
+      />
       {!isTimeUp && isStarted && (
         <div className={styles.cardManager__timer}>
           <Lottie
