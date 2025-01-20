@@ -24,10 +24,11 @@ export const LanguageSwitcher = () => {
         onClick={() => setIsOpen(!isOpen)}
         content={
           <ChevronDown
+            size={20}
+            strokeWidth={2.5}
             className={`${styles["languageSwitcher__icon"]} ${
               isOpen ? styles["languageSwitcher__icon--rotated"] : ""
             }`}
-            size={20}
           />
         }
       />
