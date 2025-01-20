@@ -6,6 +6,7 @@ import { useColor } from "@/app/contexts/ColorContext";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import { AppButton } from "@/app/components/AppButton";
+import { Award, Palette, Users } from "lucide-react";
 
 export const Header = () => {
   const t = useTranslations("controls");
@@ -16,12 +17,40 @@ export const Header = () => {
       <div className={styles.header__top}>
         <h1 className={styles.header__title}>Bingo</h1>
         <div className={styles.header__settings}>
+          <AppButton
+            text="Winners"
+            contentPosition="left"
+            content={
+              <Award
+                size={20}
+                strokeWidth={2.5}
+                className={styles.header__title}
+              />
+            }
+          />
+          <AppButton
+            text="Players"
+            contentPosition="left"
+            content={
+              <Users
+                size={20}
+                strokeWidth={2.5}
+                className={styles.header__title}
+              />
+            }
+          />
           <LanguageSwitcher />
           <AppButton
             text={t("changeCardColor")}
-            content={<div className={styles.header__colorIndicator}></div>}
-            contentPosition="left"
             onClick={cycleColor}
+            contentPosition="left"
+            content={
+              <Palette
+                size={20}
+                strokeWidth={2.5}
+                className={styles.header__title}
+              />
+            }
           />
         </div>
       </div>
