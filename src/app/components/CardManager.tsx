@@ -1,88 +1,121 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import timer from "../../../public/animations/timer.json";
+import timerAnimation from "../../../public/animations/timer.json";
 import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/AppButton";
 import styles from "@/styles/CardManager.module.scss";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { startDrawing } from "@/lib/store/features/bingo";
 
-const COUNTDOWN_DURATION = 120;
+const CARD_SUBMISSION_DEADLINE_SECONDS = 10;
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
+  const translations = useTranslations("controls");
+  const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
 
-  const t = useTranslations("controls");
+  const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(
+    CARD_SUBMISSION_DEADLINE_SECONDS
+  );
+  const [isCardPurchaseStarted, setIsCardPurchaseStarted] = useState(false);
+  const [hasRequestedRandomNumbers, setHasRequestedRandomNumbers] =
+    useState(false);
+  const [isCardSubmitted, setIsCardSubmitted] = useState(false);
 
-  const handleStartDrawing = () => {
-    dispatch(startDrawing());
+  const minutesRemaining = Math.floor(submissionTimeRemaining / 60);
+  const secondsRemaining = submissionTimeRemaining % 60;
+
+  const handleCardPurchase = () => {
+    setIsCardPurchaseStarted(true);
   };
 
-  const [timeRemaining, setTimeRemaining] = useState(COUNTDOWN_DURATION);
-  const [isStarted, setIsStarted] = useState(false);
-  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const handleRandomNumberRequest = () => {
+    setHasRequestedRandomNumbers(true);
+  };
+
+  const handleCardSubmit = () => {
+    setIsCardSubmitted(true);
+  };
 
   useEffect(() => {
-    if (!isStarted) return;
+    if (!isCardPurchaseStarted || !hasRequestedRandomNumbers) return;
 
-    const countdownTimer = setInterval(() => {
-      setTimeRemaining((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(countdownTimer);
+    const cardSelectionTimer = setInterval(() => {
+      setSubmissionTimeRemaining((previousTime) => {
+        if (previousTime <= 0) {
+          clearInterval(cardSelectionTimer);
           return 0;
         }
-        return prevTime - 1;
+        return previousTime - 1;
       });
     }, 1000);
 
     setTimeout(() => {
-      if (lottieRef.current?.animationItem) {
-        const totalFrames = timer.op - timer.ip;
-        const frameRate = timer.fr || 30;
-        const naturalDuration = totalFrames / frameRate;
-        const speedRatio = naturalDuration / COUNTDOWN_DURATION;
+      const lottieAnimation = lottieAnimationRef.current?.animationItem;
+      if (lottieAnimation) {
+        const totalAnimationFrames = timerAnimation.op - timerAnimation.ip;
+        const animationFrameRate = timerAnimation.fr || 30;
+        const animationNaturalDuration =
+          totalAnimationFrames / animationFrameRate;
+        const animationSpeedRatio =
+          animationNaturalDuration / CARD_SUBMISSION_DEADLINE_SECONDS;
 
-        lottieRef.current.animationItem.setSpeed(speedRatio);
-        lottieRef.current.animationItem.play();
+        lottieAnimation.setSpeed(animationSpeedRatio);
+        lottieAnimation.play();
       }
     }, 100);
 
     return () => {
-      clearInterval(countdownTimer);
+      clearInterval(cardSelectionTimer);
     };
-  }, [isStarted]);
+  }, [isCardPurchaseStarted, hasRequestedRandomNumbers]);
 
-  const minutes = Math.floor(timeRemaining / 60);
-  const seconds = timeRemaining % 60;
-
-  const handleStart = () => {
-    setIsStarted(true);
-  };
-
-  const isTimeUp = timeRemaining === 0;
+  useEffect(() => {
+    if (submissionTimeRemaining <= 0) {
+      dispatch(startDrawing());
+    }
+  }, [submissionTimeRemaining, dispatch]);
 
   return (
     <div className={styles.cardManager__container}>
-      {!isStarted && <AppButton text={t("buyTheCard")} onClick={handleStart} />}
-      {isTimeUp && <AppButton text={t("submitCard")} />}
-      <AppButton
-        text={t("requestRandomNumbers")}
-        onClick={handleStartDrawing}
-      />
-      {!isTimeUp && isStarted && (
-        <div className={styles.cardManager__timer}>
-          <Lottie
-            lottieRef={lottieRef}
-            animationData={timer}
-            loop={false}
-            autoplay={false}
-          />
-        </div>
+      {!isCardPurchaseStarted && (
+        <AppButton
+          text={translations("buyTheCard")}
+          onClick={handleCardPurchase}
+        />
       )}
-      {isStarted && !isTimeUp && (
-        <div className={styles.cardManager__time}>
-          Time Remaining: {minutes}:{seconds.toString().padStart(2, "0")}
-        </div>
+
+      {isCardPurchaseStarted && !hasRequestedRandomNumbers && (
+        <AppButton
+          text={translations("requestRandomNumbers")}
+          onClick={handleRandomNumberRequest}
+        />
+      )}
+
+      {hasRequestedRandomNumbers && (
+        <>
+          <div className={styles.cardManager__timer}>
+            <Lottie
+              lottieRef={lottieAnimationRef}
+              animationData={timerAnimation}
+              loop={false}
+              autoplay={false}
+            />
+          </div>
+          <div className={styles.cardManager__time}>
+            Time Remaining: {minutesRemaining}:
+            {secondsRemaining.toString().padStart(2, "0")}
+          </div>
+        </>
+      )}
+
+      {hasRequestedRandomNumbers && !isCardSubmitted && (
+        <AppButton
+          text={translations("submitCard")}
+          onClick={handleCardSubmit}
+        />
       )}
     </div>
   );
