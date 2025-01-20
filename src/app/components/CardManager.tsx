@@ -13,7 +13,7 @@ const CARD_SUBMISSION_DEADLINE_SECONDS = 10;
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
-  const translations = useTranslations("controls");
+  const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
 
   const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(
@@ -81,15 +81,12 @@ export const CardManager = () => {
   return (
     <div className={styles.cardManager__container}>
       {!isCardPurchaseStarted && (
-        <AppButton
-          text={translations("buyTheCard")}
-          onClick={handleCardPurchase}
-        />
+        <AppButton text={t("buyTheCard")} onClick={handleCardPurchase} />
       )}
 
       {isCardPurchaseStarted && !hasRequestedRandomNumbers && (
         <AppButton
-          text={translations("requestRandomNumbers")}
+          text={t("requestRandomNumbers")}
           onClick={handleRandomNumberRequest}
         />
       )}
@@ -112,10 +109,7 @@ export const CardManager = () => {
       )}
 
       {hasRequestedRandomNumbers && !isCardSubmitted && (
-        <AppButton
-          text={translations("submitCard")}
-          onClick={handleCardSubmit}
-        />
+        <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
       )}
     </div>
   );
