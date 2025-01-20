@@ -8,24 +8,22 @@ import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { CardManager } from "@/app/components/CardManager";
 import { useAppSelector } from "@/lib/store/hooks";
 import {
-  selectBingoNumbers,
   selectDrawnNumbers,
   useBingoDrawing,
 } from "@/lib/store/features/bingo";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
-  const bingoNumbers = useAppSelector(selectBingoNumbers);
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const { isDrawing } = useBingoDrawing();
 
   return (
     <div className={styles.bingo__page}>
       <div className={styles.bingo__container}>
-        <CardManager />
         <div className={styles.bingo__wrapper}>
+          <CardManager />
           <div className={styles.bingo__game}>
-            <BingoCard numbers={bingoNumbers} drawnNumbers={drawnNumbers} />
+            <BingoCard />
             <div className={styles.bingo__controls}>
               <AppButton
                 text={t("previousGame")}

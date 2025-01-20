@@ -1,23 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type {
-  BingoState,
-  DrawnNumberPayload,
-  BingoNumbersPayload,
-} from "./types";
-
-const generateInitialNumbers = (): number[] => {
-  const numbers = new Set<number>();
-  while (numbers.size < 25) {
-    const num = Math.floor(Math.random() * 75) + 1;
-    numbers.add(num);
-  }
-  return Array.from(numbers);
-};
+import type { BingoState, DrawnNumberPayload } from "./types";
 
 const initialState: BingoState = {
   isDrawing: false,
   drawnNumbers: [],
-  bingoNumbers: generateInitialNumbers(),
 };
 
 export const bingoSlice = createSlice({
@@ -33,12 +19,8 @@ export const bingoSlice = createSlice({
     addDrawnNumber: (state, action: PayloadAction<DrawnNumberPayload>) => {
       state.drawnNumbers.push(action.payload);
     },
-    setBingoNumbers: (state, action: PayloadAction<BingoNumbersPayload>) => {
-      state.bingoNumbers = action.payload;
-    },
   },
 });
 
-export const { startDrawing, stopDrawing, addDrawnNumber, setBingoNumbers } =
-  bingoSlice.actions;
+export const { startDrawing, stopDrawing, addDrawnNumber } = bingoSlice.actions;
 export default bingoSlice.reducer;
