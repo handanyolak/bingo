@@ -4,8 +4,6 @@ import styles from "@/styles/AppButton.module.scss";
 
 interface AppButtonProps {
   text: string;
-  icon?: React.ReactNode;
-  iconPosition?: "left" | "right";
   content?: React.ReactNode;
   contentPosition?: "left" | "right";
   disabled?: boolean;
@@ -15,8 +13,6 @@ interface AppButtonProps {
 
 export const AppButton = ({
   text,
-  icon,
-  iconPosition = "right",
   content,
   contentPosition = "right",
   disabled = false,
@@ -30,9 +26,7 @@ export const AppButton = ({
   return (
     <button className={buttonClass} onClick={onClick} disabled={disabled}>
       {contentPosition === "left" && content}
-      {iconPosition === "left" && icon}
       {text}
-      {iconPosition === "right" && icon}
       {contentPosition === "right" && content}
     </button>
   );
