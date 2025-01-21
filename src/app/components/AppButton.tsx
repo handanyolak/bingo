@@ -2,12 +2,15 @@
 
 import styles from "@/styles/AppButton.module.scss";
 
+type RoundedSize = "full" | "lg" | "md" | "sm";
+
 interface AppButtonProps {
   text: string;
   content?: React.ReactNode;
   contentPosition?: "left" | "right";
   disabled?: boolean;
   className?: string;
+  rounded?: RoundedSize;
   onClick?: () => void;
 }
 
@@ -17,11 +20,12 @@ export const AppButton = ({
   contentPosition = "right",
   disabled = false,
   className = "",
+  rounded,
   onClick,
 }: AppButtonProps) => {
   const buttonClass = `${styles.button} ${
     disabled ? styles.button__disabled : ""
-  } ${className}`;
+  } ${rounded ? styles[`rounded__${rounded}`] : ""} ${className}`;
 
   return (
     <button className={buttonClass} onClick={onClick} disabled={disabled}>

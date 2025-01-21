@@ -1,3 +1,10 @@
+$rounded-sizes: (
+  "full": 999px,
+  "lg": 8px,
+  "md": 6px,
+  "sm": 4px,
+);
+
 .button {
   display: flex;
   align-items: center;
@@ -22,5 +29,11 @@
     border-color: rgba(0, 0, 0, 0.05);
     cursor: not-allowed;
     pointer-events: none;
+  }
+}
+
+@each $size, $value in $rounded-sizes {
+  .rounded__#{$size} {
+    border-radius: $value;
   }
 }
