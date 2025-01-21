@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useLocale } from "@/app/contexts/LocaleContext";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
 import { ChevronDown } from "lucide-react";
-import { AppButton } from "@/app/components/AppButton";
+import { AppButton } from "@/app/components/common/AppButton";
 
 export const LanguageSwitcher = () => {
   const { locale, updateLocale } = useLocale();

@@ -5,7 +5,7 @@ import { ConnectButton } from "@/app/components/ConnectButton";
 import { useColor } from "@/app/contexts/ColorContext";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
-import { AppButton } from "@/app/components/AppButton";
+import { AppButton } from "@/app/components/common/AppButton";
 import { Award, Palette, Users } from "lucide-react";
 
 export const Header = () => {

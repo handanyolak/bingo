@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import timerAnimation from "../../../public/animations/timer.json";
 import { useTranslations } from "next-intl";
-import { AppButton } from "@/app/components/AppButton";
+import { AppButton } from "@/app/components/common/AppButton";
 import styles from "@/styles/CardManager.module.scss";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { startDrawing } from "@/lib/store/features/bingo";

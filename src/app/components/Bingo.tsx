@@ -3,7 +3,7 @@ import { BingoCard } from "@/app/components/BingoCard";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import styles from "@/styles/Bingo.module.scss";
 import { useTranslations } from "next-intl";
-import { AppButton } from "@/app/components/AppButton";
+import { AppButton } from "@/app/components/common/AppButton";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { CardManager } from "@/app/components/CardManager";
 import { useAppSelector } from "@/lib/store/hooks";
