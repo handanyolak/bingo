@@ -5,6 +5,18 @@ $rounded-sizes: (
   "sm": 4px,
 );
 
+@keyframes borderPulse {
+  0% {
+    border-color: rgba(0, 0, 0, 0.05);
+  }
+  50% {
+    border-color: var(--card-color);
+  }
+  100% {
+    border-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -29,6 +41,10 @@ $rounded-sizes: (
     border-color: rgba(0, 0, 0, 0.05);
     cursor: not-allowed;
     pointer-events: none;
+  }
+
+  &__animated {
+    animation: borderPulse 2s infinite;
   }
 }
 

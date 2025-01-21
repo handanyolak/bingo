@@ -11,6 +11,7 @@ interface AppButtonProps {
   disabled?: boolean;
   className?: string;
   rounded?: RoundedSize;
+  animated?: boolean;
   onClick?: () => void;
 }
 
@@ -21,11 +22,14 @@ export const AppButton = ({
   disabled = false,
   className = "",
   rounded,
+  animated = false,
   onClick,
 }: AppButtonProps) => {
   const buttonClass = `${styles.button} ${
     disabled ? styles.button__disabled : ""
-  } ${rounded ? styles[`rounded__${rounded}`] : ""} ${className}`;
+  } ${rounded ? styles[`rounded__${rounded}`] : ""} ${
+    animated ? styles.button__animated : ""
+  } ${className}`;
 
   return (
     <button className={buttonClass} onClick={onClick} disabled={disabled}>
