@@ -18,7 +18,7 @@ export const Header = () => {
         <h1 className={styles.header__title}>Bingo</h1>
         <div className={styles.header__settings}>
           <AppButton
-            text="Winners"
+            text={t("winners")}
             contentPosition="left"
             content={
               <Award
@@ -29,7 +29,7 @@ export const Header = () => {
             }
           />
           <AppButton
-            text="Players"
+            text={t("players")}
             contentPosition="left"
             content={
               <Users
