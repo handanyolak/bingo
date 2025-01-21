@@ -7,6 +7,7 @@ import { AppButton } from "@/app/components/AppButton";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { CardManager } from "@/app/components/CardManager";
 import { useAppSelector } from "@/lib/store/hooks";
+import { Tooltip } from "@/app/components/common/Tooltip";
 import {
   selectDrawnNumbers,
   useBingoDrawing,
@@ -21,6 +22,15 @@ export const Bingo = () => {
     <div className={styles.bingo__page}>
       <div className={styles.bingo__container}>
         <div className={styles.bingo__wrapper}>
+          <Tooltip
+            texts={[
+              "Randomness Payment: 1 ETH",
+              "Random Numbers Refund: 0.00031419852536988 ETH",
+            ]}
+            position="top"
+          >
+            <AppButton text="Total Pool Balance: 15 ETH" rounded="lg" />
+          </Tooltip>
           <CardManager />
           <div className={styles.bingo__game}>
             <BingoCard />
