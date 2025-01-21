@@ -6,6 +6,8 @@
     "nextGame": "Nächstes Spiel",
     "buyTheCard": "Karte kaufen",
     "submitCard": "Senden Sie Ihre Karte zur Überprüfung",
-    "requestRandomNumbers": "Zufällige Zahlen anfordern"
+    "requestRandomNumbers": "Zufällige Zahlen anfordern",
+    "winners": "Gewinner",
+    "players": "Spieler"
   }
 }
