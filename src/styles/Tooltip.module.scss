@@ -1,0 +1,77 @@
+.tooltip {
+  &__wrapper {
+    position: relative;
+    cursor: pointer;
+  }
+
+  &__content {
+    position: absolute;
+    z-index: 10;
+    padding: 8px 12px;
+    background-color: var(--card-light-color);
+    color: white;
+    border-radius: 5px;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+    }
+  }
+
+  &__text {
+    &:not(:last-child) {
+      margin-bottom: 4px;
+      padding-bottom: 4px;
+      text-align: center;
+      font-weight: 700;
+    }
+  }
+
+  &--top {
+    .tooltip__content {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      margin-bottom: 8px;
+
+      &::before {
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top-color: var(--card-light-color);
+      }
+    }
+  }
+
+  &--bottom {
+    .tooltip__content {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      margin-top: 8px;
+
+      &::before {
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-bottom-color: var(--card-light-color);
+      }
+    }
+  }
+
+  &--visible {
+    .tooltip__content {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+}
