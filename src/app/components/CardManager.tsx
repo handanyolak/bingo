@@ -81,7 +81,11 @@ export const CardManager = () => {
   return (
     <div className={styles.cardManager__container}>
       {!isCardPurchaseStarted && (
-        <AppButton text={t("buyTheCard")} onClick={handleCardPurchase} />
+        <AppButton
+          text={t("buyTheCard")}
+          animated
+          onClick={handleCardPurchase}
+        />
       )}
 
       {isCardPurchaseStarted && !hasRequestedRandomNumbers && (
