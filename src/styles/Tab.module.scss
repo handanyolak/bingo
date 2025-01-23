@@ -1,0 +1,51 @@
+.tab {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  &__button {
+    padding: 0.5rem 1rem;
+    width: 50%;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #6b7280;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      color: var(--card-color);
+    }
+
+    &_active {
+      color: var(--card-color);
+      border-bottom: 1px solid var(--card-dark-color);
+    }
+
+    &_content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    &_icon {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__panel {
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+  }
+}
