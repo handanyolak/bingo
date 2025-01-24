@@ -5,13 +5,22 @@
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
+    @media (max-width: 768px) {
+      margin-top: 0.2rem;
+    }
   }
 
   &__timer {
     width: 160px;
+    @media (max-width: 768px) {
+      width: 100px;
+    }
   }
 
   &__time {
     margin: 1rem auto;
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
   }
 }
