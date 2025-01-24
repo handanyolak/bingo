@@ -1,0 +1,21 @@
+.menuContent {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  &__button {
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  &__icon {
+    color: var(--card-color);
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
