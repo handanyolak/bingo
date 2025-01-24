@@ -21,6 +21,7 @@ export const LanguageSwitcher = () => {
       <AppButton
         text={LANGUAGES[locale]}
         contentPosition="right"
+        className={styles.languageSwitcher__button}
         onClick={() => setIsOpen(!isOpen)}
         content={
           <ChevronDown
