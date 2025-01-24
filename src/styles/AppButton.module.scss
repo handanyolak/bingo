@@ -31,6 +31,7 @@ $rounded-sizes: (
   transition: background-color 0.2s ease;
   font-size: 1rem;
   font-weight: 600;
+  font-size: 16px;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);
@@ -51,5 +52,13 @@ $rounded-sizes: (
 @each $size, $value in $rounded-sizes {
   .rounded__#{$size} {
     border-radius: $value;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .button {
+    padding: 4px 10px;
+    font-size: 13px;
+    gap: 0.25rem;
   }
 }
