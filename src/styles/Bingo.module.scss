@@ -38,3 +38,39 @@
     width: 200px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .bingo {
+    &__container {
+      padding: 0 0.75rem;
+    }
+
+    &__controls {
+      gap: 0.75rem;
+    }
+
+    &__control {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .bingo {
+    &__container {
+      padding: 0 0.5rem;
+    }
+
+    &__wrapper {
+      gap: 0.75rem;
+    }
+
+    &__game {
+      gap: 0.75rem;
+    }
+
+    &__controls {
+      gap: 0.5rem;
+    }
+  }
+}
