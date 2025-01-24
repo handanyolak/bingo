@@ -1,14 +1,22 @@
 .header {
   padding: 1rem;
   width: 100%;
-  display: flex;
-  flex-direction: column;
 
   &__top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--card-color);
+    z-index: 100;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
   }
 
   &__settings {
@@ -20,29 +28,14 @@
   &__bottom {
     display: flex;
     justify-content: center;
-    width: 100%;
   }
+}
 
-  &__title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--card-color);
-  }
+.desktopView {
+  display: flex;
+  gap: 1rem;
 
-  &__colorButton {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 8px;
-    background-color: rgba(0, 0, 0, 0.02);
-    color: #374151;
-    border-radius: 100px;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
+  @media (max-width: 768px) {
+    display: none;
   }
 }
