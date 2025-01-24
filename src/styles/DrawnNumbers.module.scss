@@ -19,9 +19,7 @@
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    min-height: 300px;
     width: 100%;
-    max-width: 1200px;
   }
 
   &__cell {
@@ -75,5 +73,36 @@
   100% {
     left: 50%;
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .drawnNumbers {
+    padding: 20px 0 0 0;
+
+    &__container {
+      margin: 10px 0;
+    }
+
+    &__grid {
+      grid-template-columns: repeat(15, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      grid-gap: 5px;
+      padding: 10px;
+    }
+
+    &__cell,
+    &__placeholder {
+      height: 18px;
+      width: 18px;
+      font-size: 10px;
+    }
+
+    &__marker {
+      top: 15px;
+      width: 40px;
+      height: 40px;
+      font-size: 14px;
+    }
   }
 }
