@@ -3,8 +3,9 @@
 import { wagmiAdapter, projectId, networks } from "@/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
-import React, { type ReactNode } from "react";
+import React, { type ReactNode, useEffect } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { useTheme } from "next-themes";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +16,7 @@ if (!projectId) {
 const metadata = {
   name: "appkit-example",
   description: "AppKit Example",
-  url: "https://appkitexampleapp.com", // origin must match your domain & subdomain
+  url: "https://appkitexampleapp.com",
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 
@@ -24,7 +25,7 @@ export const modal = createAppKit({
   projectId,
   networks,
   metadata,
-  themeMode: "light",
+  themeMode: (localStorage?.getItem("theme") as "dark" | "light") || "light",
 });
 
 function ContextProvider({
@@ -34,10 +35,17 @@ function ContextProvider({
   children: ReactNode;
   cookies: string | null;
 }) {
+  const { theme } = useTheme();
   const initialState = cookieToInitialState(
     wagmiAdapter.wagmiConfig as Config,
     cookies
   );
+
+  useEffect(() => {
+    if (theme) {
+      modal.setThemeMode(theme as "dark" | "light");
+    }
+  }, [theme]);
 
   return (
     <WagmiProvider
