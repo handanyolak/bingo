@@ -22,8 +22,8 @@ export default async function RootLayout({
   const messages = await getStaticMessages();
 
   return (
-    <html lang="en">
-      <body className={comfortaa.className}>
+    <html>
+      <body className={`${comfortaa.className}`} lang="en">
         <LocaleProvider messages={messages}>
           <Header />
           {children}
