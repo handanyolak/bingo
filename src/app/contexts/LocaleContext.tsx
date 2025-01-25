@@ -3,7 +3,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import StoreProvider from "@/app/StoreProvider";
 import ContextProvider from "@/app/contexts/ReownContext";
-import { ClientColorProvider } from "@/app/components/ClientColorProvider";
+import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { createContext, useContext, useState } from "react";
 import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
@@ -43,19 +43,23 @@ export const LocaleProvider = ({ messages, children }: Props) => {
   };
 
   return (
-    <NextIntlClientProvider
-      messages={messages[currentLocale]}
-      locale={currentLocale}
-    >
-      <LocaleContext.Provider value={{ locale: currentLocale, updateLocale }}>
-        <StoreProvider>
-          <ContextProvider
-            cookies={typeof window !== "undefined" ? document.cookie : null}
+    <StoreProvider>
+      <ThemeColorProvider>
+        <NextIntlClientProvider
+          messages={messages[currentLocale]}
+          locale={currentLocale}
+        >
+          <LocaleContext.Provider
+            value={{ locale: currentLocale, updateLocale }}
           >
-            <ClientColorProvider>{children}</ClientColorProvider>
-          </ContextProvider>
-        </StoreProvider>
-      </LocaleContext.Provider>
-    </NextIntlClientProvider>
+            <ContextProvider
+              cookies={typeof window !== "undefined" ? document.cookie : null}
+            >
+              {children}
+            </ContextProvider>
+          </LocaleContext.Provider>
+        </NextIntlClientProvider>
+      </ThemeColorProvider>
+    </StoreProvider>
   );
 };
