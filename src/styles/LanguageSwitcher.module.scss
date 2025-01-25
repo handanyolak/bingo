@@ -26,8 +26,8 @@
     right: 0;
     top: calc(100% + 4px);
     border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border: 1px solid var(--button-border);
+    box-shadow: var(--card-shadow);
     width: 100%;
     z-index: 50;
     overflow: hidden;
@@ -39,14 +39,14 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    background-color: #fff0d9;
+    background-color: var(--background);
   }
 
   &__option {
     width: 100%;
     padding: 10px;
     text-align: left;
-    color: #374151;
+    color: var(--text);
     border-radius: 8px;
     transition: all 0.2s ease;
     font-weight: 600;
@@ -56,11 +56,11 @@
     font-size: 15px;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: var(--button-hover-bg);
     }
 
     &:active {
-      background-color: rgba(0, 0, 0, 0.04);
+      background-color: var(--button-bg);
     }
   }
 }

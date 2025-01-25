@@ -6,7 +6,7 @@
   &__header {
     display: flex;
     justify-content: center;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--button-border);
   }
 
   &__button {
@@ -14,7 +14,7 @@
     width: 50%;
     font-weight: 500;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--button-text);
     transition: all 0.2s ease;
 
     &:focus {
@@ -45,7 +45,7 @@
 
   &__panel {
     padding: 1rem;
-    background-color: white;
+    background-color: var(--surface-bg);
     border-radius: 0.5rem;
   }
 }

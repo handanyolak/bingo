@@ -23,23 +23,22 @@ $rounded-sizes: (
   justify-content: center;
   gap: 0.5rem;
   padding: 8px 16px;
-  background-color: rgba(0, 0, 0, 0.02);
-  color: #374151;
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border-radius: 999px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s ease;
-  font-size: 1rem;
+  border: 1px solid var(--button-border);
+  transition: all 0.2s ease;
   font-weight: 600;
   font-size: 16px;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--button-hover-bg);
   }
 
   &__disabled {
-    color: #999;
-    border-color: rgba(0, 0, 0, 0.05);
+    color: var(--button-disabled);
+    border-color: var(--button-border);
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -60,5 +59,21 @@ $rounded-sizes: (
     padding: 4px 10px;
     font-size: 13px;
     gap: 0.25rem;
+  }
+}
+
+.dark {
+  .button__animated {
+    @keyframes borderPulse {
+      0% {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      50% {
+        border-color: var(--card-color);
+      }
+      100% {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    }
   }
 }
