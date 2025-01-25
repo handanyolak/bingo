@@ -3,6 +3,8 @@ import { AppButton } from "@/app/components/common/AppButton";
 import { Palette, UsersRound } from "lucide-react";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import styles from "@/styles/MenuContent.module.scss";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
 
 interface MenuContentProps {
   onModalOpen: () => void;
@@ -15,8 +17,12 @@ export const MenuContent = ({
 }: MenuContentProps) => {
   const t = useTranslations("controls");
 
+  const { theme, setTheme } = useTheme();
   return (
     <div className={styles.menuContent}>
+      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        {theme === "dark" ? <Sun /> : <Moon />}
+      </button>
       <AppButton
         text={t("participants")}
         onClick={onModalOpen}
