@@ -2,16 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+.light {
   --background: #fff0d9;
-  --foreground: #171717;
+  --text: #27272a;
+  --button-bg: rgba(0, 0, 0, 0.02);
+  --button-text: #374151;
+  --button-border: rgba(0, 0, 0, 0.05);
+  --button-hover-bg: rgba(0, 0, 0, 0.05);
+  --button-disabled: #999;
+  --modal-bg: rgba(255, 255, 255, 0.9);
+  --modal-text: #27272a;
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-text: #27272a;
+  --input-border: rgba(0, 0, 0, 0.1);
+  --drawer-bg: rgba(255, 255, 255, 0.9);
+  --surface-bg: white;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #1a1b26;
+  --text: #fafafa;
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --button-text: #e5e7eb;
+  --button-border: rgba(255, 255, 255, 0.1);
+  --button-hover-bg: rgba(255, 255, 255, 0.15);
+  --button-disabled: #666;
+  --modal-bg: rgba(24, 24, 27, 0.9);
+  --modal-text: #fafafa;
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --input-bg: rgba(24, 24, 27, 0.9);
+  --input-text: #fafafa;
+  --input-border: rgba(255, 255, 255, 0.1);
+  --drawer-bg: rgba(26, 27, 38, 0.9);
+  --surface-bg: #20212e;
 }
 
 html,
@@ -20,7 +45,17 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  color: var(--foreground);
+  color: var(--text);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--text);
+  color: var(--background);
 }
