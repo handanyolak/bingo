@@ -2,9 +2,10 @@ import { cookieStorage, createStorage } from "wagmi";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { sepolia } from "@reown/appkit/networks";
 import type { AppKitNetwork } from "@reown/appkit/networks";
+import { env } from "@/config/env";
 
 // Get projectId from https://cloud.reown.com
-export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+export const projectId = env.projectId;
 
 if (!projectId) {
   throw new Error("Project ID is not defined");
