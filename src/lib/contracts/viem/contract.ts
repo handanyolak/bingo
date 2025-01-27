@@ -1,6 +1,6 @@
 import { getContract } from "viem";
-import { abi } from "@/lib/config";
-import { publicClient } from "@/lib/config";
+import { abi } from "@/lib/contracts";
+import { publicClient } from "@/lib/contracts";
 import { env } from "@/config/env";
 
 const contract = getContract({
