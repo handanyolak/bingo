@@ -7,6 +7,8 @@ import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { createContext, useContext, useState } from "react";
 import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
+import { WagmiProvider } from "wagmi";
+import { config } from "@/lib/wagmi/config";
 
 type ContextType = {
   locale: LanguageCode;
@@ -43,23 +45,25 @@ export const LocaleProvider = ({ messages, children }: Props) => {
   };
 
   return (
-    <StoreProvider>
-      <ThemeColorProvider>
-        <NextIntlClientProvider
-          messages={messages[currentLocale]}
-          locale={currentLocale}
-        >
-          <LocaleContext.Provider
-            value={{ locale: currentLocale, updateLocale }}
+    <WagmiProvider config={config}>
+      <StoreProvider>
+        <ThemeColorProvider>
+          <NextIntlClientProvider
+            messages={messages[currentLocale]}
+            locale={currentLocale}
           >
-            <ContextProvider
-              cookies={typeof window !== "undefined" ? document.cookie : null}
+            <LocaleContext.Provider
+              value={{ locale: currentLocale, updateLocale }}
             >
-              {children}
-            </ContextProvider>
-          </LocaleContext.Provider>
-        </NextIntlClientProvider>
-      </ThemeColorProvider>
-    </StoreProvider>
+              <ContextProvider
+                cookies={typeof window !== "undefined" ? document.cookie : null}
+              >
+                {children}
+              </ContextProvider>
+            </LocaleContext.Provider>
+          </NextIntlClientProvider>
+        </ThemeColorProvider>
+      </StoreProvider>
+    </WagmiProvider>
   );
 };
