@@ -10,12 +10,14 @@ import { Tab, TabItem } from "@/app/components/common/Tab";
 import { useState } from "react";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
+import { useGameId } from "@/lib/wagmi/contracts/bingo";
 
 export const Header = () => {
   const t = useTranslations("controls");
   const { cycleColor } = useColor();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { gameId, isError: gameError, isLoading: gameLoading } = useGameId();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -52,7 +54,12 @@ export const Header = () => {
       </div>
 
       <div className={styles.header__bottom}>
-        <ConnectButton />
+        <div>
+          <ConnectButton />
+          {gameLoading && <p>Loading game ID...</p>}
+          {gameError && <p className="text-red-500">Error loading game ID</p>}
+          {gameId && <p className="text-lg text-center">#{gameId}</p>}
+        </div>
       </div>
 
       <AppModal
