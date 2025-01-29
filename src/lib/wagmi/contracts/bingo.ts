@@ -1,15 +1,25 @@
-import { getContract } from "viem";
-import { getPublicClient } from "@wagmi/core";
-import { config } from "../config";
+import { useReadContract } from "wagmi";
 import { abi } from "@/lib/wagmi/abis";
 import { env } from "@/config/env";
+import { sepolia } from "wagmi/chains";
 
-export const getBingoContract = () => {
-  const publicClient = getPublicClient(config);
-
-  return getContract({
+export const useGameId = () => {
+  const {
+    data: gameId,
+    isError,
+    isLoading,
+    refetch,
+  } = useReadContract({
     address: env.bingoContract,
     abi: abi,
-    client: publicClient,
+    functionName: "availableGameId",
+    chainId: sepolia.id,
   });
+
+  return {
+    gameId: gameId?.toString(),
+    isError,
+    isLoading,
+    refetch,
+  };
 };
