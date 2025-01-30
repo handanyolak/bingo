@@ -1,9 +1,9 @@
-import { createConfig, http } from "wagmi";
-import { sepolia } from "wagmi/chains";
+import { http, createConfig } from "@wagmi/core";
+import { sepolia } from "@wagmi/core/chains";
 
 export const config = createConfig({
   chains: [sepolia],
   transports: {
-    [sepolia.id]: http("https://eth-sepolia.public.blastapi.io"),
+    [sepolia.id]: http(),
   },
 });

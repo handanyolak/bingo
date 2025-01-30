@@ -10,14 +10,18 @@ import { Tab, TabItem } from "@/app/components/common/Tab";
 import { useState } from "react";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
-import { useGameId } from "@/lib/wagmi/contracts/bingo";
+import { useBingoContract } from "@/lib/wagmi/hooks/useBingoContract";
 
 export const Header = () => {
   const t = useTranslations("controls");
   const { cycleColor } = useColor();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { gameId, isError: gameError, isLoading: gameLoading } = useGameId();
+  const {
+    gameId,
+    isGameIdError: gameError,
+    isGameIdLoading: gameLoading,
+  } = useBingoContract();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);

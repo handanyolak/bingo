@@ -12,3 +12,8 @@ export const selectIsDrawing = createSelector(
   [selectBingo],
   (bingo): boolean => bingo.isDrawing
 );
+
+export const selectCardNumbers = createSelector(
+  [selectBingo],
+  (bingo): number[] => bingo.cardNumbers
+);
