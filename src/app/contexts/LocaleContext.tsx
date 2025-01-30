@@ -9,6 +9,7 @@ import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
 import { WagmiProvider } from "wagmi";
 import { config } from "@/lib/wagmi/config";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 type ContextType = {
   locale: LanguageCode;
@@ -34,6 +35,8 @@ const LocaleContext = createContext<ContextType>({} as ContextType);
 
 export const useLocale = () => useContext(LocaleContext);
 
+const queryClient = new QueryClient();
+
 export const LocaleProvider = ({ messages, children }: Props) => {
   const [currentLocale, setCurrentLocale] = useState<LanguageCode>(() => {
     return getLocale() as LanguageCode;
@@ -46,24 +49,28 @@ export const LocaleProvider = ({ messages, children }: Props) => {
 
   return (
     <WagmiProvider config={config}>
-      <StoreProvider>
-        <ThemeColorProvider>
-          <NextIntlClientProvider
-            messages={messages[currentLocale]}
-            locale={currentLocale}
-          >
-            <LocaleContext.Provider
-              value={{ locale: currentLocale, updateLocale }}
+      <QueryClientProvider client={queryClient}>
+        <StoreProvider>
+          <ThemeColorProvider>
+            <NextIntlClientProvider
+              messages={messages[currentLocale]}
+              locale={currentLocale}
             >
-              <ContextProvider
-                cookies={typeof window !== "undefined" ? document.cookie : null}
+              <LocaleContext.Provider
+                value={{ locale: currentLocale, updateLocale }}
               >
-                {children}
-              </ContextProvider>
-            </LocaleContext.Provider>
-          </NextIntlClientProvider>
-        </ThemeColorProvider>
-      </StoreProvider>
+                <ContextProvider
+                  cookies={
+                    typeof window !== "undefined" ? document.cookie : null
+                  }
+                >
+                  {children}
+                </ContextProvider>
+              </LocaleContext.Provider>
+            </NextIntlClientProvider>
+          </ThemeColorProvider>
+        </StoreProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 };
