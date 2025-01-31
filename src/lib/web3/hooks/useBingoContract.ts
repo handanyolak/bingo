@@ -4,8 +4,8 @@ import { useState } from "react";
 import { sepolia } from "wagmi/chains";
 import { useAppSelector } from "@/lib/store/hooks";
 import { BingoCard, selectCardNumbers } from "@/lib/store/features/bingo";
-import { config } from "@/lib/wagmi/config";
-import { abi } from "@/lib/wagmi/abis";
+import { config } from "@/lib/web3/wagmi/config";
+import { abi } from "@/lib/web3/abis";
 import { env } from "@/config/env";
 import { useMutation, useQuery } from "@tanstack/react-query";
 

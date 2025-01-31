@@ -10,7 +10,7 @@ import { Tab, TabItem } from "@/app/components/common/Tab";
 import { useState } from "react";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
-import { useBingoContract } from "@/lib/wagmi/hooks/useBingoContract";
+import { useBingoContract } from "@/lib/web3/hooks/useBingoContract";
 
 export const Header = () => {
   const t = useTranslations("controls");
