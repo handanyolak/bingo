@@ -1,1 +1,1 @@
-export * from "./useBingoContract";
+export * from "./useContractWrite.ts";
