@@ -36,7 +36,7 @@ export const useContractWrite = (): ContractWriteState => {
         address: env.bingoContractAddress,
         abi,
         functionName: "buyCard",
-        args: [cardNumbers] as [BingoCard],
+        args: [cardNumbers as any],
         chainId: sepolia.id,
         value: data.bingoCardPrice,
       });

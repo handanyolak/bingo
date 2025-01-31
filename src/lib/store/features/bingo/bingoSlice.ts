@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  toBingoCardTuple,
   type BingoCard,
   type BingoState,
   type DrawnNumberPayload,
@@ -35,8 +34,7 @@ export const bingoSlice = createSlice({
       state.drawnNumbers.push(action.payload);
     },
     generateCardNumbers: (state) => {
-      const numbers = generateRandomNumbers();
-      state.cardNumbers = toBingoCardTuple(numbers);
+      state.cardNumbers = generateRandomNumbers() as BingoCard;
     },
   },
 });
