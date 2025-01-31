@@ -10,7 +10,7 @@ import { Tab, TabItem } from "@/app/components/common/Tab";
 import { useState } from "react";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
-import { useBingoContract } from "@/lib/web3/hooks/useBingoContract";
+import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 
 export const Header = () => {
   const t = useTranslations("controls");
@@ -18,10 +18,10 @@ export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const {
-    gameId,
-    isGameIdError: gameError,
-    isGameIdLoading: gameLoading,
-  } = useBingoContract();
+    data,
+    isError: gameError,
+    isLoading: gameLoading,
+  } = useContractReads();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -62,7 +62,9 @@ export const Header = () => {
           <ConnectButton />
           {gameLoading && <p>Loading game ID...</p>}
           {gameError && <p className="text-red-500">Error loading game ID</p>}
-          {gameId && <p className="text-lg text-center">#{gameId}</p>}
+          {data?.gameId && (
+            <p className="text-lg text-center">#{data.gameId}</p>
+          )}
         </div>
       </div>
 
