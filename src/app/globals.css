@@ -19,6 +19,9 @@
   --input-border: rgba(0, 0, 0, 0.1);
   --drawer-bg: rgba(255, 255, 255, 0.9);
   --surface-bg: white;
+  --loader-size: 16px;
+  --loader-animation: spin 1s linear infinite;
+  --loader-color: var(--text);
 }
 
 .dark {
@@ -37,6 +40,23 @@
   --input-border: rgba(255, 255, 255, 0.1);
   --drawer-bg: rgba(26, 27, 38, 0.9);
   --surface-bg: #20212e;
+  --loader-color: var(--text);
+}
+
+.global-loader {
+  width: var(--loader-size);
+  height: var(--loader-size);
+  animation: var(--loader-animation);
+  color: var(--loader-color);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 html,
