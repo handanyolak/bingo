@@ -4,10 +4,12 @@ import React, { useEffect, useState, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import timerAnimation from "../../../public/animations/timer.json";
 import { useTranslations } from "next-intl";
-import { AppButton } from "@/app/components/common/AppButton";
 import styles from "@/styles/CardManager.module.scss";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { startDrawing } from "@/lib/store/features/bingo";
+import { AppButton } from "@/app/components/common/AppButton";
+import { useContractWrite } from "@/lib/web3/hooks/useContractWrite";
+import { Loader2 } from "lucide-react";
 
 const CARD_SUBMISSION_DEADLINE_SECONDS = 10;
 
@@ -15,6 +17,12 @@ export const CardManager = () => {
   const dispatch = useAppDispatch();
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
+  const {
+    buyBingoCard,
+    isBuyCardConfirming,
+    isBuyCardPending,
+    isBuyCardSuccess,
+  } = useContractWrite();
 
   const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(
     CARD_SUBMISSION_DEADLINE_SECONDS
@@ -26,10 +34,6 @@ export const CardManager = () => {
 
   const minutesRemaining = Math.floor(submissionTimeRemaining / 60);
   const secondsRemaining = submissionTimeRemaining % 60;
-
-  const handleCardPurchase = () => {
-    setIsCardPurchaseStarted(true);
-  };
 
   const handleRandomNumberRequest = () => {
     setHasRequestedRandomNumbers(true);
@@ -80,15 +84,17 @@ export const CardManager = () => {
 
   return (
     <div className={styles.cardManager__container}>
-      {!isCardPurchaseStarted && (
+      {!isBuyCardSuccess && (
         <AppButton
           text={t("buyTheCard")}
           animated
-          onClick={handleCardPurchase}
+          onClick={buyBingoCard}
+          contentPosition="right"
+          content={isBuyCardPending && <Loader2 className="global-loader" />}
         />
       )}
 
-      {isCardPurchaseStarted && !hasRequestedRandomNumbers && (
+      {isBuyCardSuccess && !hasRequestedRandomNumbers && (
         <AppButton
           text={t("requestRandomNumbers")}
           onClick={handleRandomNumberRequest}
