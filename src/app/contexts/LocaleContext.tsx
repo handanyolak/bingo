@@ -10,6 +10,7 @@ import { setLocale, getLocale } from "@/lib/actions";
 import { WagmiProvider } from "wagmi";
 import { config } from "@/lib/web3/wagmi/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from "react-toastify";
 
 type ContextType = {
   locale: LanguageCode;
@@ -64,6 +65,7 @@ export const LocaleProvider = ({ messages, children }: Props) => {
                     typeof window !== "undefined" ? document.cookie : null
                   }
                 >
+                  <ToastContainer />
                   {children}
                 </ContextProvider>
               </LocaleContext.Provider>
