@@ -17,13 +17,15 @@ export const useContractReads = () => {
       client: publicClient,
     });
 
-    const [gameId, bingoCardPrice, isPlayerExists] = await Promise.all([
-      contract.read.availableGameId(),
-      contract.read.BINGO_CARD_PRICE(),
-      contract.read.isPlayerExists([BigInt(0), address as Address]),
-    ]);
+    const [gameId, bingoCardPrice, isPlayerExists, isDrawnNumbersFilled] =
+      await Promise.all([
+        contract.read.availableGameId(),
+        contract.read.BINGO_CARD_PRICE(),
+        contract.read.isPlayerExists([BigInt(0), address as Address]),
+        contract.read.isDrawnNumbersFilled([BigInt(0)]),
+      ]);
 
-    return { gameId, bingoCardPrice, isPlayerExists };
+    return { gameId, bingoCardPrice, isPlayerExists, isDrawnNumbersFilled };
   };
 
   return useQuery({
