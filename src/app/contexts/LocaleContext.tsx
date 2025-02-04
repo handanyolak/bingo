@@ -7,8 +7,9 @@ import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { createContext, useContext, useState } from "react";
 import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
+import { queryClient } from "@/lib/queryClient";
 
 type ContextType = {
   locale: LanguageCode;
@@ -33,8 +34,6 @@ type Props = {
 const LocaleContext = createContext<ContextType>({} as ContextType);
 
 export const useLocale = () => useContext(LocaleContext);
-
-const queryClient = new QueryClient();
 
 export const LocaleProvider = ({ messages, children }: Props) => {
   const [currentLocale, setCurrentLocale] = useState<LanguageCode>(() => {
