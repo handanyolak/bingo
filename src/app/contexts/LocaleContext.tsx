@@ -7,8 +7,6 @@ import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { createContext, useContext, useState } from "react";
 import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
-import { WagmiProvider } from "wagmi";
-import { config } from "@/lib/web3/wagmi/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 
@@ -49,30 +47,26 @@ export const LocaleProvider = ({ messages, children }: Props) => {
   };
 
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <StoreProvider>
-          <ThemeColorProvider>
-            <NextIntlClientProvider
-              messages={messages[currentLocale]}
-              locale={currentLocale}
+    <QueryClientProvider client={queryClient}>
+      <StoreProvider>
+        <ThemeColorProvider>
+          <NextIntlClientProvider
+            messages={messages[currentLocale]}
+            locale={currentLocale}
+          >
+            <LocaleContext.Provider
+              value={{ locale: currentLocale, updateLocale }}
             >
-              <LocaleContext.Provider
-                value={{ locale: currentLocale, updateLocale }}
+              <ContextProvider
+                cookies={typeof window !== "undefined" ? document.cookie : null}
               >
-                <ContextProvider
-                  cookies={
-                    typeof window !== "undefined" ? document.cookie : null
-                  }
-                >
-                  <ToastContainer />
-                  {children}
-                </ContextProvider>
-              </LocaleContext.Provider>
-            </NextIntlClientProvider>
-          </ThemeColorProvider>
-        </StoreProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+                <ToastContainer />
+                {children}
+              </ContextProvider>
+            </LocaleContext.Provider>
+          </NextIntlClientProvider>
+        </ThemeColorProvider>
+      </StoreProvider>
+    </QueryClientProvider>
   );
 };
