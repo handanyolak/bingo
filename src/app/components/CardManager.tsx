@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import timerAnimation from "../../../public/animations/timer.json";
-import { useTranslations } from "next-intl";
-import styles from "@/styles/CardManager.module.scss";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { startDrawing } from "@/lib/store/features/bingo";
-import { AppButton } from "@/app/components/common/AppButton";
-import { useContractWrite } from "@/lib/web3/hooks/useContractWrite";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useEffect, useState, useRef } from "react";
+
+import { AppButton } from "@/app/components/common/AppButton";
+import { startDrawing } from "@/lib/store/features/bingo";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { useContractReads } from "@/lib/web3";
+import { useContractWrite } from "@/lib/web3/";
+import styles from "@/styles/CardManager.module.scss";
+
+import timerAnimation from "../../../public/animations/timer.json";
 
 const CARD_SUBMISSION_DEADLINE_SECONDS = 10;
 
@@ -17,17 +20,14 @@ export const CardManager = () => {
   const dispatch = useAppDispatch();
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
-  const {
-    buyBingoCard,
-    isBuyCardConfirming,
-    isBuyCardPending,
-    isBuyCardSuccess,
-  } = useContractWrite();
+  const { buyBingoCard, isBuyCardPending } = useContractWrite();
+
+  const { data } = useContractReads();
+  const { isPlayerExists } = data || {};
 
   const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(
     CARD_SUBMISSION_DEADLINE_SECONDS
   );
-  const [isCardPurchaseStarted, setIsCardPurchaseStarted] = useState(false);
   const [hasRequestedRandomNumbers, setHasRequestedRandomNumbers] =
     useState(false);
   const [isCardSubmitted, setIsCardSubmitted] = useState(false);
@@ -44,7 +44,7 @@ export const CardManager = () => {
   };
 
   useEffect(() => {
-    if (!isCardPurchaseStarted || !hasRequestedRandomNumbers) return;
+    if (!hasRequestedRandomNumbers) return;
 
     const cardSelectionTimer = setInterval(() => {
       setSubmissionTimeRemaining((previousTime) => {
@@ -74,7 +74,7 @@ export const CardManager = () => {
     return () => {
       clearInterval(cardSelectionTimer);
     };
-  }, [isCardPurchaseStarted, hasRequestedRandomNumbers]);
+  }, [hasRequestedRandomNumbers]);
 
   useEffect(() => {
     if (submissionTimeRemaining <= 0) {
@@ -84,7 +84,7 @@ export const CardManager = () => {
 
   return (
     <div className={styles.cardManager__container}>
-      {!isBuyCardSuccess && (
+      {!isPlayerExists && (
         <AppButton
           text={t("buyTheCard")}
           animated
@@ -94,7 +94,7 @@ export const CardManager = () => {
         />
       )}
 
-      {isBuyCardSuccess && !hasRequestedRandomNumbers && (
+      {isPlayerExists && (
         <AppButton
           text={t("requestRandomNumbers")}
           onClick={handleRandomNumberRequest}
