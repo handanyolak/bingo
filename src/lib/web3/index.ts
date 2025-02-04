@@ -1,2 +1,2 @@
-export * from "./wagmi/config";
+export * from "./reown/config";
 export * from "./hooks";
