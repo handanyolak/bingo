@@ -1,14 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ContractReads } from "@/lib/web3";
 import {
   type BingoCard,
   type BingoState,
   type DrawnNumberPayload,
 } from "./types";
 
-const generateRandomNumbers = (): number[] => {
+const generateRandomNumbers = (contractData: ContractReads): number[] => {
+  const { BINGO_MIN_NUMBER, BINGO_MAX_NUMBER, BINGO_CARD_NUMBERS_COUNT } =
+    contractData;
+
+  const min = Number(BINGO_MIN_NUMBER);
+  const max = Number(BINGO_MAX_NUMBER);
+  const count = Number(BINGO_CARD_NUMBERS_COUNT);
+
   const numbers = new Set<number>();
-  while (numbers.size < 25) {
-    const num = Math.floor(Math.random() * 75) + 1;
+  while (numbers.size < count) {
+    const num = Math.floor(Math.random() * (max - min + 1)) + min;
     numbers.add(num);
   }
   return Array.from(numbers);
@@ -17,7 +25,7 @@ const generateRandomNumbers = (): number[] => {
 const initialState: BingoState = {
   isDrawing: false,
   drawnNumbers: [],
-  cardNumbers: generateRandomNumbers() as BingoCard,
+  cardNumbers: new Array(25).fill(0) as BingoCard,
 };
 
 export const bingoSlice = createSlice({
@@ -33,8 +41,8 @@ export const bingoSlice = createSlice({
     addDrawnNumber: (state, action: PayloadAction<DrawnNumberPayload>) => {
       state.drawnNumbers.push(action.payload);
     },
-    generateCardNumbers: (state) => {
-      state.cardNumbers = generateRandomNumbers() as BingoCard;
+    generateCardNumbers: (state, action: PayloadAction<ContractReads>) => {
+      state.cardNumbers = generateRandomNumbers(action.payload) as BingoCard;
     },
   },
 });
