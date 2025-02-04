@@ -20,10 +20,11 @@ export const CardManager = () => {
   const dispatch = useAppDispatch();
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
-  const { buyBingoCard, isBuyCardPending } = useContractWrite();
+  const { buyBingoCard, isBuyCardPending, requestRandomNumbers } =
+    useContractWrite();
 
   const { data } = useContractReads();
-  const { isPlayerExists } = data || {};
+  const { isPlayerExists, isDrawnNumbersFilled } = data || {};
 
   const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(
     CARD_SUBMISSION_DEADLINE_SECONDS
@@ -44,7 +45,7 @@ export const CardManager = () => {
   };
 
   useEffect(() => {
-    if (!hasRequestedRandomNumbers) return;
+    if (!isDrawnNumbersFilled) return;
 
     const cardSelectionTimer = setInterval(() => {
       setSubmissionTimeRemaining((previousTime) => {
@@ -74,7 +75,7 @@ export const CardManager = () => {
     return () => {
       clearInterval(cardSelectionTimer);
     };
-  }, [hasRequestedRandomNumbers]);
+  }, [isDrawnNumbersFilled]);
 
   useEffect(() => {
     if (submissionTimeRemaining <= 0) {
@@ -94,14 +95,14 @@ export const CardManager = () => {
         />
       )}
 
-      {isPlayerExists && (
+      {isPlayerExists && !isDrawnNumbersFilled && (
         <AppButton
           text={t("requestRandomNumbers")}
-          onClick={handleRandomNumberRequest}
+          onClick={requestRandomNumbers}
         />
       )}
 
-      {hasRequestedRandomNumbers && (
+      {isDrawnNumbersFilled && (
         <>
           <div className={styles.cardManager__timer}>
             <Lottie
@@ -118,7 +119,7 @@ export const CardManager = () => {
         </>
       )}
 
-      {hasRequestedRandomNumbers && !isCardSubmitted && (
+      {isDrawnNumbersFilled && !isCardSubmitted && (
         <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
       )}
     </div>
