@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getContract } from "viem";
-import { publicClient } from "@/lib/web3/viem/client";
+import { publicClient } from "@/lib/web3";
 import { env } from "@/config/env";
-import { abi } from "@/lib/web3/abis";
+import { abi } from "@/lib/web3";
+import { useAccount } from "wagmi";
 
 export const useContractReads = () => {
   return useQuery({

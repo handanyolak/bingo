@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { sepolia } from "wagmi/chains";
 import { useAppSelector } from "@/lib/store/hooks";
 import { selectCardNumbers } from "@/lib/store/features/bingo";
-import { config } from "@/lib/web3/reown/config";
-import { abi } from "@/lib/web3/abis";
+import { config } from "@/lib/web3";
+import { abi } from "@/lib/web3";
 import { env } from "@/config/env";
 import { useMutation } from "@tanstack/react-query";
-import { useContractReads } from "@/lib/web3/hooks/useContractReads";
+import { useContractReads } from "@/lib/web3";
 import { toast } from "react-toastify";
 
 interface ContractWriteState {
