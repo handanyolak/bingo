@@ -10,18 +10,19 @@ import { env } from "@/config/env";
 import { useMutation } from "@tanstack/react-query";
 import { useContractReads } from "@/lib/web3";
 import { toast } from "react-toastify";
+import { Hash } from "viem";
 
 interface ContractWriteState {
-  buyBingoCard: () => Promise<`0x${string}`>;
+  buyBingoCard: () => Promise<Hash>;
   isBuyCardPending: boolean;
   isBuyCardConfirming: boolean;
   isBuyCardSuccess: boolean;
-  hash: `0x${string}` | undefined;
+  hash: Hash | undefined;
   error: Error | null;
 }
 
 export const useContractWrite = (): ContractWriteState => {
-  const [hash, setHash] = useState<`0x${string}`>();
+  const [hash, setHash] = useState<Hash>();
   const [error, setError] = useState<Error | null>(null);
   const cardNumbers = useAppSelector(selectCardNumbers);
   const { data } = useContractReads();
