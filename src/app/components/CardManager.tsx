@@ -14,21 +14,16 @@ import styles from "@/styles/CardManager.module.scss";
 
 import timerAnimation from "../../../public/animations/timer.json";
 
-const CARD_SUBMISSION_DEADLINE_SECONDS = 10;
-
 export const CardManager = () => {
   const dispatch = useAppDispatch();
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
   const { buyBingoCard, isBuyCardPending, requestRandomNumbers } =
     useContractWrite();
+  const { data: contractReadsData, isLoading } = useContractReads();
 
-  const { data } = useContractReads();
-  const { isPlayerExists, isDrawnNumbersFilled } = data || {};
+  const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(0);
 
-  const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(
-    CARD_SUBMISSION_DEADLINE_SECONDS
-  );
   const [hasRequestedRandomNumbers, setHasRequestedRandomNumbers] =
     useState(false);
   const [isCardSubmitted, setIsCardSubmitted] = useState(false);
@@ -45,7 +40,7 @@ export const CardManager = () => {
   };
 
   useEffect(() => {
-    if (!isDrawnNumbersFilled) return;
+    if (!contractReadsData?.isDrawnNumbersFilled) return;
 
     const cardSelectionTimer = setInterval(() => {
       setSubmissionTimeRemaining((previousTime) => {
@@ -65,7 +60,8 @@ export const CardManager = () => {
         const animationNaturalDuration =
           totalAnimationFrames / animationFrameRate;
         const animationSpeedRatio =
-          animationNaturalDuration / CARD_SUBMISSION_DEADLINE_SECONDS;
+          animationNaturalDuration /
+          Number(contractReadsData?.FINALIZATION_COOLDOWN);
 
         lottieAnimation.setSpeed(animationSpeedRatio);
         lottieAnimation.play();
@@ -75,17 +71,19 @@ export const CardManager = () => {
     return () => {
       clearInterval(cardSelectionTimer);
     };
-  }, [isDrawnNumbersFilled]);
+  }, [contractReadsData?.isDrawnNumbersFilled]);
 
   useEffect(() => {
-    if (submissionTimeRemaining <= 0) {
-      dispatch(startDrawing());
+    if (contractReadsData?.FINALIZATION_COOLDOWN) {
+      setSubmissionTimeRemaining(
+        Number(contractReadsData.FINALIZATION_COOLDOWN)
+      );
     }
-  }, [submissionTimeRemaining, dispatch]);
+  }, [contractReadsData?.FINALIZATION_COOLDOWN]);
 
   return (
     <div className={styles.cardManager__container}>
-      {!isPlayerExists && (
+      {!contractReadsData?.isPlayerExists && (
         <AppButton
           text={t("buyTheCard")}
           animated
@@ -94,15 +92,15 @@ export const CardManager = () => {
           content={isBuyCardPending && <Loader2 className="global-loader" />}
         />
       )}
+      {contractReadsData?.isPlayerExists &&
+        !contractReadsData?.isDrawnNumbersFilled && (
+          <AppButton
+            text={t("requestRandomNumbers")}
+            onClick={requestRandomNumbers}
+          />
+        )}
 
-      {isPlayerExists && !isDrawnNumbersFilled && (
-        <AppButton
-          text={t("requestRandomNumbers")}
-          onClick={requestRandomNumbers}
-        />
-      )}
-
-      {isDrawnNumbersFilled && (
+      {contractReadsData?.isDrawnNumbersFilled && (
         <>
           <div className={styles.cardManager__timer}>
             <Lottie
@@ -113,13 +111,15 @@ export const CardManager = () => {
             />
           </div>
           <div className={styles.cardManager__time}>
-            Time Remaining: {minutesRemaining}:
-            {secondsRemaining.toString().padStart(2, "0")}
+            Time Remaining: {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
+            {!isNaN(secondsRemaining)
+              ? secondsRemaining.toString().padStart(2, "0")
+              : "00"}
           </div>
         </>
       )}
 
-      {isDrawnNumbersFilled && !isCardSubmitted && (
+      {contractReadsData?.isDrawnNumbersFilled && !isCardSubmitted && (
         <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
       )}
     </div>

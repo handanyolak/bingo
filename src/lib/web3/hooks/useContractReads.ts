@@ -31,6 +31,7 @@ export const useContractReads = () => {
       isDrawnNumbersFilled,
       playerDetails,
       drawnNumbers,
+      FINALIZATION_COOLDOWN,
     ] = await Promise.all([
       contract.read.availableGameId(),
       contract.read.BINGO_CARD_PRICE(),
@@ -41,7 +42,9 @@ export const useContractReads = () => {
       contract.read.isDrawnNumbersFilled([gameIdToUse]),
       contract.read.playerDetails([gameIdToUse, address as Address]),
       contract.read.drawnNumbers([gameIdToUse]),
+      contract.read.FINALIZATION_COOLDOWN(),
     ]);
+
     return {
       gameId,
       bingoCardPrice,
@@ -52,6 +55,7 @@ export const useContractReads = () => {
       isDrawnNumbersFilled,
       playerDetails,
       drawnNumbers,
+      FINALIZATION_COOLDOWN,
     };
   };
 
