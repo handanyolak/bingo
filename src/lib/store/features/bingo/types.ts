@@ -1,9 +1,9 @@
-export type BingoCard = number[] & { length: 25 };
+export type BingoCardNumbers = number[] & { length: 25 };
 
 export interface BingoState {
   isDrawing: boolean;
   drawnNumbers: number[];
-  cardNumbers: BingoCard;
+  cardNumbers: BingoCardNumbers;
 }
 
 export type DrawnNumberPayload = number;
