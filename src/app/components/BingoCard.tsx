@@ -1,6 +1,8 @@
 import {
+  BingoCardNumbers,
   generateCardNumbers,
   selectDrawnNumbers,
+  setCardNumbers,
 } from "@/lib/store/features/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import styles from "@/styles/BingoCard.module.scss";
@@ -9,7 +11,7 @@ import { useContractReads } from "@/lib/web3";
 import { useEffect } from "react";
 
 export const BingoCard = () => {
-  const { data: contractData, isLoading } = useContractReads();
+  const { data: contractReadsData, isLoading } = useContractReads();
 
   const cardNumbers = useAppSelector(selectCardNumbers);
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
@@ -17,10 +19,18 @@ export const BingoCard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isLoading && contractData) {
-      dispatch(generateCardNumbers(contractData));
+    if (!isLoading && contractReadsData) {
+      if (contractReadsData.isPlayerExists) {
+        dispatch(
+          setCardNumbers(
+            contractReadsData.playerDetails.cardNumbers as BingoCardNumbers
+          )
+        );
+      } else {
+        dispatch(generateCardNumbers(contractReadsData));
+      }
     }
-  }, [isLoading, contractData, dispatch]);
+  }, [isLoading, contractReadsData, dispatch]);
 
   return (
     <div className={styles.bingoCard}>
