@@ -30,6 +30,7 @@ export const useContractReads = () => {
       isPlayerExists,
       isDrawnNumbersFilled,
       playerDetails,
+      drawnNumbers,
     ] = await Promise.all([
       contract.read.availableGameId(),
       contract.read.BINGO_CARD_PRICE(),
@@ -39,6 +40,7 @@ export const useContractReads = () => {
       contract.read.isPlayerExists([gameIdToUse, address as Address]),
       contract.read.isDrawnNumbersFilled([gameIdToUse]),
       contract.read.playerDetails([gameIdToUse, address as Address]),
+      contract.read.drawnNumbers([gameIdToUse]),
     ]);
     return {
       gameId,
@@ -49,6 +51,7 @@ export const useContractReads = () => {
       isPlayerExists,
       isDrawnNumbersFilled,
       playerDetails,
+      drawnNumbers,
     };
   };
 
