@@ -1,14 +1,15 @@
+import { useEffect } from "react";
+
 import {
   BingoCardNumbers,
   generateCardNumbers,
   selectDrawnNumbers,
   setCardNumbers,
 } from "@/lib/store/features/bingo";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import styles from "@/styles/BingoCard.module.scss";
 import { selectCardNumbers } from "@/lib/store/features/bingo";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
-import { useEffect } from "react";
+import styles from "@/styles/BingoCard.module.scss";
 
 export const BingoCard = () => {
   const { data: contractReadsData, isLoading } = useContractReads();
@@ -36,11 +37,11 @@ export const BingoCard = () => {
     <div className={styles.bingoCard}>
       <h1 className={styles.bingoCard__bingoTitle}>BINGO</h1>
       <div className={styles.bingoCard__cardGrid}>
-        {cardNumbers.map((num, index) => {
-          const isDrawn = drawnNumbers.includes(num);
+        {cardNumbers.map((cardNumber, index) => {
+          const isDrawn = drawnNumbers.includes(cardNumber);
           return (
             <div key={index} className={styles.bingoCard__gridCell}>
-              {num}
+              {cardNumber}
               {isDrawn && <span className={styles.bingoCard__marker} />}
             </div>
           );
