@@ -12,4 +12,5 @@ export interface ContractReads {
     cardNumbers: readonly number[];
     numberBitmap: bigint;
   };
+  drawnNumbers: readonly number[];
 }
