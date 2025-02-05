@@ -18,6 +18,9 @@ export const useContractReads = () => {
       client: publicClient,
     });
 
+    const currentGameId = await contract.read.availableGameId();
+    const gameIdToUse = currentGameId - BigInt(1);
+
     const [
       gameId,
       bingoCardPrice,
@@ -26,16 +29,17 @@ export const useContractReads = () => {
       BINGO_CARD_NUMBERS_COUNT,
       isPlayerExists,
       isDrawnNumbersFilled,
+      playerDetails,
     ] = await Promise.all([
       contract.read.availableGameId(),
       contract.read.BINGO_CARD_PRICE(),
       contract.read.BINGO_MAX_NUMBER(),
       contract.read.BINGO_MIN_NUMBER(),
       contract.read.BINGO_CARD_NUMBERS_COUNT(),
-      contract.read.isPlayerExists([BigInt(0), address as Address]),
-      contract.read.isDrawnNumbersFilled([BigInt(0)]),
+      contract.read.isPlayerExists([gameIdToUse, address as Address]),
+      contract.read.isDrawnNumbersFilled([gameIdToUse]),
+      contract.read.playerDetails([gameIdToUse, address as Address]),
     ]);
-
     return {
       gameId,
       bingoCardPrice,
@@ -44,6 +48,7 @@ export const useContractReads = () => {
       BINGO_CARD_NUMBERS_COUNT,
       isPlayerExists,
       isDrawnNumbersFilled,
+      playerDetails,
     };
   };
 
