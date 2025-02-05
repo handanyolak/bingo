@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { selectDrawnNumbers, selectIsDrawing } from "./bingoSelector";
 import { addDrawnNumber, stopDrawing } from "./bingoSlice";
+import { useContractReads } from "@/lib/web3";
 
 interface UseBingoDrawingReturn {
   drawnNumbers: number[];
@@ -13,23 +14,20 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const isDrawing = useAppSelector(selectIsDrawing);
   const intervalRef = useRef<number | null>(null);
+  const { data: contractReadsData } = useContractReads();
 
   useEffect(() => {
-    if (isDrawing) {
+    if (isDrawing && contractReadsData?.drawnNumbers) {
+      let currentIndex = drawnNumbers.length;
+
       intervalRef.current = window.setInterval(() => {
-        if (drawnNumbers.length >= 75) {
+        if (currentIndex >= contractReadsData.drawnNumbers.length) {
           dispatch(stopDrawing());
           return;
         }
 
-        const allNumbers = new Set<number>(
-          Array.from({ length: 75 }, (_, i) => i + 1)
-        );
-        drawnNumbers.forEach((num) => allNumbers.delete(num));
-
-        const remainingNumbers = Array.from(allNumbers);
-        const randomIndex = Math.floor(Math.random() * remainingNumbers.length);
-        dispatch(addDrawnNumber(remainingNumbers[randomIndex]));
+        dispatch(addDrawnNumber(contractReadsData.drawnNumbers[currentIndex]));
+        currentIndex++;
       }, 3000);
     }
 
@@ -39,7 +37,7 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
         intervalRef.current = null;
       }
     };
-  }, [isDrawing, drawnNumbers, dispatch]);
+  }, [isDrawing, drawnNumbers, contractReadsData, dispatch]);
 
   return {
     drawnNumbers,

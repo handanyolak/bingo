@@ -6,17 +6,28 @@ import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/common/AppButton";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { CardManager } from "@/app/components/CardManager";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Tooltip } from "@/app/components/common/Tooltip";
+import { useContractReads } from "@/lib/web3";
 import {
   selectDrawnNumbers,
+  startDrawing,
   useBingoDrawing,
 } from "@/lib/store/features/bingo";
+import { useEffect } from "react";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const { isDrawing } = useBingoDrawing();
+  const dispatch = useAppDispatch();
+  const { data: contractReadsData } = useContractReads();
+
+  useEffect(() => {
+    if (contractReadsData?.isDrawnNumbersFilled) {
+      dispatch(startDrawing());
+    }
+  }, [contractReadsData?.isDrawnNumbersFilled, dispatch]);
 
   return (
     <div className={styles.bingo__page}>
@@ -49,7 +60,7 @@ export const Bingo = () => {
               />
             </div>
           </div>
-          <DrawnNumbers numbers={drawnNumbers} />
+          <DrawnNumbers />
         </div>
       </div>
     </div>

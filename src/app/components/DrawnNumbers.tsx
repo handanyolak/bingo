@@ -1,23 +1,23 @@
 import styles from "@/styles/DrawnNumbers.module.scss";
+import { useAppSelector } from "@/lib/store/hooks";
+import { selectDrawnNumbers } from "@/lib/store/features/bingo";
 
-type DrawnNumbersProps = {
-  numbers: number[];
-};
+export const DrawnNumbers = () => {
+  const drawnNumbers = useAppSelector(selectDrawnNumbers);
 
-export const DrawnNumbers = ({ numbers }: DrawnNumbersProps) => {
   const totalCells = 15 * 5;
   return (
     <div className={styles.drawnNumbers}>
       <div className={styles.drawnNumbers__container}>
         <div className={styles.drawnNumbers__grid}>
-          {numbers.map((number, index) => (
+          {drawnNumbers.map((drawnNumber, index) => (
             <div key={index}>
-              <div className={styles.drawnNumbers__cell}>{number}</div>
-              <span className={styles.drawnNumbers__marker}>{number}</span>
+              <div className={styles.drawnNumbers__cell}>{drawnNumber}</div>
+              <span className={styles.drawnNumbers__marker}>{drawnNumber}</span>
             </div>
           ))}
 
-          {Array.from({ length: totalCells - numbers.length }).map(
+          {Array.from({ length: totalCells - drawnNumbers.length }).map(
             (_, index) => (
               <div key={index} className={styles.drawnNumbers__placeholder} />
             )

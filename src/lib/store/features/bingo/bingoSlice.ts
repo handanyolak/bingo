@@ -39,7 +39,9 @@ export const bingoSlice = createSlice({
       state.isDrawing = false;
     },
     addDrawnNumber: (state, action: PayloadAction<DrawnNumberPayload>) => {
-      state.drawnNumbers.push(action.payload);
+      if (!state.drawnNumbers.includes(action.payload)) {
+        state.drawnNumbers.push(action.payload);
+      }
     },
     setCardNumbers: (state, action: PayloadAction<BingoCardNumbers>) => {
       state.cardNumbers = action.payload;
