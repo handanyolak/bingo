@@ -6,4 +6,10 @@ export interface ContractReads {
   BINGO_CARD_NUMBERS_COUNT: number;
   isPlayerExists: boolean;
   isDrawnNumbersFilled: boolean;
+  playerDetails: {
+    playerAddress: string;
+    remainingNumbersCount: number;
+    cardNumbers: readonly number[];
+    numberBitmap: bigint;
+  };
 }
