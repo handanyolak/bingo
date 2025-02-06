@@ -29,13 +29,16 @@
     display: flex;
     justify-content: center;
   }
-}
 
-.desktopView {
-  display: flex;
-  gap: 1rem;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
 
-  @media (max-width: 768px) {
-    display: none;
+  &__gameId {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 }
