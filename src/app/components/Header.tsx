@@ -4,7 +4,7 @@ import styles from "@/styles/Header.module.scss";
 import { ConnectButton } from "@/app/components/ConnectButton";
 import { useColor } from "@/app/contexts/ColorContext";
 import { useTranslations } from "next-intl";
-import { Trophy, Users } from "lucide-react";
+import { Loader2, Trophy, Users } from "lucide-react";
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
 import { useState } from "react";
@@ -17,11 +17,7 @@ export const Header = () => {
   const { cycleColor } = useColor();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const {
-    data,
-    isError: gameError,
-    isLoading: gameLoading,
-  } = useContractReads();
+  const { data, isLoading: gameLoading } = useContractReads();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -58,12 +54,11 @@ export const Header = () => {
       </div>
 
       <div className={styles.header__bottom}>
-        <div>
+        <div className={styles.header__content}>
           <ConnectButton />
-          {gameLoading && <p>Loading game ID...</p>}
-          {gameError && <p className="text-red-500">Error loading game ID</p>}
-          {data?.gameId && (
-            <p className="text-lg text-center">#{data.gameId}</p>
+          {gameLoading && <Loader2 className="global-loader" />}
+          {data && (
+            <span className={styles.header__gameId}>#{data.targetGameId}</span>
           )}
         </div>
       </div>
