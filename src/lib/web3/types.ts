@@ -1,5 +1,6 @@
 export interface ContractReads {
   gameId: bigint;
+  targetGameId: bigint;
   bingoCardPrice: bigint;
   BINGO_MAX_NUMBER: number;
   BINGO_MIN_NUMBER: number;
@@ -14,4 +15,5 @@ export interface ContractReads {
   };
   drawnNumbers: readonly number[];
   FINALIZATION_COOLDOWN: bigint;
+  drawnNumbersTimestamp: bigint;
 }
