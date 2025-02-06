@@ -13,6 +13,7 @@ import { useContractWrite } from "@/lib/web3/";
 import styles from "@/styles/CardManager.module.scss";
 
 import timerAnimation from "../../../public/animations/timer.json";
+import { useUnixTimestamp } from "../hooks/useUnixTimestamp";
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
@@ -81,6 +82,8 @@ export const CardManager = () => {
     }
   }, [contractReadsData?.FINALIZATION_COOLDOWN]);
 
+  const unixTimestamp = useUnixTimestamp();
+
   return (
     <div className={styles.cardManager__container}>
       {!contractReadsData?.isPlayerExists && (
@@ -100,28 +103,41 @@ export const CardManager = () => {
           />
         )}
 
-      {contractReadsData?.isDrawnNumbersFilled && (
-        <>
-          <div className={styles.cardManager__timer}>
-            <Lottie
-              lottieRef={lottieAnimationRef}
-              animationData={timerAnimation}
-              loop={false}
-              autoplay={false}
-            />
-          </div>
-          <div className={styles.cardManager__time}>
-            Time Remaining: {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
-            {!isNaN(secondsRemaining)
-              ? secondsRemaining.toString().padStart(2, "0")
-              : "00"}
-          </div>
-        </>
-      )}
+      {contractReadsData &&
+        contractReadsData.drawnNumbersTimestamp !== undefined &&
+        contractReadsData.FINALIZATION_COOLDOWN !== undefined &&
+        Number(
+          contractReadsData.drawnNumbersTimestamp +
+            contractReadsData.FINALIZATION_COOLDOWN
+        ) -
+          unixTimestamp >
+          0 && (
+          <>
+            {contractReadsData?.isDrawnNumbersFilled && (
+              <>
+                <div className={styles.cardManager__timer}>
+                  <Lottie
+                    lottieRef={lottieAnimationRef}
+                    animationData={timerAnimation}
+                    loop={false}
+                    autoplay={false}
+                  />
+                </div>
+                <div className={styles.cardManager__time}>
+                  Time Remaining:{" "}
+                  {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
+                  {!isNaN(secondsRemaining)
+                    ? secondsRemaining.toString().padStart(2, "0")
+                    : "00"}
+                </div>
+              </>
+            )}
 
-      {contractReadsData?.isDrawnNumbersFilled && !isCardSubmitted && (
-        <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
-      )}
+            {contractReadsData?.isDrawnNumbersFilled && !isCardSubmitted && (
+              <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
+            )}
+          </>
+        )}
     </div>
   );
 };
