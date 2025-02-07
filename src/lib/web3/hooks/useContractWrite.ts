@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { writeContract } from "@wagmi/core";
+import { simulateContract, writeContract } from "@wagmi/core";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Hash } from "viem";
@@ -12,7 +12,6 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { config } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { useContractReads } from "@/lib/web3";
-
 
 interface ContractWriteState {
   buyBingoCard: () => Promise<Hash>;
@@ -28,6 +27,23 @@ interface ContractWriteState {
   error: Error | null;
 }
 
+const useSuccessTransactionToast = (
+  toastId: string,
+  successMessage: string,
+  isSuccess: boolean
+) => {
+  useEffect(() => {
+    if (isSuccess) {
+      toast.update(toastId, {
+        render: successMessage,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    }
+  }, [isSuccess, toastId, successMessage]);
+};
+
 export const useContractWrite = (): ContractWriteState => {
   const [buyCardHash, setBuyCardHash] = useState<Hash>();
   const [requestRandomHash, setRequestRandomHash] = useState<Hash>();
@@ -35,31 +51,31 @@ export const useContractWrite = (): ContractWriteState => {
   const cardNumbers = useAppSelector(selectCardNumbers);
   const { data } = useContractReads();
 
+  const handleError = (err: any, toastId: string) => {
+    const trimmedMessage = err?.message
+      .split("Contract Call:")[0]
+      .trim()
+      .split("\n")[0];
+    toast.error(trimmedMessage);
+    setError(err instanceof Error ? err : new Error(String(err)));
+    toast.dismiss(toastId);
+  };
+
   const { mutateAsync: buyBingoCard, isPending: isBuyCardPending } =
     useMutation({
       mutationFn: async () => {
-        try {
-          const result = await writeContract(config, {
-            address: env.bingoContractAddress,
-            abi,
-            functionName: "buyCard",
-            args: [cardNumbers as any],
-            chainId: sepolia.id,
-            value: data?.bingoCardPrice,
-          });
-          return result;
-        } catch (err) {
-          const errorMessage =
-            err instanceof Error ? err.message : "Failed to buy card";
-          toast.error(errorMessage);
-          throw err;
-        }
-      },
-      onMutate: () => {
-        toast.loading("Sending transaction...", {
-          toastId: "buyCardToast",
+        const result = await simulateContract(config, {
+          address: env.bingoContractAddress,
+          abi,
+          functionName: "buyCard",
+          args: [cardNumbers as any],
+          chainId: sepolia.id,
+          value: data?.bingoCardPrice,
         });
+        return await writeContract(config, result.request);
       },
+      onMutate: () =>
+        toast.loading("Simulating transaction...", { toastId: "buyCardToast" }),
       onSuccess: (result) => {
         setBuyCardHash(result);
         setError(null);
@@ -69,10 +85,7 @@ export const useContractWrite = (): ContractWriteState => {
           isLoading: true,
         });
       },
-      onError: (err) => {
-        setError(err instanceof Error ? err : new Error(String(err)));
-        toast.dismiss("buyCardToast");
-      },
+      onError: (err) => handleError(err, "buyCardToast"),
     });
 
   const {
@@ -80,76 +93,47 @@ export const useContractWrite = (): ContractWriteState => {
     isPending: isRequestRandomPending,
   } = useMutation({
     mutationFn: async () => {
-      try {
-        const result = await writeContract(config, {
-          address: env.bingoContractAddress,
-          abi,
-          functionName: "requestRandomNumbers",
-          chainId: sepolia.id,
-        });
-        return result;
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error
-            ? err.message
-            : "Failed to request random numbers";
-        toast.error(errorMessage);
-        throw err;
-      }
-    },
-    onMutate: () => {
-      toast.loading("Sending transaction...", {
-        toastId: "requestRandomToast",
+      const result = await simulateContract(config, {
+        address: env.bingoContractAddress,
+        abi,
+        functionName: "requestRandomNumbers",
+        chainId: sepolia.id,
       });
+      return await writeContract(config, result.request);
     },
+    onMutate: () =>
+      toast.loading("Simulating transaction...", {
+        toastId: "requestRandomToast",
+      }),
     onSuccess: (result) => {
       setRequestRandomHash(result);
       setError(null);
       toast.update("requestRandomToast", {
-        render: "Confirming transaction...",
+        render: "Sending transaction...",
         type: "info",
         isLoading: true,
       });
     },
-    onError: (err) => {
-      setError(err instanceof Error ? err : new Error(String(err)));
-      toast.dismiss("requestRandomToast");
-    },
+    onError: (err) => handleError(err, "requestRandomToast"),
   });
 
   const { isLoading: isBuyCardConfirming, isSuccess: isBuyCardSuccess } =
-    useWaitForTransactionReceipt({
-      hash: buyCardHash,
-    });
-
+    useWaitForTransactionReceipt({ hash: buyCardHash });
   const {
     isLoading: isRequestRandomConfirming,
     isSuccess: isRequestRandomSuccess,
-  } = useWaitForTransactionReceipt({
-    hash: requestRandomHash,
-  });
+  } = useWaitForTransactionReceipt({ hash: requestRandomHash });
 
-  useEffect(() => {
-    if (isBuyCardSuccess) {
-      toast.update("buyCardToast", {
-        render: "Card purchased successfully!",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
-    }
-  }, [isBuyCardSuccess]);
-
-  useEffect(() => {
-    if (isRequestRandomSuccess) {
-      toast.update("requestRandomToast", {
-        render: "Random numbers requested successfully!",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
-    }
-  }, [isRequestRandomSuccess]);
+  useSuccessTransactionToast(
+    "buyCardToast",
+    "Card purchased successfully!",
+    isBuyCardSuccess
+  );
+  useSuccessTransactionToast(
+    "requestRandomToast",
+    "Random numbers requested successfully!",
+    isRequestRandomSuccess
+  );
 
   return {
     buyBingoCard,
