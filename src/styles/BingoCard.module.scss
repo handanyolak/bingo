@@ -15,7 +15,7 @@
     }
 
     &.spinning {
-      animation: spin 1s linear infinite;
+      animation: var(--loader-animation);
     }
   }
 }
@@ -23,10 +23,9 @@
 .bingoCard {
   background-color: var(--card-color);
   border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
   padding: 1.5rem;
   width: 100%;
-  background-color: var(--card-color);
   background: repeating-conic-gradient(
     from 0deg,
     var(--card-color) 0deg 15deg,
@@ -83,6 +82,7 @@
     position: relative;
     z-index: 1;
     font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
     &.changed > span {
       animation: numberChange 0.4s ease-out;
@@ -105,15 +105,6 @@
       animation: markerEffect 1s ease-out forwards;
       transition: background-color 0.3s, opacity 0.3s;
     }
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-360deg);
   }
 }
 
