@@ -7,13 +7,13 @@ $rounded-sizes: (
 
 @keyframes borderPulse {
   0% {
-    border-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--button-border);
   }
   50% {
     border-color: var(--card-color);
   }
   100% {
-    border-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--button-border);
   }
 }
 
@@ -59,21 +59,5 @@ $rounded-sizes: (
     padding: 4px 10px;
     font-size: 13px;
     gap: 0.25rem;
-  }
-}
-
-.dark {
-  .button__animated {
-    @keyframes borderPulse {
-      0% {
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-      50% {
-        border-color: var(--card-color);
-      }
-      100% {
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-    }
   }
 }
