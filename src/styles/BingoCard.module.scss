@@ -1,3 +1,25 @@
+.bingoCardWrapper {
+  position: relative;
+
+  .refreshIcon {
+    position: absolute;
+    z-index: 50;
+    right: -0.5rem;
+    top: -0.5rem;
+    cursor: pointer;
+    color: var(--card-dark-color);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.spinning {
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
 .bingoCard {
   background-color: var(--card-color);
   border-radius: 1rem;
@@ -62,6 +84,10 @@
     z-index: 1;
     font-weight: 500;
 
+    &.changed > span {
+      animation: numberChange 0.4s ease-out;
+    }
+
     .bingoCard__marker {
       position: absolute;
       top: 0;
@@ -79,6 +105,27 @@
       animation: markerEffect 1s ease-out forwards;
       transition: background-color 0.3s, opacity 0.3s;
     }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes numberChange {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
