@@ -41,15 +41,17 @@ export const Header = () => {
               onColorChange={handleColorChange}
             />
           </div>
-          <MobileMenu
-            isOpen={isMobileMenuOpen}
-            onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <MenuContent
-              onModalOpen={handleModalOpen}
-              onColorChange={handleColorChange}
-            />
-          </MobileMenu>
+          <div className={styles.mobileView}>
+            <MobileMenu
+              isOpen={isMobileMenuOpen}
+              onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <MenuContent
+                onModalOpen={handleModalOpen}
+                onColorChange={handleColorChange}
+              />
+            </MobileMenu>
+          </div>
         </div>
       </div>
 
