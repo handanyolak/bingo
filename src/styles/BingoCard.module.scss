@@ -140,33 +140,6 @@
 
 @media screen and (max-width: 768px) {
   .bingoCard {
-    padding: 1rem;
-
-    &__bingoTitle {
-      font-size: 1.5rem;
-      padding: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    &__cardGrid {
-      grid-template-columns: repeat(5, 1fr);
-      gap: 2px;
-    }
-
-    &__gridCell {
-      height: 3.5rem;
-      width: 3.5rem;
-      font-size: 0.875rem;
-
-      .bingoCard__marker {
-        border-width: 4px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .bingoCard {
     padding: 0.75rem;
 
     &__bingoTitle {
@@ -176,6 +149,7 @@
     }
 
     &__cardGrid {
+      grid-template-columns: repeat(5, 1fr);
       gap: 1px;
     }
 
