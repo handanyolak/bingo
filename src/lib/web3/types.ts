@@ -1,3 +1,5 @@
+export type BingoCardNumbers = readonly number[] & { length: 25 };
+
 export interface ContractReads {
   gameId: bigint;
   targetGameId: bigint;
@@ -7,10 +9,10 @@ export interface ContractReads {
   BINGO_CARD_NUMBERS_COUNT: number;
   isPlayerExists: boolean;
   isDrawnNumbersFilled: boolean;
-  playerDetails: {
+  playerDetails?: {
     playerAddress: string;
     remainingNumbersCount: number;
-    cardNumbers: readonly number[];
+    cardNumbers: BingoCardNumbers;
     numberBitmap: bigint;
   };
   drawnNumbers: readonly number[];

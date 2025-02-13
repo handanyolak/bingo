@@ -28,42 +28,32 @@ export const useContractReads = () => {
     const targetGameId = urlId ? BigInt(urlId) : currentGameId;
 
     const [
-      bingoCardPrice,
       BINGO_MAX_NUMBER,
       BINGO_MIN_NUMBER,
       BINGO_CARD_NUMBERS_COUNT,
-      FINALIZATION_COOLDOWN,
+      { finalizationCooldown, bingoCardPrice },
+      isPlayerExists,
+      isDrawnNumbersFilled,
+      drawnNumbers,
+      drawnNumbersTimestamp,
     ] = await Promise.all([
-      contract.read.BINGO_CARD_PRICE(),
       contract.read.BINGO_MAX_NUMBER(),
       contract.read.BINGO_MIN_NUMBER(),
       contract.read.BINGO_CARD_NUMBERS_COUNT(),
-      contract.read.FINALIZATION_COOLDOWN(),
-    ]);
-
-    const gameDataPromise = Promise.all([
+      contract.read.gameConfig([targetGameId]),
       contract.read.isPlayerExists([targetGameId, address as Address]),
       contract.read.isDrawnNumbersFilled([targetGameId]),
-      contract.read.playerDetails([targetGameId, address as Address]),
       contract.read.drawnNumbers([targetGameId]),
       contract.read.drawnNumbersTimestamp([targetGameId]),
-    ]).catch(() => {
-      const emptyPlayerDetails = {
-        playerAddress: "",
-        remainingNumbersCount: 0,
-        cardNumbers: [] as const,
-        numberBitmap: BigInt(0),
-      };
-      return [false, false, emptyPlayerDetails, [], BigInt(0)] as const;
-    });
+    ]);
 
-    const [
-      isPlayerExists,
-      isDrawnNumbersFilled,
-      playerDetails,
-      drawnNumbers,
-      drawnNumbersTimestamp,
-    ] = await gameDataPromise;
+    let playerDetails;
+    if (isPlayerExists) {
+      playerDetails = await contract.read.playerDetails([
+        targetGameId,
+        address as Address,
+      ]);
+    }
 
     return {
       gameId: currentGameId,
@@ -72,7 +62,7 @@ export const useContractReads = () => {
       BINGO_MAX_NUMBER,
       BINGO_MIN_NUMBER,
       BINGO_CARD_NUMBERS_COUNT,
-      FINALIZATION_COOLDOWN,
+      finalizationCooldown,
       isPlayerExists,
       isDrawnNumbersFilled,
       playerDetails,
