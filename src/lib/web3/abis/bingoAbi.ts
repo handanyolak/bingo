@@ -6,6 +6,11 @@ export const abi = [
         name: "vrfWrapperAddress",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "binGovernanceAddress",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -73,6 +78,11 @@ export const abi = [
   {
     inputs: [],
     name: "NonUniqueCardNumbers_1008",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NotGovernance_1001",
     type: "error",
   },
   {
@@ -264,19 +274,6 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "BINGO_CARD_PRICE",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "BINGO_MAX_NUMBER",
     outputs: [
       {
@@ -316,38 +313,12 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "FINALIZATION_COOLDOWN",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "MAX_VRF_CALLBACK_GAS_LIMIT",
     outputs: [
       {
         internalType: "uint32",
         name: "",
         type: "uint32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "MIN_PLAYERS",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -445,6 +416,36 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "config",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "minimumPlayers",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bingoCardPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizationCooldown",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BinGoods.Config",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -483,6 +484,42 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "gameConfig",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "minimumPlayers",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bingoCardPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizationCooldown",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BinGoods.Config",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getBalance",
     outputs: [
@@ -501,6 +538,19 @@ export const abi = [
     outputs: [
       {
         internalType: "contract LinkTokenInterface",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "governanceContract",
+    outputs: [
+      {
+        internalType: "contract BinGovernance",
         name: "",
         type: "address",
       },
@@ -743,6 +793,36 @@ export const abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "minimumPlayers",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "bingoCardPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "finalizationCooldown",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BinGoods.Config",
+        name: "newConfig",
+        type: "tuple",
+      },
+    ],
+    name: "setConfig",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
