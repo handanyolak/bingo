@@ -62,7 +62,7 @@ export const CardManager = () => {
           totalAnimationFrames / animationFrameRate;
         const animationSpeedRatio =
           animationNaturalDuration /
-          Number(contractReadsData?.FINALIZATION_COOLDOWN);
+          Number(contractReadsData?.finalizationCooldown);
 
         lottieAnimation.setSpeed(animationSpeedRatio);
         lottieAnimation.play();
@@ -75,12 +75,12 @@ export const CardManager = () => {
   }, [contractReadsData?.isDrawnNumbersFilled]);
 
   useEffect(() => {
-    if (contractReadsData?.FINALIZATION_COOLDOWN) {
+    if (contractReadsData?.finalizationCooldown) {
       setSubmissionTimeRemaining(
-        Number(contractReadsData.FINALIZATION_COOLDOWN)
+        Number(contractReadsData.finalizationCooldown)
       );
     }
-  }, [contractReadsData?.FINALIZATION_COOLDOWN]);
+  }, [contractReadsData?.finalizationCooldown]);
 
   const unixTimestamp = useUnixTimestamp();
 
@@ -105,10 +105,10 @@ export const CardManager = () => {
 
       {contractReadsData &&
         contractReadsData.drawnNumbersTimestamp !== undefined &&
-        contractReadsData.FINALIZATION_COOLDOWN !== undefined &&
+        contractReadsData.finalizationCooldown !== undefined &&
         Number(
           contractReadsData.drawnNumbersTimestamp +
-            contractReadsData.FINALIZATION_COOLDOWN
+            contractReadsData.finalizationCooldown
         ) -
           unixTimestamp >
           0 && (

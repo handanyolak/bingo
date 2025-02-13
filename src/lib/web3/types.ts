@@ -14,6 +14,6 @@ export interface ContractReads {
     numberBitmap: bigint;
   };
   drawnNumbers: readonly number[];
-  FINALIZATION_COOLDOWN: bigint;
+  finalizationCooldown: bigint;
   drawnNumbersTimestamp: bigint;
 }
