@@ -22,67 +22,57 @@ export const CardManager = () => {
   const { buyBingoCard, isBuyCardPending, requestRandomNumbers } =
     useContractWrite();
   const { data: contractReadsData, isLoading } = useContractReads();
+  const currentTimestamp = useUnixTimestamp();
 
-  const [submissionTimeRemaining, setSubmissionTimeRemaining] = useState(0);
-
-  const [hasRequestedRandomNumbers, setHasRequestedRandomNumbers] =
-    useState(false);
   const [isCardSubmitted, setIsCardSubmitted] = useState(false);
 
-  const minutesRemaining = Math.floor(submissionTimeRemaining / 60);
-  const secondsRemaining = submissionTimeRemaining % 60;
+  const endTime =
+    contractReadsData?.drawnNumbersTimestamp &&
+    contractReadsData?.finalizationCooldown
+      ? Number(contractReadsData.drawnNumbersTimestamp) +
+        Number(contractReadsData.finalizationCooldown)
+      : 0;
 
-  const handleRandomNumberRequest = () => {
-    setHasRequestedRandomNumbers(true);
-  };
+  const remainingTime = endTime ? Math.max(0, endTime - currentTimestamp) : 0;
+  const minutesRemaining = Math.floor(remainingTime / 60);
+  const secondsRemaining = remainingTime % 60;
+
+  useEffect(() => {
+    if (
+      !contractReadsData?.isDrawnNumbersFilled ||
+      !contractReadsData?.finalizationCooldown ||
+      remainingTime <= 0
+    )
+      return;
+
+    const lottieAnimation = lottieAnimationRef.current?.animationItem;
+    if (!lottieAnimation) return;
+
+    const totalAnimationFrames = timerAnimation.op - timerAnimation.ip;
+    const animationFrameRate = timerAnimation.fr || 30;
+    const animationNaturalDuration = totalAnimationFrames / animationFrameRate;
+    const totalDuration = Number(contractReadsData.finalizationCooldown);
+
+    const speedRatio = animationNaturalDuration / totalDuration;
+    lottieAnimation.setSpeed(speedRatio);
+
+    const progress = 1 - remainingTime / totalDuration;
+    const frame = Math.floor(progress * totalAnimationFrames);
+
+    lottieAnimation.goToAndPlay(frame, true);
+
+    return () => {
+      lottieAnimation.stop();
+    };
+  }, [
+    contractReadsData?.isDrawnNumbersFilled,
+    contractReadsData?.finalizationCooldown,
+    remainingTime,
+  ]);
 
   const handleCardSubmit = () => {
     setIsCardSubmitted(true);
   };
-
-  useEffect(() => {
-    if (!contractReadsData?.isDrawnNumbersFilled) return;
-
-    const cardSelectionTimer = setInterval(() => {
-      setSubmissionTimeRemaining((previousTime) => {
-        if (previousTime <= 0) {
-          clearInterval(cardSelectionTimer);
-          return 0;
-        }
-        return previousTime - 1;
-      });
-    }, 1000);
-
-    setTimeout(() => {
-      const lottieAnimation = lottieAnimationRef.current?.animationItem;
-      if (lottieAnimation) {
-        const totalAnimationFrames = timerAnimation.op - timerAnimation.ip;
-        const animationFrameRate = timerAnimation.fr || 30;
-        const animationNaturalDuration =
-          totalAnimationFrames / animationFrameRate;
-        const animationSpeedRatio =
-          animationNaturalDuration /
-          Number(contractReadsData?.finalizationCooldown);
-
-        lottieAnimation.setSpeed(animationSpeedRatio);
-        lottieAnimation.play();
-      }
-    }, 100);
-
-    return () => {
-      clearInterval(cardSelectionTimer);
-    };
-  }, [contractReadsData?.isDrawnNumbersFilled]);
-
-  useEffect(() => {
-    if (contractReadsData?.finalizationCooldown) {
-      setSubmissionTimeRemaining(
-        Number(contractReadsData.finalizationCooldown)
-      );
-    }
-  }, [contractReadsData?.finalizationCooldown]);
-
-  const unixTimestamp = useUnixTimestamp();
 
   return (
     <div className={styles.cardManager__container}>
@@ -95,6 +85,7 @@ export const CardManager = () => {
           content={isBuyCardPending && <Loader2 className="global-loader" />}
         />
       )}
+
       {contractReadsData?.isPlayerExists &&
         !contractReadsData?.isDrawnNumbersFilled && (
           <AppButton
@@ -103,41 +94,27 @@ export const CardManager = () => {
           />
         )}
 
-      {contractReadsData &&
-        contractReadsData.drawnNumbersTimestamp !== undefined &&
-        contractReadsData.finalizationCooldown !== undefined &&
-        Number(
-          contractReadsData.drawnNumbersTimestamp +
-            contractReadsData.finalizationCooldown
-        ) -
-          unixTimestamp >
-          0 && (
-          <>
-            {contractReadsData?.isDrawnNumbersFilled && (
-              <>
-                <div className={styles.cardManager__timer}>
-                  <Lottie
-                    lottieRef={lottieAnimationRef}
-                    animationData={timerAnimation}
-                    loop={false}
-                    autoplay={false}
-                  />
-                </div>
-                <div className={styles.cardManager__time}>
-                  Time Remaining:{" "}
-                  {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
-                  {!isNaN(secondsRemaining)
-                    ? secondsRemaining.toString().padStart(2, "0")
-                    : "00"}
-                </div>
-              </>
-            )}
-
-            {contractReadsData?.isDrawnNumbersFilled && !isCardSubmitted && (
-              <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
-            )}
-          </>
-        )}
+      {contractReadsData?.isDrawnNumbersFilled && remainingTime > 0 && (
+        <>
+          <div className={styles.cardManager__timer}>
+            <Lottie
+              lottieRef={lottieAnimationRef}
+              animationData={timerAnimation}
+              loop={false}
+              autoplay={false}
+            />
+          </div>
+          <div className={styles.cardManager__time}>
+            Time Remaining: {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
+            {!isNaN(secondsRemaining)
+              ? secondsRemaining.toString().padStart(2, "0")
+              : "00"}
+          </div>
+          {!isCardSubmitted && (
+            <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
+          )}
+        </>
+      )}
     </div>
   );
 };

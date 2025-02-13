@@ -36,9 +36,21 @@ export const Bingo = () => {
 
   useEffect(() => {
     if (contractReadsData?.isDrawnNumbersFilled) {
-      dispatch(startDrawing());
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      const cooldownEndTimestamp =
+        Number(contractReadsData.drawnNumbersTimestamp) +
+        Number(contractReadsData.finalizationCooldown);
+
+      if (currentTimestamp >= cooldownEndTimestamp) {
+        dispatch(startDrawing());
+      }
     }
-  }, [contractReadsData?.isDrawnNumbersFilled, dispatch]);
+  }, [
+    contractReadsData?.isDrawnNumbersFilled,
+    contractReadsData?.drawnNumbersTimestamp,
+    contractReadsData?.finalizationCooldown,
+    dispatch,
+  ]);
 
   const handleSwitchGame = (offset: number) => {
     const newGameId = selectedGameId + BigInt(offset);
