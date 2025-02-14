@@ -26,7 +26,7 @@ export const BingoCard = () => {
       if (contractReadsData.isPlayerExists) {
         dispatch(
           setCardNumbers(
-            contractReadsData.playerDetails.cardNumbers as BingoCardNumbers
+            contractReadsData.playerDetails?.cardNumbers as BingoCardNumbers
           )
         );
       } else {

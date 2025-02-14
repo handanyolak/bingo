@@ -74,6 +74,5 @@ export const useContractReads = () => {
   return useQuery({
     queryKey: ["contract", "game-reads", urlId, address],
     queryFn: fetchContractData,
-    enabled: isConnected && !!address,
   });
 };
