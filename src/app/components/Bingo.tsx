@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
@@ -14,13 +13,13 @@ import { CardManager } from "@/app/components/CardManager";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   selectDrawnNumbers,
-  startDrawing,
   useBingoDrawing,
 } from "@/lib/store/features/bingo";
 
 import { useContractReads } from "@/lib/web3";
 import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
 import { useSelectedAddress } from "@/app/hooks/routing/useSelectedAddress";
+import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
@@ -34,23 +33,9 @@ export const Bingo = () => {
     useSelectedGameId();
   const { selectedAddress } = useSelectedAddress();
 
-  useEffect(() => {
-    if (contractReadsData?.isDrawnNumbersFilled) {
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const cooldownEndTimestamp =
-        Number(contractReadsData.drawnNumbersTimestamp) +
-        Number(contractReadsData.finalizationCooldown);
-
-      if (currentTimestamp >= cooldownEndTimestamp) {
-        dispatch(startDrawing());
-      }
-    }
-  }, [
-    contractReadsData?.isDrawnNumbersFilled,
-    contractReadsData?.drawnNumbersTimestamp,
-    contractReadsData?.finalizationCooldown,
-    dispatch,
-  ]);
+  useDrawTimer({
+    contractData: contractReadsData,
+  });
 
   const handleSwitchGame = (offset: number) => {
     const newGameId = selectedGameId + BigInt(offset);
