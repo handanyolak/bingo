@@ -5,3 +5,4 @@ export { abi } from "./abis/bingoAbi";
 
 export { useContractWrite } from "./hooks/useContractWrite";
 export { useContractReads } from "./hooks/useContractReads";
+export { useContractEvents } from "./hooks/useContractEvents";
