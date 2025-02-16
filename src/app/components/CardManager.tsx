@@ -3,7 +3,7 @@
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { useAppDispatch } from "@/lib/store/hooks";
@@ -31,6 +31,8 @@ export const CardManager = () => {
   const { data: contractReadsData, isLoading, refetch } = useContractReads();
 
   const [isCardSubmitted, setIsCardSubmitted] = useState(false);
+  const [waitingCardEvent, setWaitingCardEvent] = useState(false);
+  const [waitingRandomEvent, setWaitingRandomEvent] = useState(false);
 
   const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer({
     contractData: contractReadsData,
@@ -39,12 +41,16 @@ export const CardManager = () => {
   });
 
   const handleCardPurchased = useCallback(() => {
-    toast.success("Kart başarıyla satın alındı!");
+    toast.dismiss("waitingCardEvent");
+    setWaitingCardEvent(false);
+    toast.success("Card successfully purchased!");
     refetch();
   }, [refetch]);
 
   const handleDrawnNumbersFilled = useCallback(() => {
-    toast.success("Rastgele sayılar çekildi! Oyun yakında başlayacak.");
+    toast.dismiss("waitingRandomEvent");
+    setWaitingRandomEvent(false);
+    toast.success("Random numbers received! Game will start soon.");
     refetch();
   }, [refetch]);
 
@@ -54,25 +60,68 @@ export const CardManager = () => {
     refetchData: refetch,
   });
 
+  useEffect(() => {
+    if (waitingCardEvent && !isBuyCardPending && !isBuyCardConfirming) {
+      toast.loading("Getting card details...", {
+        toastId: "waitingCardEvent",
+      });
+    }
+    if (
+      waitingRandomEvent &&
+      !isRequestRandomPending &&
+      !isRequestRandomConfirming
+    ) {
+      toast.loading("Getting random numbers...", {
+        toastId: "waitingRandomEvent",
+      });
+    }
+  }, [
+    waitingCardEvent,
+    waitingRandomEvent,
+    isBuyCardPending,
+    isBuyCardConfirming,
+    isRequestRandomPending,
+    isRequestRandomConfirming,
+  ]);
+
   const handleBuyCard = async () => {
     try {
+      setWaitingCardEvent(true);
       await buyBingoCard();
     } catch (error) {
+      setWaitingCardEvent(false);
       console.error("Error in handleBuyCard:", error);
+      toast.error("Error occurred while purchasing the card");
     }
   };
 
   const handleRequestRandomNumbers = async () => {
     try {
+      setWaitingRandomEvent(true);
       await requestRandomNumbers();
     } catch (error) {
+      setWaitingRandomEvent(false);
       console.error("Error in handleRequestRandomNumbers:", error);
+      toast.error("Error occurred while getting random numbers");
     }
   };
 
   const handleCardSubmit = () => {
     setIsCardSubmitted(true);
   };
+
+  const isBuyCardLoading =
+    isBuyCardPending || isBuyCardConfirming || waitingCardEvent;
+  const isRequestRandomLoading =
+    isRequestRandomPending || isRequestRandomConfirming || waitingRandomEvent;
+
+  if (isLoading) {
+    return (
+      <div className={styles.cardManager__container}>
+        <Loader2 className="global-loader" />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.cardManager__container}>
@@ -82,12 +131,8 @@ export const CardManager = () => {
           animated
           onClick={handleBuyCard}
           contentPosition="right"
-          content={
-            (isBuyCardPending || isBuyCardConfirming) && (
-              <Loader2 className="global-loader" />
-            )
-          }
-          disabled={isBuyCardPending || isBuyCardConfirming}
+          content={isBuyCardLoading && <Loader2 className="global-loader" />}
+          disabled={isBuyCardLoading}
         />
       )}
 
@@ -96,11 +141,9 @@ export const CardManager = () => {
           <AppButton
             text={t("requestRandomNumbers")}
             onClick={handleRequestRandomNumbers}
-            disabled={isRequestRandomPending || isRequestRandomConfirming}
+            disabled={isRequestRandomLoading}
             content={
-              (isRequestRandomPending || isRequestRandomConfirming) && (
-                <Loader2 className="global-loader" />
-              )
+              isRequestRandomLoading && <Loader2 className="global-loader" />
             }
           />
         )}
