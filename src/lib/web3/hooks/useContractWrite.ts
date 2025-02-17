@@ -16,14 +16,19 @@ import { useContractReads } from "@/lib/web3";
 interface ContractWriteState {
   buyBingoCard: () => Promise<Hash>;
   requestRandomNumbers: () => Promise<Hash>;
+  submitCard: () => Promise<Hash>;
   isBuyCardPending: boolean;
   isBuyCardConfirming: boolean;
   isBuyCardSuccess: boolean;
   isRequestRandomPending: boolean;
   isRequestRandomConfirming: boolean;
   isRequestRandomSuccess: boolean;
+  isSubmitCardPending: boolean;
+  isSubmitCardConfirming: boolean;
+  isSubmitCardSuccess: boolean;
   buyCardHash: Hash | undefined;
   requestRandomHash: Hash | undefined;
+  submitCardHash: Hash | undefined;
   error: Error | null;
 }
 
@@ -47,6 +52,7 @@ const useSuccessTransactionToast = (
 export const useContractWrite = (): ContractWriteState => {
   const [buyCardHash, setBuyCardHash] = useState<Hash>();
   const [requestRandomHash, setRequestRandomHash] = useState<Hash>();
+  const [submitCardHash, setSubmitCardHash] = useState<Hash>();
   const [error, setError] = useState<Error | null>(null);
   const cardNumbers = useAppSelector(selectCardNumbers);
   const { data } = useContractReads();
@@ -117,35 +123,78 @@ export const useContractWrite = (): ContractWriteState => {
     onError: (err) => handleError(err, "requestRandomToast"),
   });
 
+  const { mutateAsync: submitCard, isPending: isSubmitCardPending } =
+    useMutation({
+      mutationFn: async () => {
+        const result = await simulateContract(config, {
+          address: env.bingoContractAddress,
+          abi,
+          functionName: "submitCard",
+          chainId: sepolia.id,
+        });
+        return await writeContract(config, result.request);
+      },
+      onMutate: () =>
+        toast.loading("Simulating transaction...", {
+          toastId: "submitCardToast",
+        }),
+      onSuccess: (result) => {
+        setSubmitCardHash(result);
+        setError(null);
+        toast.update("submitCardToast", {
+          render: "Confirming transaction...",
+          type: "info",
+          isLoading: true,
+        });
+      },
+      onError: (err) => handleError(err, "submitCardToast"),
+    });
+
   const { isLoading: isBuyCardConfirming, isSuccess: isBuyCardSuccess } =
     useWaitForTransactionReceipt({ hash: buyCardHash });
+
   const {
     isLoading: isRequestRandomConfirming,
     isSuccess: isRequestRandomSuccess,
   } = useWaitForTransactionReceipt({ hash: requestRandomHash });
+
+  const { isLoading: isSubmitCardConfirming, isSuccess: isSubmitCardSuccess } =
+    useWaitForTransactionReceipt({ hash: submitCardHash });
 
   useSuccessTransactionToast(
     "buyCardToast",
     "Card purchased successfully!",
     isBuyCardSuccess
   );
+
   useSuccessTransactionToast(
     "requestRandomToast",
     "Random numbers requested successfully!",
     isRequestRandomSuccess
   );
 
+  useSuccessTransactionToast(
+    "submitCardToast",
+    "Card submitted successfully!",
+    isSubmitCardSuccess
+  );
+
   return {
     buyBingoCard,
     requestRandomNumbers,
+    submitCard,
     isBuyCardPending,
     isBuyCardConfirming,
     isBuyCardSuccess,
     isRequestRandomPending,
     isRequestRandomConfirming,
     isRequestRandomSuccess,
+    isSubmitCardPending,
+    isSubmitCardConfirming,
+    isSubmitCardSuccess,
     buyCardHash,
     requestRandomHash,
+    submitCardHash,
     error,
   };
 };

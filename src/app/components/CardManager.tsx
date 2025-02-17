@@ -23,16 +23,20 @@ export const CardManager = () => {
   const {
     buyBingoCard,
     requestRandomNumbers,
+    submitCard,
     isBuyCardPending,
     isBuyCardConfirming,
     isRequestRandomPending,
     isRequestRandomConfirming,
+    isSubmitCardPending,
+    isSubmitCardConfirming,
+    isSubmitCardSuccess,
   } = useContractWrite();
   const { data: contractReadsData, isLoading, refetch } = useContractReads();
 
-  const [isCardSubmitted, setIsCardSubmitted] = useState(false);
   const [waitingCardEvent, setWaitingCardEvent] = useState(false);
   const [waitingRandomEvent, setWaitingRandomEvent] = useState(false);
+  const [waitingSubmitEvent, setWaitingSubmitEvent] = useState(false);
 
   const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer({
     contractData: contractReadsData,
@@ -78,6 +82,7 @@ export const CardManager = () => {
   }, [
     waitingCardEvent,
     waitingRandomEvent,
+    waitingSubmitEvent,
     isBuyCardPending,
     isBuyCardConfirming,
     isRequestRandomPending,
@@ -106,14 +111,23 @@ export const CardManager = () => {
     }
   };
 
-  const handleCardSubmit = () => {
-    setIsCardSubmitted(true);
+  const handleCardSubmit = async () => {
+    try {
+      setWaitingSubmitEvent(true);
+      await submitCard();
+    } catch (error) {
+      setWaitingSubmitEvent(false);
+      console.error("Error in handleCardSubmit:", error);
+      toast.error("Error occurred while submitting the card");
+    }
   };
 
   const isBuyCardLoading =
     isBuyCardPending || isBuyCardConfirming || waitingCardEvent;
   const isRequestRandomLoading =
     isRequestRandomPending || isRequestRandomConfirming || waitingRandomEvent;
+  const isSubmitCardLoading =
+    isSubmitCardPending || isSubmitCardConfirming || waitingSubmitEvent;
 
   if (isLoading) {
     return (
@@ -164,9 +178,18 @@ export const CardManager = () => {
               ? secondsRemaining.toString().padStart(2, "0")
               : "00"}
           </div>
-          {!isCardSubmitted && (
-            <AppButton text={t("submitCard")} onClick={handleCardSubmit} />
-          )}
+          {!isSubmitCardSuccess &&
+            contractReadsData?.playerDetails?.remainingNumbersCount ===
+              contractReadsData?.BINGO_CARD_NUMBERS_COUNT && (
+              <AppButton
+                text={t("submitCard")}
+                onClick={handleCardSubmit}
+                disabled={isSubmitCardLoading}
+                content={
+                  isSubmitCardLoading && <Loader2 className="global-loader" />
+                }
+              />
+            )}
         </>
       )}
     </div>
