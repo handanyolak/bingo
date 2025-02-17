@@ -14,30 +14,41 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const isDrawing = useAppSelector(selectIsDrawing);
   const intervalRef = useRef<number | null>(null);
+  const currentIndexRef = useRef<number>(drawnNumbers.length);
   const { data: contractReadsData } = useContractReads();
 
   useEffect(() => {
     if (isDrawing && contractReadsData?.drawnNumbers) {
-      let currentIndex = drawnNumbers.length;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
 
       intervalRef.current = window.setInterval(() => {
-        if (currentIndex >= contractReadsData.drawnNumbers.length) {
+        if (currentIndexRef.current >= contractReadsData.drawnNumbers.length) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
           dispatch(stopDrawing());
           return;
         }
 
-        dispatch(addDrawnNumber(contractReadsData.drawnNumbers[currentIndex]));
-        currentIndex++;
+        dispatch(
+          addDrawnNumber(
+            contractReadsData.drawnNumbers[currentIndexRef.current]
+          )
+        );
+        currentIndexRef.current += 1;
       }, 3000);
     }
 
     return () => {
-      if (intervalRef.current !== null) {
+      if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
-  }, [isDrawing, drawnNumbers, contractReadsData, dispatch]);
+  }, [isDrawing, contractReadsData?.drawnNumbers, dispatch]);
 
   return {
     drawnNumbers,

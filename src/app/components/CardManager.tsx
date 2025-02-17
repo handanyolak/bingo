@@ -1,18 +1,17 @@
-"use client";
-
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState, useRef, useCallback, useEffect } from "react";
-
 import { AppButton } from "@/app/components/common/AppButton";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
 import styles from "@/styles/CardManager.module.scss";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
-
+import { startDrawing } from "@/lib/store/features/bingo/bingoSlice";
+import { selectIsDrawing } from "@/lib/store/features/bingo/bingoSelector";
+import { useBingoDrawing } from "@/lib/store/features/bingo/hooks";
 import timerAnimation from "../../../public/animations/timer.json";
 import { toast } from "react-toastify";
 
@@ -20,6 +19,9 @@ export const CardManager = () => {
   const dispatch = useAppDispatch();
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
+  const isDrawing = useAppSelector(selectIsDrawing);
+  const { drawnNumbers } = useBingoDrawing();
+
   const {
     buyBingoCard,
     requestRandomNumbers,
@@ -32,6 +34,7 @@ export const CardManager = () => {
     isSubmitCardConfirming,
     isSubmitCardSuccess,
   } = useContractWrite();
+
   const { data: contractReadsData, isLoading, refetch } = useContractReads();
 
   const [waitingCardEvent, setWaitingCardEvent] = useState(false);
@@ -43,6 +46,24 @@ export const CardManager = () => {
     lottieRef: lottieAnimationRef,
     timerAnimation,
   });
+
+  useEffect(() => {
+    if (
+      remainingTime === 0 &&
+      contractReadsData?.isDrawnNumbersFilled &&
+      !isDrawing &&
+      drawnNumbers.length < (contractReadsData?.drawnNumbers?.length || 0)
+    ) {
+      dispatch(startDrawing());
+    }
+  }, [
+    remainingTime,
+    contractReadsData?.isDrawnNumbersFilled,
+    isDrawing,
+    drawnNumbers.length,
+    contractReadsData?.drawnNumbers?.length,
+    dispatch,
+  ]);
 
   const handleCardPurchased = useCallback(() => {
     toast.dismiss("waitingCardEvent");
