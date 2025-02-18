@@ -1,9 +1,14 @@
 import { useEffect } from "react";
 import { LottieRefCurrentProps } from "lottie-react";
-import { useUnixTimestamp } from "./useUnixTimestamp";
 import { startDrawing } from "@/lib/store/features/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { ContractReads } from "@/lib/web3";
+import {
+  getUnixTimestamp,
+  useUnixTimestamp,
+  secondsToMinutes,
+  getRemainingSeconds,
+} from "@/lib/utils/time";
 
 interface UseDrawTimerProps {
   contractData: ContractReads | undefined;
