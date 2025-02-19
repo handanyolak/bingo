@@ -16,7 +16,7 @@ type TabProps = {
 };
 
 export const TabItem = ({ children }: TabItemProps) => {
-  return <>{children}</>;
+  return <div className={styles.tab__content}>{children}</div>;
 };
 
 export const Tab = ({ children, defaultTab = 0, onTabChange }: TabProps) => {
