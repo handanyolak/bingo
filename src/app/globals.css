@@ -19,7 +19,6 @@
   --input-border: rgba(0, 0, 0, 0.1);
   --drawer-bg: rgba(255, 255, 255, 0.9);
   --surface-bg: white;
-  --loader-size: 16px;
   --loader-animation: spin 1s linear infinite;
   --loader-color: var(--text);
 }
