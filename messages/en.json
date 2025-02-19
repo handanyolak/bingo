@@ -9,6 +9,8 @@
     "requestRandomNumbers": "Request Random Numbers",
     "winners": "Winners",
     "players": "Players",
-    "participants": "Participants"
+    "participants": "Participants",
+    "noPlayers": "No Players",
+    "noWinners": "No Winners"
   }
 }

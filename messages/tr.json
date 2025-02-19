@@ -9,6 +9,8 @@
     "requestRandomNumbers": "Rastgele Sayı İste",
     "winners": "Kazananlar",
     "players": "Oyuncular",
-    "participants": "Katılımcılar"
+    "participants": "Katılımcılar",
+    "noPlayers": "Oyuncu Yok",
+    "noWinners": "Kazanan Yok"
   }
 }

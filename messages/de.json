@@ -9,6 +9,8 @@
     "requestRandomNumbers": "Zufällige Zahlen anfordern",
     "winners": "Gewinner",
     "players": "Spieler",
-    "participants": "Teilnehmer"
+    "participants": "Teilnehmer",
+    "noPlayers": "Keine Spieler",
+    "noWinners": "Keine Gewinner"
   }
 }
