@@ -77,7 +77,7 @@ export const Bingo = () => {
               />
             </div>
           </div>
-          <DrawnNumbers />
+          <DrawnNumbers loading={contractLoading} />
         </div>
       </div>
     </div>
