@@ -10,14 +10,15 @@ import { Tab, TabItem } from "@/app/components/common/Tab";
 import { useState } from "react";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
-import { useContractReads } from "@/lib/web3/hooks/useContractReads";
+import { useContractReads } from "@/lib/web3/";
 
 export const Header = () => {
   const t = useTranslations("controls");
   const { cycleColor } = useColor();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data, isLoading: gameLoading } = useContractReads();
+  const { data: contractReadsData, isLoading: gameLoading } =
+    useContractReads();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -59,8 +60,10 @@ export const Header = () => {
         <div className={styles.header__content}>
           <ConnectButton />
           {gameLoading && <Loader2 className="global-loader" />}
-          {data && (
-            <span className={styles.header__gameId}>#{data.targetGameId}</span>
+          {contractReadsData && (
+            <span className={styles.header__gameId}>
+              #{contractReadsData.targetGameId}
+            </span>
           )}
         </div>
       </div>
@@ -75,7 +78,9 @@ export const Header = () => {
             title={t("players")}
             icon={<Users size={20} strokeWidth={2.5} />}
           >
-            <div>Players</div>
+            {contractReadsData?.players.addresses.map((address) => (
+              <div key={address}>{address}</div>
+            ))}
           </TabItem>
           <TabItem
             title={t("winners")}
