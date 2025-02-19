@@ -43,6 +43,10 @@ export const bingoSlice = createSlice({
         state.drawnNumbers.push(action.payload);
       }
     },
+    resetDrawnNumbers: (state) => {
+      state.drawnNumbers = [];
+      state.isDrawing = false;
+    },
     setCardNumbers: (state, action: PayloadAction<BingoCardNumbers>) => {
       state.cardNumbers = action.payload;
     },
@@ -58,6 +62,7 @@ export const {
   startDrawing,
   stopDrawing,
   addDrawnNumber,
+  resetDrawnNumbers,
   setCardNumbers,
   generateCardNumbers,
 } = bingoSlice.actions;

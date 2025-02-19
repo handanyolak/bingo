@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { selectDrawnNumbers, selectIsDrawing } from "./bingoSelector";
-import { addDrawnNumber, stopDrawing } from "./bingoSlice";
+import { addDrawnNumber, stopDrawing, resetDrawnNumbers } from "./bingoSlice";
 import { useContractReads } from "@/lib/web3";
 import { getUnixTimestamp, MS_IN_SECOND } from "@/lib/utils/time";
+import { useSearchParams } from "next/navigation";
 
 const DRAW_INTERVAL_MS = 3000;
 
@@ -32,7 +33,18 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const isDrawing = useAppSelector(selectIsDrawing);
   const intervalRef = useRef<number | null>(null);
+  const searchParams = useSearchParams();
+  const currentGameId = searchParams.get("id");
   const { data: contractReadsData } = useContractReads();
+
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    dispatch(resetDrawnNumbers());
+  }, [currentGameId, dispatch]);
 
   const handleDrawNumber = (
     numberIndex: number,
@@ -77,7 +89,7 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
       contractReadsData.drawnNumbers.length
     );
 
-    for (let i = drawnNumbers.length; i < targetIndex; i++) {
+    for (let i = 0; i < targetIndex; i++) {
       handleDrawNumber(i, contractReadsData.drawnNumbers);
     }
 
