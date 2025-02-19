@@ -26,13 +26,9 @@ export const useContractReads = () => {
     const currentGameId = await contract.read.availableGameId();
     const targetGameId = urlId ? BigInt(urlId) : currentGameId;
 
-    const [addresses, nextCursor] = await contract.read.players([
-      targetGameId,
-      BigInt(0),
-      BigInt(100),
-    ]);
-
     const [
+      [playerAddresses, playerNextCursor],
+      [winnerAddresses, winnerNextCursor],
       BINGO_MAX_NUMBER,
       BINGO_MIN_NUMBER,
       BINGO_CARD_NUMBERS_COUNT,
@@ -42,6 +38,8 @@ export const useContractReads = () => {
       drawnNumbers,
       drawnNumbersTimestamp,
     ] = await Promise.all([
+      contract.read.players([targetGameId, BigInt(0), BigInt(100)]),
+      contract.read.winners([targetGameId, BigInt(0), BigInt(100)]),
       contract.read.BINGO_MAX_NUMBER(),
       contract.read.BINGO_MIN_NUMBER(),
       contract.read.BINGO_CARD_NUMBERS_COUNT(),
@@ -74,8 +72,12 @@ export const useContractReads = () => {
       drawnNumbers,
       drawnNumbersTimestamp,
       players: {
-        addresses,
-        nextCursor,
+        playerAddresses,
+        playerNextCursor,
+      },
+      winners: {
+        winnerAddresses,
+        winnerNextCursor,
       },
     };
   };

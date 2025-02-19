@@ -21,7 +21,11 @@ export interface ContractReads {
   finalizationCooldown: bigint;
   drawnNumbersTimestamp: bigint;
   players: {
-    addresses: readonly Address[];
-    nextCursor: bigint;
+    playerAddresses: readonly Address[];
+    playerNextCursor: bigint;
+  };
+  winners: {
+    winnerAddresses: readonly Address[];
+    winnerNextCursor: bigint;
   };
 }
