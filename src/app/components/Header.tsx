@@ -78,15 +78,39 @@ export const Header = () => {
             title={t("players")}
             icon={<Users size={20} strokeWidth={2.5} />}
           >
-            {contractReadsData?.players.addresses.map((address) => (
-              <div key={address}>{address}</div>
-            ))}
+            {gameLoading ? (
+              <Loader2 className="global-loader" />
+            ) : (
+              <div className={styles.addressList}>
+                {contractReadsData?.players.playerAddresses.map((address) => (
+                  <div key={address} className={styles.addressItem}>
+                    {address}
+                  </div>
+                ))}
+                {contractReadsData?.players.playerAddresses.length === 0 && (
+                  <div className={styles.emptyState}>{t("noPlayers")}</div>
+                )}
+              </div>
+            )}
           </TabItem>
           <TabItem
             title={t("winners")}
             icon={<Trophy size={20} strokeWidth={2.5} />}
           >
-            <div>Winners</div>
+            {gameLoading ? (
+              <Loader2 className="global-loader" />
+            ) : (
+              <div className={styles.addressList}>
+                {contractReadsData?.winners.winnerAddresses.map((address) => (
+                  <div key={address} className={styles.addressItem}>
+                    {address}
+                  </div>
+                ))}
+                {contractReadsData?.winners.winnerAddresses.length === 0 && (
+                  <div className={styles.emptyState}>{t("noWinners")}</div>
+                )}
+              </div>
+            )}
           </TabItem>
         </Tab>
       </AppModal>
