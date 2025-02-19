@@ -11,7 +11,7 @@ import {
 } from "@/lib/utils/time";
 
 interface UseDrawTimerProps {
-  contractData: ContractReads | undefined;
+  contractData?: ContractReads;
   isLoading?: boolean;
   isError?: boolean;
   lottieRef?: React.RefObject<LottieRefCurrentProps | null>;
@@ -35,26 +35,29 @@ export const useDrawTimer = ({
   const dispatch = useAppDispatch();
   const currentTimestamp = useUnixTimestamp();
 
-  const isDataReady = !isLoading && !isError && !!contractData;
+  const isDataReady = !isLoading && !isError && contractData;
 
-  const endTime =
-    isDataReady &&
-    contractData?.drawnNumbersTimestamp &&
-    contractData?.finalizationCooldown
-      ? Number(contractData.drawnNumbersTimestamp) +
-        Number(contractData.finalizationCooldown)
-      : 0;
+  const calculateEndTime = (timestamp: bigint, cooldown: bigint) =>
+    Number(timestamp) + Number(cooldown);
 
-  const remainingTime = endTime ? Math.max(0, endTime - currentTimestamp) : 0;
-  const minutesRemaining = Math.floor(remainingTime / 60);
-  const secondsRemaining = remainingTime % 60;
+  const endTime = isDataReady
+    ? calculateEndTime(
+        contractData.drawnNumbersTimestamp,
+        contractData.finalizationCooldown
+      )
+    : 0;
+
+  const remainingTime = Math.max(0, endTime - currentTimestamp);
+  const minutesRemaining = secondsToMinutes(remainingTime);
+  const secondsRemaining = getRemainingSeconds(remainingTime);
 
   useEffect(() => {
     if (contractData?.isDrawnNumbersFilled) {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const cooldownEndTimestamp =
-        Number(contractData.drawnNumbersTimestamp) +
-        Number(contractData.finalizationCooldown);
+      const currentTime = getUnixTimestamp();
+      const cooldownEndTimestamp = calculateEndTime(
+        contractData.drawnNumbersTimestamp,
+        contractData.finalizationCooldown
+      );
 
       if (currentTime >= cooldownEndTimestamp) {
         dispatch(startDrawing());
