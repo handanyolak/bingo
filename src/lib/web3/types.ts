@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 export type BingoCardNumbers = readonly number[] & { length: 25 };
 
 export interface ContractReads {
@@ -18,4 +20,8 @@ export interface ContractReads {
   drawnNumbers: readonly number[];
   finalizationCooldown: bigint;
   drawnNumbersTimestamp: bigint;
+  players: {
+    addresses: readonly Address[];
+    nextCursor: bigint;
+  };
 }

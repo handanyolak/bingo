@@ -24,8 +24,13 @@ export const useContractReads = () => {
     });
 
     const currentGameId = await contract.read.availableGameId();
-
     const targetGameId = urlId ? BigInt(urlId) : currentGameId;
+
+    const [addresses, nextCursor] = await contract.read.players([
+      targetGameId,
+      BigInt(0),
+      BigInt(100),
+    ]);
 
     const [
       BINGO_MAX_NUMBER,
@@ -68,6 +73,10 @@ export const useContractReads = () => {
       playerDetails,
       drawnNumbers,
       drawnNumbersTimestamp,
+      players: {
+        addresses,
+        nextCursor,
+      },
     };
   };
 
