@@ -28,4 +28,7 @@ export interface ContractReads {
     winnerAddresses: readonly Address[];
     winnerNextCursor: bigint;
   };
+  prizePoolBalance: bigint;
+  requestRandomnessPayment: bigint;
+  requestRandomNumbersRefund: bigint;
 }
