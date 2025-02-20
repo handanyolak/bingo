@@ -5,7 +5,6 @@ import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 import styles from "@/styles/Bingo.module.scss";
 import { AppButton } from "@/app/components/common/AppButton";
-import { Tooltip } from "@/app/components/common/Tooltip";
 import { BingoCard } from "@/app/components/BingoCard";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import { CardManager } from "@/app/components/CardManager";
@@ -18,8 +17,8 @@ import {
 
 import { useContractReads } from "@/lib/web3";
 import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
-import { useSelectedAddress } from "@/app/hooks/routing/useSelectedAddress";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
+import { PoolInfo } from "@/app/components/PoolInfo";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
@@ -31,7 +30,6 @@ export const Bingo = () => {
     useContractReads();
   const { selectedGameId, updateSelectedGameId, maxGameId } =
     useSelectedGameId();
-  const { selectedAddress } = useSelectedAddress();
 
   useDrawTimer({
     contractData: contractReadsData,
@@ -46,15 +44,15 @@ export const Bingo = () => {
     <div className={styles.bingo__page}>
       <div className={styles.bingo__container}>
         <div className={styles.bingo__wrapper}>
-          <Tooltip
-            texts={[
-              "Randomness Payment: 1 ETH",
-              "Random Numbers Refund: 0.00031419852536988 ETH",
-            ]}
-            position="top"
-          >
-            <AppButton text="Total Pool Balance: 15 ETH" rounded="lg" />
-          </Tooltip>
+          <PoolInfo
+            prizePoolBalance={contractReadsData?.prizePoolBalance ?? BigInt(0)}
+            requestRandomnessPayment={
+              contractReadsData?.requestRandomnessPayment
+            }
+            requestRandomNumbersRefund={
+              contractReadsData?.requestRandomNumbersRefund
+            }
+          />
           <CardManager />
           <div className={styles.bingo__game}>
             <BingoCard />
