@@ -94,6 +94,13 @@ export const useContractEvents = ({
     [processEventLogs, onDrawnNumbersFilled]
   );
 
+  const handleRequestRandomness = useCallback(
+    (logs: Log[]) => {
+      processEventLogs(logs, "RequestRandomness", undefined);
+    },
+    [processEventLogs]
+  );
+
   useEffect(() => {
     if (!env.bingoContractAddress) {
       console.error("Bingo contract address is not defined");
@@ -116,6 +123,13 @@ export const useContractEvents = ({
         onLogs: handleDrawnNumbers,
       });
       cleanupFunctions.push(unsubscribeDrawnNumbers);
+
+      const unsubscribeRequestRandomness = publicClient.watchContractEvent({
+        ...CONTRACT_EVENT_CONFIG,
+        eventName: "RequestRandomness",
+        onLogs: handleRequestRandomness,
+      });
+      cleanupFunctions.push(unsubscribeRequestRandomness);
     } catch (error) {
       console.error("Failed to setup contract event listeners:", error);
     }
