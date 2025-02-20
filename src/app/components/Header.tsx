@@ -1,16 +1,19 @@
 "use client";
 
-import styles from "@/styles/Header.module.scss";
-import { ConnectButton } from "@/app/components/ConnectButton";
-import { useColor } from "@/app/contexts/ColorContext";
-import { useTranslations } from "next-intl";
 import { Loader2, Trophy, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { Address } from "viem";
+
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
-import { useState } from "react";
+import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
+import { useColor } from "@/app/contexts/ColorContext";
+import { useSelectedAddress } from "@/app/hooks/routing/useSelectedAddress";
 import { useContractReads } from "@/lib/web3/";
+import styles from "@/styles/Header.module.scss";
 
 export const Header = () => {
   const t = useTranslations("controls");
@@ -20,6 +23,8 @@ export const Header = () => {
   const { data: contractReadsData, isLoading: gameLoading } =
     useContractReads();
 
+  const { updateURL } = useSelectedAddress();
+
   const handleModalOpen = () => {
     setIsModalOpen(true);
     setIsMobileMenuOpen(false);
@@ -28,6 +33,11 @@ export const Header = () => {
   const handleColorChange = () => {
     cycleColor();
     setIsMobileMenuOpen(false);
+  };
+
+  const handleAddressClick = (address: Address) => {
+    updateURL(address);
+    setIsModalOpen(false);
   };
 
   return (
@@ -83,7 +93,11 @@ export const Header = () => {
             ) : (
               <div className={styles.addressList}>
                 {contractReadsData?.players.playerAddresses.map((address) => (
-                  <div key={address} className={styles.addressItem}>
+                  <div
+                    key={address}
+                    className={styles.addressItem}
+                    onClick={() => handleAddressClick(address)}
+                  >
                     {address}
                   </div>
                 ))}
@@ -102,7 +116,11 @@ export const Header = () => {
             ) : (
               <div className={styles.addressList}>
                 {contractReadsData?.winners.winnerAddresses.map((address) => (
-                  <div key={address} className={styles.addressItem}>
+                  <div
+                    key={address}
+                    className={styles.addressItem}
+                    onClick={() => handleAddressClick(address)}
+                  >
                     {address}
                   </div>
                 ))}

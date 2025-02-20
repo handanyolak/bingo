@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getContract } from "viem";
+import { getContract, isAddress } from "viem";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
 
@@ -12,9 +12,15 @@ import { ContractReads } from "@/lib/web3";
 import { useSearchParams } from "next/navigation";
 
 export const useContractReads = () => {
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const searchParams = useSearchParams();
   const urlId = searchParams.get("id");
+  const selectedAddressParam = searchParams.get("selectedAddress");
+
+  const addressToCheck =
+    selectedAddressParam && isAddress(selectedAddressParam)
+      ? (selectedAddressParam as Address)
+      : (address as Address);
 
   const fetchContractData = async (): Promise<ContractReads> => {
     const contract = getContract({
@@ -44,7 +50,7 @@ export const useContractReads = () => {
       contract.read.BINGO_MIN_NUMBER(),
       contract.read.BINGO_CARD_NUMBERS_COUNT(),
       contract.read.gameConfig([targetGameId]),
-      contract.read.isPlayerExists([targetGameId, address as Address]),
+      contract.read.isPlayerExists([targetGameId, addressToCheck]),
       contract.read.isDrawnNumbersFilled([targetGameId]),
       contract.read.drawnNumbers([targetGameId]),
       contract.read.drawnNumbersTimestamp([targetGameId]),
@@ -54,7 +60,7 @@ export const useContractReads = () => {
     if (isPlayerExists) {
       playerDetails = await contract.read.playerDetails([
         targetGameId,
-        address as Address,
+        addressToCheck,
       ]);
     }
 
@@ -83,7 +89,7 @@ export const useContractReads = () => {
   };
 
   return useQuery({
-    queryKey: ["contract", "game-reads", urlId, address],
+    queryKey: ["contract", "game-reads", urlId, addressToCheck],
     queryFn: fetchContractData,
   });
 };
