@@ -18,6 +18,10 @@ export const Tooltip = ({
 }: TooltipProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
+  if (!texts?.length) {
+    return <>{children}</>;
+  }
+
   const tooltipClasses = `${styles.tooltip__wrapper} ${
     styles[`tooltip--${position}`]
   } ${isVisible && styles["tooltip--visible"]}`;
