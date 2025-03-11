@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { LottieRefCurrentProps } from "lottie-react";
-import { startDrawing } from "@/lib/store/features/bingo";
+import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { ContractReads } from "@/lib/web3";
 import {

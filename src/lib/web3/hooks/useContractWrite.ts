@@ -7,7 +7,7 @@ import { useWaitForTransactionReceipt } from "wagmi";
 import { sepolia } from "wagmi/chains";
 
 import { env } from "@/config/env";
-import { selectCardNumbers } from "@/lib/store/features/bingo";
+import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import { config } from "@/lib/web3";
 import { abi } from "@/lib/web3";

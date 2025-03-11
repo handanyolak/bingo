@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "next-themes";
-import { useWallet } from "@/lib/store/features/wallet";
 import useCardColors from "@/app/hooks/useCardColors";
 import { Loader } from "@/app/components/Loader";
 import { ColorProvider } from "@/app/contexts/ColorContext";
+import { useAppKitAccount } from "@reown/appkit/react";
 
 export function ThemeColorProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { address } = useWallet();
+  const { address } = useAppKitAccount();
   const { colors, isLoading } = useCardColors(address || undefined);
   const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -4,8 +4,8 @@ import {
   generateCardNumbers,
   selectDrawnNumbers,
   setCardNumbers,
-} from "@/lib/store/features/bingo";
-import { selectCardNumbers } from "@/lib/store/features/bingo";
+} from "@/lib/store/bingo";
+import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/BingoCard.module.scss";

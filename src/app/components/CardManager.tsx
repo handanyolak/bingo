@@ -9,9 +9,9 @@ import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
 import styles from "@/styles/CardManager.module.scss";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
-import { startDrawing } from "@/lib/store/features/bingo/bingoSlice";
-import { selectIsDrawing } from "@/lib/store/features/bingo/bingoSelector";
-import { useBingoDrawing } from "@/lib/store/features/bingo/hooks";
+import { startDrawing } from "@/lib/store/bingo/bingoSlice";
+import { selectIsDrawing } from "@/lib/store/bingo/bingoSelector";
+import { useBingoDrawing } from "@/lib/store/bingo/hooks";
 import timerAnimation from "../../../public/animations/timer.json";
 import { toast } from "react-toastify";
 

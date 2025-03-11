@@ -10,10 +10,7 @@ import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import { CardManager } from "@/app/components/CardManager";
 
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  selectDrawnNumbers,
-  useBingoDrawing,
-} from "@/lib/store/features/bingo";
+import { selectDrawnNumbers, useBingoDrawing } from "@/lib/store/bingo";
 
 import { useContractReads } from "@/lib/web3";
 import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
