@@ -1,0 +1,16 @@
+{
+  "controls": {
+    "changeCardColor": "Changer la Couleur de la Carte",
+    "drawnNumbers": "Numéros Tirés",
+    "previousGame": "Jeu Précédent",
+    "nextGame": "Jeu Suivant",
+    "buyTheCard": "Acheter la Carte",
+    "submitCard": "Soumettre votre carte pour validation",
+    "requestRandomNumbers": "Demander des Numéros Aléatoires",
+    "winners": "Gagnants",
+    "players": "Joueurs",
+    "participants": "Participants",
+    "noPlayers": "Aucun Joueur",
+    "noWinners": "Aucun Gagnant"
+  }
+}
