@@ -1,10 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { selectDrawnNumbers, selectIsDrawing } from "./bingoSelector";
+import {
+  selectDrawnNumbers,
+  selectIsDrawing,
+  selectCardNumbers,
+} from "./bingoSelector";
 import { addDrawnNumber, stopDrawing, resetDrawnNumbers } from "./bingoSlice";
 import { useContractReads } from "@/lib/web3";
 import { getUnixTimestamp, MS_IN_SECOND } from "@/lib/utils/time";
 import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const DRAW_INTERVAL_MS = 3000;
 
@@ -17,6 +22,7 @@ interface DrawnNumbersConfig {
 interface UseBingoDrawingReturn {
   drawnNumbers: number[];
   isDrawing: boolean;
+  isPlayerCardComplete: () => boolean;
 }
 
 const calculateDrawingStartTime = (config: DrawnNumbersConfig): number =>
@@ -30,12 +36,22 @@ const calculateExpectedDrawnCount = (drawingStartTime: number): number => {
 
 export const useBingoDrawing = (): UseBingoDrawingReturn => {
   const dispatch = useAppDispatch();
-  const drawnNumbers = useAppSelector(selectDrawnNumbers);
+  const announcedNumbers = useAppSelector(selectDrawnNumbers);
+  const playerCardNumbers = useAppSelector(selectCardNumbers);
   const isDrawing = useAppSelector(selectIsDrawing);
   const intervalRef = useRef<number | null>(null);
   const searchParams = useSearchParams();
   const currentGameId = searchParams.get("id");
   const { data: contractReadsData } = useContractReads();
+  const [hasShownWinToast, setHasShownWinToast] = useState(false);
+  const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
+
+  const isPlayerCardComplete = () => {
+    if (!playerCardNumbers.length || !announcedNumbers.length) return false;
+    return playerCardNumbers.every((number) =>
+      announcedNumbers.includes(number)
+    );
+  };
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -44,9 +60,38 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     }
 
     dispatch(resetDrawnNumbers());
+    setHasShownWinToast(false);
+    setHasShownLoseToast(false);
   }, [currentGameId, dispatch]);
 
-  const handleDrawNumber = (
+  useEffect(() => {
+    if (!contractReadsData || !contractReadsData.isDrawnNumbersFilled) return;
+
+    const isCardComplete = isPlayerCardComplete();
+
+    if (isCardComplete && !hasShownWinToast) {
+      toast.success("Tebrikler! Oyunu kazandınız!");
+      setHasShownWinToast(true);
+    }
+
+    if (
+      !isCardComplete &&
+      announcedNumbers.length === contractReadsData.drawnNumbers.length &&
+      contractReadsData.drawnNumbers.length > 0 &&
+      !hasShownLoseToast
+    ) {
+      toast.error("Üzgünüz, oyunu kaybettiniz!");
+      setHasShownLoseToast(true);
+    }
+  }, [
+    announcedNumbers,
+    playerCardNumbers,
+    contractReadsData,
+    hasShownWinToast,
+    hasShownLoseToast,
+  ]);
+
+  const announceDrawnNumber = (
     numberIndex: number,
     contractNumbers: readonly number[]
   ) => {
@@ -90,7 +135,7 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     );
 
     for (let i = 0; i < targetIndex; i++) {
-      handleDrawNumber(i, contractReadsData.drawnNumbers);
+      announceDrawnNumber(i, contractReadsData.drawnNumbers);
     }
 
     if (targetIndex >= contractReadsData.drawnNumbers.length) {
@@ -105,8 +150,11 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
         contractReadsData.drawnNumbers.length
       );
 
-      if (newTargetIndex > drawnNumbers.length) {
-        handleDrawNumber(drawnNumbers.length, contractReadsData.drawnNumbers);
+      if (newTargetIndex > announcedNumbers.length) {
+        announceDrawnNumber(
+          announcedNumbers.length,
+          contractReadsData.drawnNumbers
+        );
       }
 
       if (newTargetIndex >= contractReadsData.drawnNumbers.length) {
@@ -126,8 +174,8 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     contractReadsData?.drawnNumbersTimestamp,
     contractReadsData?.finalizationCooldown,
     dispatch,
-    drawnNumbers.length,
+    announcedNumbers.length,
   ]);
 
-  return { drawnNumbers, isDrawing };
+  return { drawnNumbers: announcedNumbers, isDrawing, isPlayerCardComplete };
 };

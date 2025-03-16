@@ -106,6 +106,12 @@
       transition: background-color 0.3s, opacity 0.3s;
     }
   }
+
+  &__winner {
+    animation: winnerPulse 1.5s infinite;
+    border: 0.5px solid var(--card-dark-color) !important;
+    box-shadow: 0 0 10px var(--card-dark-color);
+  }
 }
 
 @keyframes numberChange {
@@ -135,6 +141,21 @@
     opacity: 0.6;
     transform: scale(1);
     filter: brightness(1);
+  }
+}
+
+@keyframes winnerPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px var(--card-color);
+  }
+  50% {
+    transform: scale(1.01);
+    box-shadow: 0 0 15px var(--card-color);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px var(--card-color);
   }
 }
 

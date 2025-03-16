@@ -4,6 +4,7 @@ import {
   generateCardNumbers,
   selectDrawnNumbers,
   setCardNumbers,
+  useBingoDrawing,
 } from "@/lib/store/bingo";
 import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -16,8 +17,9 @@ export const BingoCard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
 
-  const cardNumbers = useAppSelector(selectCardNumbers);
-  const drawnNumbers = useAppSelector(selectDrawnNumbers);
+  const playerCardNumbers = useAppSelector(selectCardNumbers);
+  const announcedNumbers = useAppSelector(selectDrawnNumbers);
+  const { isPlayerCardComplete } = useBingoDrawing();
 
   const dispatch = useAppDispatch();
 
@@ -60,17 +62,19 @@ export const BingoCard = () => {
       <div className={styles.bingoCard}>
         <h1 className={styles.bingoCard__bingoTitle}>BINGO</h1>
         <div className={styles.bingoCard__cardGrid}>
-          {cardNumbers.map((cardNumber, index) => {
-            const isDrawn = drawnNumbers.includes(cardNumber);
+          {playerCardNumbers.map((cardNumber, index) => {
+            const isNumberAnnounced = announcedNumbers.includes(cardNumber);
             return (
               <div
                 key={index}
                 className={`${styles.bingoCard__gridCell} ${
                   showAnimation ? styles.changed : ""
-                }`}
+                } ${isPlayerCardComplete() ? styles.bingoCard__winner : ""}`}
               >
                 <span>{cardNumber}</span>
-                {isDrawn && <span className={styles.bingoCard__marker} />}
+                {isNumberAnnounced && (
+                  <span className={styles.bingoCard__marker} />
+                )}
               </div>
             );
           })}
