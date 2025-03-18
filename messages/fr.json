@@ -11,6 +11,10 @@
     "players": "Joueurs",
     "participants": "Participants",
     "noPlayers": "Aucun Joueur",
-    "noWinners": "Aucun Gagnant"
+    "noWinners": "Aucun Gagnant",
+    "claimReward": "Réclamer la Récompense",
+    "claiming": "Réclamation...",
+    "claimInfo": "Félicitations! Vous avez gagné! Cliquez sur le bouton 'Réclamer la Récompense' pour obtenir votre prix.",
+    "rewardClaimed": "Récompense Réclamée ✓"
   }
 }

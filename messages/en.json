@@ -11,6 +11,10 @@
     "players": "Players",
     "participants": "Participants",
     "noPlayers": "No Players",
-    "noWinners": "No Winners"
+    "noWinners": "No Winners",
+    "claimReward": "Claim Reward",
+    "claiming": "Claiming...",
+    "claimInfo": "Congratulations! You won! Click the 'Claim Reward' button to get your prize.",
+    "rewardClaimed": "Reward Claimed ✓"
   }
 }

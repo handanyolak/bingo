@@ -11,6 +11,10 @@
     "players": "Spieler",
     "participants": "Teilnehmer",
     "noPlayers": "Keine Spieler",
-    "noWinners": "Keine Gewinner"
+    "noWinners": "Keine Gewinner",
+    "claimReward": "Preis beanspruchen",
+    "claiming": "Beanspruchung...",
+    "claimInfo": "Herzlichen Glückwunsch! Sie haben gewonnen! Klicken Sie auf die Schaltfläche 'Preis beanspruchen', um Ihren Preis zu erhalten.",
+    "rewardClaimed": "Preis beansprucht ✓"
   }
 }

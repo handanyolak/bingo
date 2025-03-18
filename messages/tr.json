@@ -11,6 +11,10 @@
     "players": "Oyuncular",
     "participants": "Katılımcılar",
     "noPlayers": "Oyuncu Yok",
-    "noWinners": "Kazanan Yok"
+    "noWinners": "Kazanan Yok",
+    "claimReward": "Ödülü Talep Et",
+    "claiming": "Talep Ediliyor...",
+    "claimInfo": "Tebrikler! Kazandınız! Ödülünüzü almak için 'Ödülü Talep Et' buttonuna tıklayın.",
+    "rewardClaimed": "Ödül Alındı ✓"
   }
 }
