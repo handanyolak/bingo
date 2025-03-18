@@ -20,7 +20,7 @@ export const CardManager = () => {
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
   const isDrawing = useAppSelector(selectIsDrawing);
-  const { drawnNumbers } = useBingoDrawing();
+  const { drawnNumbers, isGameOver } = useBingoDrawing();
 
   const {
     buyBingoCard,
@@ -45,6 +45,7 @@ export const CardManager = () => {
     contractData: contractReadsData,
     lottieRef: lottieAnimationRef,
     timerAnimation,
+    isGameOver,
   });
 
   useEffect(() => {
@@ -52,7 +53,8 @@ export const CardManager = () => {
       remainingTime === 0 &&
       contractReadsData?.isDrawnNumbersFilled &&
       !isDrawing &&
-      drawnNumbers.length < (contractReadsData?.drawnNumbers?.length || 0)
+      drawnNumbers.length < (contractReadsData?.drawnNumbers?.length || 0) &&
+      !isGameOver
     ) {
       dispatch(startDrawing());
     }
@@ -63,6 +65,7 @@ export const CardManager = () => {
     drawnNumbers.length,
     contractReadsData?.drawnNumbers?.length,
     dispatch,
+    isGameOver,
   ]);
 
   const handleCardPurchased = useCallback(() => {

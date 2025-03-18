@@ -16,6 +16,7 @@ interface UseDrawTimerProps {
   isError?: boolean;
   lottieRef?: React.RefObject<LottieRefCurrentProps | null>;
   timerAnimation?: any;
+  isGameOver?: boolean;
 }
 
 interface UseDrawTimerReturn {
@@ -31,6 +32,7 @@ export const useDrawTimer = ({
   isError = false,
   lottieRef,
   timerAnimation,
+  isGameOver = false,
 }: UseDrawTimerProps): UseDrawTimerReturn => {
   const dispatch = useAppDispatch();
   const currentTimestamp = useUnixTimestamp();
@@ -52,7 +54,7 @@ export const useDrawTimer = ({
   const secondsRemaining = getRemainingSeconds(remainingTime);
 
   useEffect(() => {
-    if (contractData?.isDrawnNumbersFilled) {
+    if (contractData?.isDrawnNumbersFilled && !isGameOver) {
       const currentTime = getUnixTimestamp();
       const cooldownEndTimestamp = calculateEndTime(
         contractData.drawnNumbersTimestamp,
@@ -68,6 +70,7 @@ export const useDrawTimer = ({
     contractData?.drawnNumbersTimestamp,
     contractData?.finalizationCooldown,
     dispatch,
+    isGameOver,
   ]);
 
   useEffect(() => {

@@ -20,7 +20,7 @@ import { PoolInfo } from "@/app/components/PoolInfo";
 export const Bingo = () => {
   const t = useTranslations("controls");
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
-  const { isDrawing } = useBingoDrawing();
+  const { isDrawing, isGameOver } = useBingoDrawing();
   const dispatch = useAppDispatch();
 
   const { data: contractReadsData, isLoading: contractLoading } =
@@ -30,6 +30,7 @@ export const Bingo = () => {
 
   useDrawTimer({
     contractData: contractReadsData,
+    isGameOver,
   });
 
   const handleSwitchGame = (offset: number) => {

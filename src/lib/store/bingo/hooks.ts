@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   selectDrawnNumbers,
@@ -23,6 +23,7 @@ interface UseBingoDrawingReturn {
   drawnNumbers: number[];
   isDrawing: boolean;
   isPlayerCardComplete: () => boolean;
+  isGameOver: boolean;
 }
 
 const calculateDrawingStartTime = (config: DrawnNumbersConfig): number =>
@@ -45,13 +46,22 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
   const { data: contractReadsData } = useContractReads();
   const [hasShownWinToast, setHasShownWinToast] = useState(false);
   const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
-  const isPlayerCardComplete = () => {
+  const isPlayerCardComplete = useCallback(() => {
     if (!playerCardNumbers.length || !announcedNumbers.length) return false;
     return playerCardNumbers.every((number) =>
       announcedNumbers.includes(number)
     );
-  };
+  }, [playerCardNumbers, announcedNumbers]);
+
+  const stopDrawingProcess = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    dispatch(stopDrawing());
+  }, [dispatch]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -62,6 +72,7 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     dispatch(resetDrawnNumbers());
     setHasShownWinToast(false);
     setHasShownLoseToast(false);
+    setIsGameOver(false);
   }, [currentGameId, dispatch]);
 
   useEffect(() => {
@@ -72,6 +83,8 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     if (isCardComplete && !hasShownWinToast) {
       toast.success("Tebrikler! Oyunu kazandınız!");
       setHasShownWinToast(true);
+      setIsGameOver(true);
+      stopDrawingProcess();
     }
 
     if (
@@ -82,34 +95,30 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     ) {
       toast.error("Üzgünüz, oyunu kaybettiniz!");
       setHasShownLoseToast(true);
+      setIsGameOver(true);
+      stopDrawingProcess();
     }
   }, [
     announcedNumbers,
-    playerCardNumbers,
     contractReadsData,
     hasShownWinToast,
     hasShownLoseToast,
+    isPlayerCardComplete,
+    stopDrawingProcess,
   ]);
 
-  const announceDrawnNumber = (
-    numberIndex: number,
-    contractNumbers: readonly number[]
-  ) => {
-    if (numberIndex < contractNumbers.length) {
-      dispatch(addDrawnNumber(contractNumbers[numberIndex]));
-    }
-  };
-
-  const stopDrawingProcess = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    dispatch(stopDrawing());
-  };
+  const announceDrawnNumber = useCallback(
+    (numberIndex: number, contractNumbers: readonly number[]) => {
+      if (numberIndex < contractNumbers.length) {
+        dispatch(addDrawnNumber(contractNumbers[numberIndex]));
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (
+      isGameOver ||
       !isDrawing ||
       !contractReadsData?.drawnNumbers ||
       !contractReadsData.drawnNumbersTimestamp ||
@@ -144,6 +153,11 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     }
 
     intervalRef.current = window.setInterval(() => {
+      if (isGameOver) {
+        stopDrawingProcess();
+        return;
+      }
+
       const newExpectedCount = calculateExpectedDrawnCount(drawingStartTime);
       const newTargetIndex = Math.min(
         newExpectedCount,
@@ -170,12 +184,19 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     };
   }, [
     isDrawing,
+    isGameOver,
     contractReadsData?.drawnNumbers,
     contractReadsData?.drawnNumbersTimestamp,
     contractReadsData?.finalizationCooldown,
-    dispatch,
     announcedNumbers.length,
+    announceDrawnNumber,
+    stopDrawingProcess,
   ]);
 
-  return { drawnNumbers: announcedNumbers, isDrawing, isPlayerCardComplete };
+  return {
+    drawnNumbers: announcedNumbers,
+    isDrawing,
+    isPlayerCardComplete,
+    isGameOver,
+  };
 };
