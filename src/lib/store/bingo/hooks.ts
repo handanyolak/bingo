@@ -4,49 +4,43 @@ import {
   selectDrawnNumbers,
   selectIsDrawing,
   selectCardNumbers,
+  selectIsGameFinishedInUi,
+  selectDrawnNumbersWithTimestamp,
 } from "./bingoSelector";
-import { addDrawnNumber, stopDrawing, resetDrawnNumbers } from "./bingoSlice";
+import {
+  addDrawnNumber,
+  stopDrawing,
+  resetDrawnNumbers,
+  setGameFinishedInUi,
+  setDrawnNumbersWithTimestamp,
+  startDrawing,
+  resetStateForNewGame,
+} from "./bingoSlice";
 import { useContractReads } from "@/lib/web3";
-import { getUnixTimestamp, MS_IN_SECOND } from "@/lib/utils/time";
+import { getUnixTimestamp } from "@/lib/utils/time";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 const DRAW_INTERVAL_MS = 3000;
+const DRAW_INTERVAL_SEC = DRAW_INTERVAL_MS / 1000;
+const ADDITIONAL_TIME_SEC = 5;
 
-interface DrawnNumbersConfig {
-  drawnNumbers: readonly number[];
-  drawnNumbersTimestamp: bigint;
-  finalizationCooldown: bigint;
-}
-
-interface UseBingoDrawingReturn {
-  drawnNumbers: number[];
-  isDrawing: boolean;
-  isPlayerCardComplete: () => boolean;
-  isGameOver: boolean;
-}
-
-const calculateDrawingStartTime = (config: DrawnNumbersConfig): number =>
-  parseInt(config.drawnNumbersTimestamp.toString()) +
-  parseInt(config.finalizationCooldown.toString());
-
-const calculateExpectedDrawnCount = (drawingStartTime: number): number => {
-  const elapsedTime = Math.max(0, getUnixTimestamp() - drawingStartTime);
-  return Math.floor(elapsedTime / (DRAW_INTERVAL_MS / MS_IN_SECOND));
-};
-
-export const useBingoDrawing = (): UseBingoDrawingReturn => {
+export const useBingoDrawing = () => {
   const dispatch = useAppDispatch();
   const announcedNumbers = useAppSelector(selectDrawnNumbers);
+  const drawnNumbersWithTimestamp = useAppSelector(
+    selectDrawnNumbersWithTimestamp
+  );
   const playerCardNumbers = useAppSelector(selectCardNumbers);
   const isDrawing = useAppSelector(selectIsDrawing);
+  const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
   const intervalRef = useRef<number | null>(null);
   const searchParams = useSearchParams();
   const currentGameId = searchParams.get("id");
   const { data: contractReadsData } = useContractReads();
   const [hasShownWinToast, setHasShownWinToast] = useState(false);
   const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [currentNumber, setCurrentNumber] = useState<number | null>(null);
 
   const isPlayerCardComplete = useCallback(() => {
     if (!playerCardNumbers.length || !announcedNumbers.length) return false;
@@ -72,109 +66,165 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
     dispatch(resetDrawnNumbers());
     setHasShownWinToast(false);
     setHasShownLoseToast(false);
-    setIsGameOver(false);
+    setCurrentNumber(null);
+    dispatch(resetStateForNewGame());
   }, [currentGameId, dispatch]);
 
   useEffect(() => {
-    if (!contractReadsData || !contractReadsData.isDrawnNumbersFilled) return;
-
-    const isCardComplete = isPlayerCardComplete();
-
-    if (isCardComplete && !hasShownWinToast) {
-      toast.success("Tebrikler! Oyunu kazandınız!");
-      setHasShownWinToast(true);
-      setIsGameOver(true);
-      stopDrawingProcess();
-    }
+    if (!contractReadsData) return;
 
     if (
-      !isCardComplete &&
-      announcedNumbers.length === contractReadsData.drawnNumbers.length &&
+      contractReadsData.isDrawnNumbersFilled &&
       contractReadsData.drawnNumbers.length > 0 &&
-      !hasShownLoseToast
+      drawnNumbersWithTimestamp.length === 0
     ) {
-      toast.error("Üzgünüz, oyunu kaybettiniz!");
-      setHasShownLoseToast(true);
-      setIsGameOver(true);
-      stopDrawingProcess();
+      const startTime =
+        Number(contractReadsData.drawnNumbersTimestamp) +
+        Number(contractReadsData.finalizationCooldown);
+
+      const numbersWithTimestamp = contractReadsData.drawnNumbers.map(
+        (number, index) => ({
+          number,
+          timestamp:
+            startTime + index * DRAW_INTERVAL_SEC + ADDITIONAL_TIME_SEC,
+        })
+      );
+
+      const maxIndex =
+        contractReadsData.winningDrawnNumberIndex > 0
+          ? contractReadsData.winningDrawnNumberIndex + 1
+          : contractReadsData.drawnNumbers.length;
+
+      dispatch(
+        setDrawnNumbersWithTimestamp(numbersWithTimestamp.slice(0, maxIndex))
+      );
     }
   }, [
-    announcedNumbers,
+    contractReadsData?.isDrawnNumbersFilled,
+    contractReadsData?.drawnNumbers,
+    contractReadsData?.drawnNumbersTimestamp,
+    contractReadsData?.finalizationCooldown,
+    contractReadsData?.winningDrawnNumberIndex,
+    drawnNumbersWithTimestamp.length,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    if (!contractReadsData || !drawnNumbersWithTimestamp.length) return;
+
+    if (
+      announcedNumbers.length === drawnNumbersWithTimestamp.length &&
+      announcedNumbers.length > 0 &&
+      !isGameFinishedInUi
+    ) {
+      dispatch(setGameFinishedInUi(true));
+      stopDrawingProcess();
+
+      if (isPlayerCardComplete() && !hasShownWinToast) {
+        toast.success("Congratulations! You won!");
+        setHasShownWinToast(true);
+      } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
+        if (contractReadsData.winningDrawnNumberIndex > 0) {
+          toast.error("Sorry, another player won!");
+        } else {
+          toast.error("Sorry, you lost!");
+        }
+        setHasShownLoseToast(true);
+      }
+    }
+  }, [
+    announcedNumbers.length,
+    drawnNumbersWithTimestamp.length,
+    isGameFinishedInUi,
     contractReadsData,
+    isPlayerCardComplete,
     hasShownWinToast,
     hasShownLoseToast,
-    isPlayerCardComplete,
+    dispatch,
     stopDrawingProcess,
   ]);
 
-  const announceDrawnNumber = useCallback(
-    (numberIndex: number, contractNumbers: readonly number[]) => {
-      if (numberIndex < contractNumbers.length) {
-        dispatch(addDrawnNumber(contractNumbers[numberIndex]));
-      }
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    if (!contractReadsData) return;
+
+    if (isPlayerCardComplete() && !hasShownWinToast && isDrawing) {
+      toast.success("Congratulations! You won!");
+      setHasShownWinToast(true);
+      dispatch(setGameFinishedInUi(true));
+      stopDrawingProcess();
+    }
+  }, [
+    isPlayerCardComplete,
+    hasShownWinToast,
+    isDrawing,
+    contractReadsData,
+    dispatch,
+    stopDrawingProcess,
+  ]);
 
   useEffect(() => {
-    if (
-      isGameOver ||
-      !isDrawing ||
-      !contractReadsData?.drawnNumbers ||
-      !contractReadsData.drawnNumbersTimestamp ||
-      !contractReadsData.finalizationCooldown
-    ) {
+    if (!drawnNumbersWithTimestamp.length || isGameFinishedInUi || !isDrawing) {
       return;
     }
 
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-
-    const drawingStartTime = calculateDrawingStartTime({
-      drawnNumbers: contractReadsData.drawnNumbers,
-      drawnNumbersTimestamp: contractReadsData.drawnNumbersTimestamp,
-      finalizationCooldown: contractReadsData.finalizationCooldown,
-    });
-
-    const expectedDrawnCount = calculateExpectedDrawnCount(drawingStartTime);
-    const targetIndex = Math.min(
-      expectedDrawnCount,
-      contractReadsData.drawnNumbers.length
-    );
-
-    for (let i = 0; i < targetIndex; i++) {
-      announceDrawnNumber(i, contractReadsData.drawnNumbers);
-    }
-
-    if (targetIndex >= contractReadsData.drawnNumbers.length) {
-      stopDrawingProcess();
+    const currentTimestamp = getUnixTimestamp();
+    if (drawnNumbersWithTimestamp[0].timestamp > currentTimestamp) {
       return;
     }
 
-    intervalRef.current = window.setInterval(() => {
-      if (isGameOver) {
+    let isFirstSync = true;
+    let i = 0;
+
+    const processDrawnNumbers = async () => {
+      while (
+        i < drawnNumbersWithTimestamp.length &&
+        drawnNumbersWithTimestamp[i].timestamp <= currentTimestamp
+      ) {
+        const currentItem = drawnNumbersWithTimestamp[i];
+
+        if (!announcedNumbers.includes(currentItem.number)) {
+          dispatch(addDrawnNumber(currentItem.number));
+          setCurrentNumber(currentItem.number);
+
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          setCurrentNumber(null);
+        }
+
+        i++;
+      }
+
+      if (i >= drawnNumbersWithTimestamp.length) {
+        dispatch(setGameFinishedInUi(true));
         stopDrawingProcess();
         return;
       }
 
-      const newExpectedCount = calculateExpectedDrawnCount(drawingStartTime);
-      const newTargetIndex = Math.min(
-        newExpectedCount,
-        contractReadsData.drawnNumbers.length
-      );
+      if (isFirstSync) {
+        isFirstSync = false;
 
-      if (newTargetIndex > announcedNumbers.length) {
-        announceDrawnNumber(
-          announcedNumbers.length,
-          contractReadsData.drawnNumbers
-        );
-      }
+        intervalRef.current = window.setInterval(async () => {
+          if (i < drawnNumbersWithTimestamp.length) {
+            const item = drawnNumbersWithTimestamp[i];
 
-      if (newTargetIndex >= contractReadsData.drawnNumbers.length) {
-        stopDrawingProcess();
+            dispatch(addDrawnNumber(item.number));
+            setCurrentNumber(item.number);
+
+            setTimeout(() => {
+              setCurrentNumber(null);
+            }, 1500);
+
+            i++;
+
+            if (i >= drawnNumbersWithTimestamp.length) {
+              dispatch(setGameFinishedInUi(true));
+              stopDrawingProcess();
+            }
+          }
+        }, DRAW_INTERVAL_MS);
       }
-    }, DRAW_INTERVAL_MS);
+    };
+
+    processDrawnNumbers();
 
     return () => {
       if (intervalRef.current) {
@@ -183,20 +233,46 @@ export const useBingoDrawing = (): UseBingoDrawingReturn => {
       }
     };
   }, [
+    drawnNumbersWithTimestamp,
+    isGameFinishedInUi,
     isDrawing,
-    isGameOver,
-    contractReadsData?.drawnNumbers,
-    contractReadsData?.drawnNumbersTimestamp,
-    contractReadsData?.finalizationCooldown,
-    announcedNumbers.length,
-    announceDrawnNumber,
+    announcedNumbers,
+    dispatch,
     stopDrawingProcess,
+  ]);
+
+  useEffect(() => {
+    if (
+      !contractReadsData?.isDrawnNumbersFilled ||
+      isGameFinishedInUi ||
+      isDrawing ||
+      !drawnNumbersWithTimestamp.length
+    ) {
+      return;
+    }
+
+    const currentTime = getUnixTimestamp();
+    const drawingStartTime = drawnNumbersWithTimestamp[0].timestamp;
+
+    if (currentTime >= drawingStartTime) {
+      dispatch(startDrawing());
+    }
+  }, [
+    contractReadsData?.isDrawnNumbersFilled,
+    isGameFinishedInUi,
+    isDrawing,
+    drawnNumbersWithTimestamp,
+    dispatch,
   ]);
 
   return {
     drawnNumbers: announcedNumbers,
     isDrawing,
     isPlayerCardComplete,
-    isGameOver,
+    isGameOver: isGameFinishedInUi,
+    currentNumber,
+    remainingDrawnNumbersCount: contractReadsData
+      ? contractReadsData.BINGO_MAX_NUMBER - announcedNumbers.length
+      : 0,
   };
 };
