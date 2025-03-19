@@ -46,6 +46,7 @@ export const useContractReads = () => {
       prizePoolBalance,
       requestRandomnessPayment,
       requestRandomNumbersRefund,
+      winningDrawnNumberIndex,
     ] = await Promise.all([
       contract.read.players([targetGameId, BigInt(0), BigInt(100)]),
       contract.read.winners([targetGameId, BigInt(0), BigInt(100)]),
@@ -60,6 +61,7 @@ export const useContractReads = () => {
       contract.read.prizePoolBalance([targetGameId]),
       contract.read.requestRandomnessPayment([targetGameId]),
       contract.read.requestRandomNumbersRefund([targetGameId]),
+      contract.read.winningDrawnNumberIndex([targetGameId]),
     ]);
 
     let playerDetails;
@@ -86,6 +88,7 @@ export const useContractReads = () => {
       prizePoolBalance,
       requestRandomnessPayment,
       requestRandomNumbersRefund,
+      winningDrawnNumberIndex,
       players: {
         playerAddresses,
         playerNextCursor,

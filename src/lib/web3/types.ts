@@ -31,4 +31,5 @@ export interface ContractReads {
   prizePoolBalance: bigint;
   requestRandomnessPayment: bigint;
   requestRandomNumbersRefund: bigint;
+  winningDrawnNumberIndex: number;
 }
