@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 
-const MS_IN_SECOND = 1000;
-const SECONDS_IN_MINUTE = 60;
-
-const getUnixTimestamp = () => Math.floor(Date.now() / MS_IN_SECOND);
+const getUnixTimestamp = () => Math.floor(Date.now() / 1000);
 
 const useUnixTimestamp = () => {
   const [timestamp, setTimestamp] = useState(getUnixTimestamp());
@@ -11,7 +8,7 @@ const useUnixTimestamp = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTimestamp(getUnixTimestamp());
-    }, MS_IN_SECOND);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -19,14 +16,11 @@ const useUnixTimestamp = () => {
   return timestamp;
 };
 
-const secondsToMinutes = (seconds: number) =>
-  Math.floor(seconds / SECONDS_IN_MINUTE);
+const secondsToMinutes = (seconds: number) => Math.floor(seconds / 60);
 
-const getRemainingSeconds = (seconds: number) => seconds % SECONDS_IN_MINUTE;
+const getRemainingSeconds = (seconds: number) => seconds % 60;
 
 export {
-  MS_IN_SECOND,
-  SECONDS_IN_MINUTE,
   getUnixTimestamp,
   useUnixTimestamp,
   secondsToMinutes,
