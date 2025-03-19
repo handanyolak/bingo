@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ContractReads } from "@/lib/web3";
 import {
+  DrawnNumberWithTimestamp,
   type BingoCardNumbers,
   type BingoState,
   type DrawnNumberPayload,
@@ -26,6 +27,8 @@ const initialState: BingoState = {
   isDrawing: false,
   drawnNumbers: [],
   cardNumbers: new Array(25).fill(0) as BingoCardNumbers,
+  isGameFinishedInUi: false,
+  drawnNumbersWithTimestamp: [],
 };
 
 export const bingoSlice = createSlice({
@@ -46,6 +49,17 @@ export const bingoSlice = createSlice({
     resetDrawnNumbers: (state) => {
       state.drawnNumbers = [];
       state.isDrawing = false;
+      state.isGameFinishedInUi = false;
+      state.drawnNumbersWithTimestamp = [];
+    },
+    setGameFinishedInUi: (state, action: PayloadAction<boolean>) => {
+      state.isGameFinishedInUi = action.payload;
+    },
+    setDrawnNumbersWithTimestamp: (
+      state,
+      action: PayloadAction<DrawnNumberWithTimestamp[]>
+    ) => {
+      state.drawnNumbersWithTimestamp = action.payload;
     },
     setCardNumbers: (state, action: PayloadAction<BingoCardNumbers>) => {
       state.cardNumbers = action.payload;
@@ -54,6 +68,13 @@ export const bingoSlice = createSlice({
       state.cardNumbers = generateRandomNumbers(
         action.payload
       ) as BingoCardNumbers;
+    },
+    resetStateForNewGame: (state) => {
+      state.isDrawing = false;
+      state.drawnNumbers = [];
+      state.isGameFinishedInUi = false;
+      state.drawnNumbersWithTimestamp = [];
+      state.cardNumbers = new Array(25).fill(0) as BingoCardNumbers;
     },
   },
 });
@@ -65,5 +86,9 @@ export const {
   resetDrawnNumbers,
   setCardNumbers,
   generateCardNumbers,
+  setGameFinishedInUi,
+  setDrawnNumbersWithTimestamp,
+  resetStateForNewGame,
 } = bingoSlice.actions;
+
 export default bingoSlice.reducer;
