@@ -168,9 +168,6 @@ export const useBingoDrawing = () => {
     }
 
     const currentTimestamp = getUnixTimestamp();
-    if (drawnNumbersWithTimestamp[0].timestamp > currentTimestamp) {
-      return;
-    }
 
     let isFirstSync = true;
     let i = 0;
@@ -256,6 +253,13 @@ export const useBingoDrawing = () => {
 
     if (currentTime >= drawingStartTime) {
       dispatch(startDrawing());
+    } else {
+      const timeUntilStart = (drawingStartTime - currentTime) * 1000;
+      const timer = setTimeout(() => {
+        dispatch(startDrawing());
+      }, timeUntilStart);
+
+      return () => clearTimeout(timer);
     }
   }, [
     contractReadsData?.isDrawnNumbersFilled,

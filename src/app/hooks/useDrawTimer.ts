@@ -63,6 +63,13 @@ export const useDrawTimer = ({
 
       if (currentTime >= cooldownEndTimestamp) {
         dispatch(startDrawing());
+      } else {
+        const timeUntilStart = (cooldownEndTimestamp - currentTime) * 1000;
+        const timer = setTimeout(() => {
+          dispatch(startDrawing());
+        }, timeUntilStart);
+
+        return () => clearTimeout(timer);
       }
     }
   }, [
