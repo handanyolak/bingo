@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   BingoCardNumbers,
   generateCardNumbers,
@@ -13,82 +13,90 @@ import styles from "@/styles/BingoCard.module.scss";
 import { RefreshCcw } from "lucide-react";
 
 export const BingoCard = () => {
-  const { data: contractReadsData, isLoading } = useContractReads();
+  const { data: contractData, isLoading: isContractDataLoading } =
+    useContractReads();
+
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
 
-  const playerCardNumbers = useAppSelector(selectCardNumbers);
-  const announcedNumbers = useAppSelector(selectDrawnNumbers);
+  const cardNumbers = useAppSelector(selectCardNumbers);
+  const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const { isPlayerCardComplete } = useBingoDrawing();
-
   const dispatch = useAppDispatch();
 
-  const getCardConfig = () => {
-    if (!contractReadsData) return null;
+  const getCardConfig = useMemo(() => {
+    if (!contractData) return null;
 
     return {
-      BINGO_MIN_NUMBER: contractReadsData.BINGO_MIN_NUMBER,
-      BINGO_MAX_NUMBER: contractReadsData.BINGO_MAX_NUMBER,
-      BINGO_CARD_NUMBERS_COUNT: contractReadsData.BINGO_CARD_NUMBERS_COUNT,
+      BINGO_MIN_NUMBER: contractData.BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER: contractData.BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT: contractData.BINGO_CARD_NUMBERS_COUNT,
     };
-  };
+  }, [contractData]);
 
   useEffect(() => {
-    if (!isLoading && contractReadsData) {
-      if (contractReadsData.isPlayerExists) {
-        dispatch(
-          setCardNumbers(
-            contractReadsData.playerDetails?.cardNumbers as BingoCardNumbers
-          )
-        );
-      } else {
-        const cardConfig = getCardConfig();
-        if (cardConfig) {
-          dispatch(generateCardNumbers(cardConfig));
-        }
-      }
-    }
-  }, [isLoading, contractReadsData, dispatch]);
+    if (isContractDataLoading || !contractData) return;
 
-  const handleRefresh = () => {
+    if (
+      contractData.isPlayerExists &&
+      contractData.playerDetails?.cardNumbers
+    ) {
+      dispatch(
+        setCardNumbers(
+          contractData.playerDetails.cardNumbers as BingoCardNumbers
+        )
+      );
+    } else if (getCardConfig) {
+      dispatch(generateCardNumbers(getCardConfig));
+    }
+  }, [isContractDataLoading, contractData, dispatch, getCardConfig]);
+
+  const handleCardRefresh = () => {
+    if (!getCardConfig) return;
+
     setIsRefreshing(true);
     setShowAnimation(true);
-    const cardConfig = getCardConfig();
-    if (cardConfig) {
-      dispatch(generateCardNumbers(cardConfig));
-      setTimeout(() => {
-        setIsRefreshing(false);
-        setShowAnimation(false);
-      }, 400);
-    }
+
+    dispatch(generateCardNumbers(getCardConfig));
+
+    setTimeout(() => {
+      setIsRefreshing(false);
+      setShowAnimation(false);
+    }, 400);
+  };
+
+  const getCardCellClassName = (isAnimating: boolean, isCompleted: boolean) => {
+    return `${styles.bingoCard__gridCell} 
+      ${isAnimating ? styles.changed : ""} 
+      ${isCompleted ? styles.bingoCard__winner : ""}`;
   };
 
   return (
     <div className={styles.bingoCardWrapper}>
-      {!contractReadsData?.isPlayerExists && (
+      {!contractData?.isPlayerExists && (
         <RefreshCcw
           className={`${styles.refreshIcon} ${
             isRefreshing ? styles.spinning : ""
           }`}
-          onClick={handleRefresh}
+          onClick={handleCardRefresh}
         />
       )}
+
       <div className={styles.bingoCard}>
         <h1 className={styles.bingoCard__bingoTitle}>BINGO</h1>
+
         <div className={styles.bingoCard__cardGrid}>
-          {playerCardNumbers.map((cardNumber, index) => {
-            const isNumberAnnounced = announcedNumbers.includes(cardNumber);
+          {cardNumbers.map((number, index) => {
+            const isNumberDrawn = drawnNumbers.includes(number);
+            const cellClassName = getCardCellClassName(
+              showAnimation,
+              isPlayerCardComplete()
+            );
+
             return (
-              <div
-                key={index}
-                className={`${styles.bingoCard__gridCell} ${
-                  showAnimation ? styles.changed : ""
-                } ${isPlayerCardComplete() ? styles.bingoCard__winner : ""}`}
-              >
-                <span>{cardNumber}</span>
-                {isNumberAnnounced && (
-                  <span className={styles.bingoCard__marker} />
-                )}
+              <div key={index} className={cellClassName}>
+                <span>{number}</span>
+                {isNumberDrawn && <span className={styles.bingoCard__marker} />}
               </div>
             );
           })}
