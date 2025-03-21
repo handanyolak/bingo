@@ -35,14 +35,14 @@ export const CardManager = () => {
     isSubmitCardSuccess,
   } = useContractWrite();
 
-  const { data: contractReadsData, isLoading, refetch } = useContractReads();
+  const { data: contractData, isLoading, refetch } = useContractReads();
 
   const [waitingCardEvent, setWaitingCardEvent] = useState(false);
   const [waitingRandomEvent, setWaitingRandomEvent] = useState(false);
   const [waitingSubmitEvent, setWaitingSubmitEvent] = useState(false);
 
   const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer({
-    contractData: contractReadsData,
+    contractData: contractData,
     lottieRef: lottieAnimationRef,
     timerAnimation,
     isGameOver,
@@ -51,19 +51,19 @@ export const CardManager = () => {
   useEffect(() => {
     if (
       remainingTime === 0 &&
-      contractReadsData?.isDrawnNumbersFilled &&
+      contractData?.isDrawnNumbersFilled &&
       !isDrawing &&
-      drawnNumbers.length < (contractReadsData?.drawnNumbers?.length || 0) &&
+      drawnNumbers.length < (contractData?.drawnNumbers?.length || 0) &&
       !isGameOver
     ) {
       dispatch(startDrawing());
     }
   }, [
     remainingTime,
-    contractReadsData?.isDrawnNumbersFilled,
+    contractData?.isDrawnNumbersFilled,
     isDrawing,
     drawnNumbers.length,
-    contractReadsData?.drawnNumbers?.length,
+    contractData?.drawnNumbers?.length,
     dispatch,
     isGameOver,
   ]);
@@ -163,7 +163,7 @@ export const CardManager = () => {
 
   return (
     <div className={styles.cardManager__container}>
-      {!contractReadsData?.isPlayerExists && (
+      {!contractData?.isPlayerExists && (
         <AppButton
           text={t("buyTheCard")}
           animated
@@ -174,19 +174,18 @@ export const CardManager = () => {
         />
       )}
 
-      {contractReadsData?.isPlayerExists &&
-        !contractReadsData?.isDrawnNumbersFilled && (
-          <AppButton
-            text={t("requestRandomNumbers")}
-            onClick={handleRequestRandomNumbers}
-            disabled={isRequestRandomLoading}
-            content={
-              isRequestRandomLoading && <Loader2 className="global-loader" />
-            }
-          />
-        )}
+      {contractData?.isPlayerExists && !contractData?.isDrawnNumbersFilled && (
+        <AppButton
+          text={t("requestRandomNumbers")}
+          onClick={handleRequestRandomNumbers}
+          disabled={isRequestRandomLoading}
+          content={
+            isRequestRandomLoading && <Loader2 className="global-loader" />
+          }
+        />
+      )}
 
-      {contractReadsData?.isDrawnNumbersFilled && remainingTime > 0 && (
+      {contractData?.isDrawnNumbersFilled && remainingTime > 0 && (
         <>
           <div className={styles.cardManager__timer}>
             <Lottie
@@ -203,8 +202,8 @@ export const CardManager = () => {
               : "00"}
           </div>
           {!isSubmitCardSuccess &&
-            contractReadsData?.playerDetails?.remainingNumbersCount ===
-              contractReadsData?.BINGO_CARD_NUMBERS_COUNT && (
+            contractData?.playerDetails?.remainingNumbersCount ===
+              contractData?.BINGO_CARD_NUMBERS_COUNT && (
               <AppButton
                 text={t("submitCard")}
                 onClick={handleCardSubmit}

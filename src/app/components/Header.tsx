@@ -2,7 +2,7 @@
 
 import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Address } from "viem";
 
 import { AppModal } from "@/app/components/common/AppModal";
@@ -23,8 +23,7 @@ export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasClaimedReward, setHasClaimedReward] = useState(false);
-  const { data: contractReadsData, isLoading: gameLoading } =
-    useContractReads();
+  const { data: contractData, isLoading: gameLoading } = useContractReads();
   const { address } = useAccount();
   const {
     claimReward,
@@ -38,8 +37,9 @@ export const Header = () => {
   useEffect(() => {
     if (isClaimRewardSuccess) {
       setHasClaimedReward(true);
+      toast.success(t("rewardClaimedMessage"));
     }
-  }, [isClaimRewardSuccess]);
+  }, [isClaimRewardSuccess, t]);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -57,26 +57,30 @@ export const Header = () => {
   };
 
   const handleClaimReward = async () => {
-    if (!contractReadsData?.targetGameId) {
-      toast.error("Game ID is not available");
-      return;
-    }
-
     try {
-      await claimReward(contractReadsData.targetGameId);
+      if (!contractData?.targetGameId) {
+        toast.error(t("gameIdNotAvailable"));
+        return;
+      }
+
+      await claimReward(contractData.targetGameId);
     } catch (error) {
-      console.error("Failed to claim reward:", error);
+      console.error("Error claiming reward:", error);
+      toast.error(t("claimRewardError"));
     }
   };
 
   const isClaimButtonDisabled = isClaimRewardPending || isClaimRewardConfirming;
-  const isUserWinner =
-    address &&
-    contractReadsData?.winners.winnerAddresses.includes(address as Address);
+  const isWinner = useMemo(() => {
+    return (
+      address &&
+      contractData?.winners.winnerAddresses.includes(address as Address)
+    );
+  }, [contractData?.winners.winnerAddresses, address]);
 
   useEffect(() => {
     setHasClaimedReward(false);
-  }, [contractReadsData?.targetGameId, address]);
+  }, [contractData?.targetGameId, address]);
 
   return (
     <header className={styles.header}>
@@ -108,11 +112,13 @@ export const Header = () => {
         <div className={styles.header__content}>
           <ConnectButton />
           {gameLoading && <Loader2 className="global-loader" />}
-          {contractReadsData && (
-            <span className={styles.header__gameId}>
-              #{contractReadsData.targetGameId}
-            </span>
-          )}
+          <div className={styles.header__gameIdContainer}>
+            {contractData && (
+              <div className={styles.header__gameId}>
+                #{contractData.targetGameId}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -130,7 +136,7 @@ export const Header = () => {
               <Loader2 className="global-loader" />
             ) : (
               <div className={styles.addressList}>
-                {contractReadsData?.players.playerAddresses.map((address) => (
+                {contractData?.players.playerAddresses.map((address) => (
                   <div
                     key={address}
                     className={styles.addressItem}
@@ -139,7 +145,7 @@ export const Header = () => {
                     {address}
                   </div>
                 ))}
-                {contractReadsData?.players.playerAddresses.length === 0 && (
+                {contractData?.players.playerAddresses.length === 0 && (
                   <div className={styles.emptyState}>{t("noPlayers")}</div>
                 )}
               </div>
@@ -153,35 +159,33 @@ export const Header = () => {
               <Loader2 className="global-loader" />
             ) : (
               <div className={styles.addressList}>
-                {contractReadsData?.winners.winnerAddresses.map(
-                  (winnerAddress) => (
-                    <div key={winnerAddress} className={styles.addressItem}>
-                      <span onClick={() => handleAddressClick(winnerAddress)}>
-                        {winnerAddress}
-                      </span>
-                      {address === winnerAddress && !hasClaimedReward && (
-                        <button
-                          className={styles.claimButton}
-                          onClick={handleClaimReward}
-                          disabled={isClaimButtonDisabled}
-                        >
-                          {isClaimButtonDisabled
-                            ? t("claiming")
-                            : t("claimReward")}
-                        </button>
-                      )}
-                      {address === winnerAddress && hasClaimedReward && (
-                        <div className={styles.claimedStatus}>
-                          {t("rewardClaimed")}
-                        </div>
-                      )}
-                    </div>
-                  )
-                )}
-                {contractReadsData?.winners.winnerAddresses.length === 0 && (
+                {contractData?.winners.winnerAddresses.map((winnerAddress) => (
+                  <div key={winnerAddress} className={styles.addressItem}>
+                    <span onClick={() => handleAddressClick(winnerAddress)}>
+                      {winnerAddress}
+                    </span>
+                    {address === winnerAddress && !hasClaimedReward && (
+                      <button
+                        className={styles.claimButton}
+                        onClick={handleClaimReward}
+                        disabled={isClaimButtonDisabled}
+                      >
+                        {isClaimButtonDisabled
+                          ? t("claiming")
+                          : t("claimReward")}
+                      </button>
+                    )}
+                    {address === winnerAddress && hasClaimedReward && (
+                      <div className={styles.claimedStatus}>
+                        {t("rewardClaimed")}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {contractData?.winners.winnerAddresses.length === 0 && (
                   <div className={styles.emptyState}>{t("noWinners")}</div>
                 )}
-                {isUserWinner && !hasClaimedReward && (
+                {isWinner && !hasClaimedReward && (
                   <div className={styles.claimInfoBox}>{t("claimInfo")}</div>
                 )}
               </div>

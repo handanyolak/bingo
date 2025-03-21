@@ -23,13 +23,12 @@ export const Bingo = () => {
   const { isDrawing, isGameOver } = useBingoDrawing();
   const dispatch = useAppDispatch();
 
-  const { data: contractReadsData, isLoading: contractLoading } =
-    useContractReads();
+  const { data: contractData, isLoading: contractLoading } = useContractReads();
   const { selectedGameId, updateSelectedGameId, maxGameId } =
     useSelectedGameId();
 
   useDrawTimer({
-    contractData: contractReadsData,
+    contractData: contractData,
     isGameOver,
   });
 
@@ -43,12 +42,10 @@ export const Bingo = () => {
       <div className={styles.bingo__container}>
         <div className={styles.bingo__wrapper}>
           <PoolInfo
-            prizePoolBalance={contractReadsData?.prizePoolBalance ?? BigInt(0)}
-            requestRandomnessPayment={
-              contractReadsData?.requestRandomnessPayment
-            }
+            prizePoolBalance={contractData?.prizePoolBalance ?? BigInt(0)}
+            requestRandomnessPayment={contractData?.requestRandomnessPayment}
             requestRandomNumbersRefund={
-              contractReadsData?.requestRandomNumbersRefund
+              contractData?.requestRandomNumbersRefund
             }
           />
           <CardManager />

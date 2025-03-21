@@ -37,7 +37,7 @@ export const useBingoDrawing = () => {
   const intervalRef = useRef<number | null>(null);
   const searchParams = useSearchParams();
   const currentGameId = searchParams.get("id");
-  const { data: contractReadsData } = useContractReads();
+  const { data: contractData } = useContractReads();
   const [hasShownWinToast, setHasShownWinToast] = useState(false);
   const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
   const [currentNumber, setCurrentNumber] = useState<number | null>(null);
@@ -71,18 +71,18 @@ export const useBingoDrawing = () => {
   }, [currentGameId, dispatch]);
 
   useEffect(() => {
-    if (!contractReadsData) return;
+    if (!contractData) return;
 
     if (
-      contractReadsData.isDrawnNumbersFilled &&
-      contractReadsData.drawnNumbers.length > 0 &&
+      contractData.isDrawnNumbersFilled &&
+      contractData.drawnNumbers.length > 0 &&
       drawnNumbersWithTimestamp.length === 0
     ) {
       const startTime =
-        Number(contractReadsData.drawnNumbersTimestamp) +
-        Number(contractReadsData.finalizationCooldown);
+        Number(contractData.drawnNumbersTimestamp) +
+        Number(contractData.finalizationCooldown);
 
-      const numbersWithTimestamp = contractReadsData.drawnNumbers.map(
+      const numbersWithTimestamp = contractData.drawnNumbers.map(
         (number, index) => ({
           number,
           timestamp:
@@ -91,26 +91,26 @@ export const useBingoDrawing = () => {
       );
 
       const maxIndex =
-        contractReadsData.winningDrawnNumberIndex > 0
-          ? contractReadsData.winningDrawnNumberIndex + 1
-          : contractReadsData.drawnNumbers.length;
+        contractData.winningDrawnNumberIndex > 0
+          ? contractData.winningDrawnNumberIndex + 1
+          : contractData.drawnNumbers.length;
 
       dispatch(
         setDrawnNumbersWithTimestamp(numbersWithTimestamp.slice(0, maxIndex))
       );
     }
   }, [
-    contractReadsData?.isDrawnNumbersFilled,
-    contractReadsData?.drawnNumbers,
-    contractReadsData?.drawnNumbersTimestamp,
-    contractReadsData?.finalizationCooldown,
-    contractReadsData?.winningDrawnNumberIndex,
+    contractData?.isDrawnNumbersFilled,
+    contractData?.drawnNumbers,
+    contractData?.drawnNumbersTimestamp,
+    contractData?.finalizationCooldown,
+    contractData?.winningDrawnNumberIndex,
     drawnNumbersWithTimestamp.length,
     dispatch,
   ]);
 
   useEffect(() => {
-    if (!contractReadsData || !drawnNumbersWithTimestamp.length) return;
+    if (!contractData || !drawnNumbersWithTimestamp.length) return;
 
     if (
       announcedNumbers.length === drawnNumbersWithTimestamp.length &&
@@ -124,7 +124,7 @@ export const useBingoDrawing = () => {
         toast.success("Congratulations! You won!");
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        if (contractReadsData.winningDrawnNumberIndex > 0) {
+        if (contractData.winningDrawnNumberIndex > 0) {
           toast.error("Sorry, another player won!");
         } else {
           toast.error("Sorry, you lost!");
@@ -136,7 +136,7 @@ export const useBingoDrawing = () => {
     announcedNumbers.length,
     drawnNumbersWithTimestamp.length,
     isGameFinishedInUi,
-    contractReadsData,
+    contractData,
     isPlayerCardComplete,
     hasShownWinToast,
     hasShownLoseToast,
@@ -145,7 +145,7 @@ export const useBingoDrawing = () => {
   ]);
 
   useEffect(() => {
-    if (!contractReadsData) return;
+    if (!contractData) return;
 
     if (isPlayerCardComplete() && !hasShownWinToast && isDrawing) {
       toast.success("Congratulations! You won!");
@@ -157,7 +157,7 @@ export const useBingoDrawing = () => {
     isPlayerCardComplete,
     hasShownWinToast,
     isDrawing,
-    contractReadsData,
+    contractData,
     dispatch,
     stopDrawingProcess,
   ]);
@@ -240,7 +240,7 @@ export const useBingoDrawing = () => {
 
   useEffect(() => {
     if (
-      !contractReadsData?.isDrawnNumbersFilled ||
+      !contractData?.isDrawnNumbersFilled ||
       isGameFinishedInUi ||
       isDrawing ||
       !drawnNumbersWithTimestamp.length
@@ -262,7 +262,7 @@ export const useBingoDrawing = () => {
       return () => clearTimeout(timer);
     }
   }, [
-    contractReadsData?.isDrawnNumbersFilled,
+    contractData?.isDrawnNumbersFilled,
     isGameFinishedInUi,
     isDrawing,
     drawnNumbersWithTimestamp,
@@ -275,8 +275,8 @@ export const useBingoDrawing = () => {
     isPlayerCardComplete,
     isGameOver: isGameFinishedInUi,
     currentNumber,
-    remainingDrawnNumbersCount: contractReadsData
-      ? contractReadsData.BINGO_MAX_NUMBER - announcedNumbers.length
+    remainingDrawnNumbersCount: contractData
+      ? contractData.BINGO_MAX_NUMBER - announcedNumbers.length
       : 0,
   };
 };
