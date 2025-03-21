@@ -23,6 +23,16 @@ export const BingoCard = () => {
 
   const dispatch = useAppDispatch();
 
+  const getCardConfig = () => {
+    if (!contractReadsData) return null;
+
+    return {
+      BINGO_MIN_NUMBER: contractReadsData.BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER: contractReadsData.BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT: contractReadsData.BINGO_CARD_NUMBERS_COUNT,
+    };
+  };
+
   useEffect(() => {
     if (!isLoading && contractReadsData) {
       if (contractReadsData.isPlayerExists) {
@@ -32,7 +42,10 @@ export const BingoCard = () => {
           )
         );
       } else {
-        dispatch(generateCardNumbers(contractReadsData));
+        const cardConfig = getCardConfig();
+        if (cardConfig) {
+          dispatch(generateCardNumbers(cardConfig));
+        }
       }
     }
   }, [isLoading, contractReadsData, dispatch]);
@@ -40,8 +53,9 @@ export const BingoCard = () => {
   const handleRefresh = () => {
     setIsRefreshing(true);
     setShowAnimation(true);
-    if (contractReadsData) {
-      dispatch(generateCardNumbers(contractReadsData));
+    const cardConfig = getCardConfig();
+    if (cardConfig) {
+      dispatch(generateCardNumbers(cardConfig));
       setTimeout(() => {
         setIsRefreshing(false);
         setShowAnimation(false);

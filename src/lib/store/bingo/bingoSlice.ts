@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ContractReads } from "@/lib/web3";
 import {
   DrawnNumberWithTimestamp,
   type BingoCardNumbers,
@@ -7,9 +6,15 @@ import {
   type DrawnNumberPayload,
 } from "./types";
 
-const generateRandomNumbers = (contractData: ContractReads): number[] => {
+interface CardGenerationConfig {
+  BINGO_MIN_NUMBER: number;
+  BINGO_MAX_NUMBER: number;
+  BINGO_CARD_NUMBERS_COUNT: number;
+}
+
+const generateRandomNumbers = (cardConfig: CardGenerationConfig): number[] => {
   const { BINGO_MIN_NUMBER, BINGO_MAX_NUMBER, BINGO_CARD_NUMBERS_COUNT } =
-    contractData;
+    cardConfig;
 
   const min = Number(BINGO_MIN_NUMBER);
   const max = Number(BINGO_MAX_NUMBER);
@@ -64,7 +69,10 @@ export const bingoSlice = createSlice({
     setCardNumbers: (state, action: PayloadAction<BingoCardNumbers>) => {
       state.cardNumbers = action.payload;
     },
-    generateCardNumbers: (state, action: PayloadAction<ContractReads>) => {
+    generateCardNumbers: (
+      state,
+      action: PayloadAction<CardGenerationConfig>
+    ) => {
       state.cardNumbers = generateRandomNumbers(
         action.payload
       ) as BingoCardNumbers;
