@@ -16,8 +16,7 @@ export const BingoCard = () => {
   const { data: contractData, isLoading: isContractDataLoading } =
     useContractReads();
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
+  const [isRefreshingCard, setIsRefreshingCard] = useState(false);
 
   const cardNumbers = useAppSelector(selectCardNumbers);
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
@@ -54,14 +53,12 @@ export const BingoCard = () => {
   const handleCardRefresh = () => {
     if (!getCardConfig) return;
 
-    setIsRefreshing(true);
-    setShowAnimation(true);
+    setIsRefreshingCard(true);
 
     dispatch(generateCardNumbers(getCardConfig));
 
     setTimeout(() => {
-      setIsRefreshing(false);
-      setShowAnimation(false);
+      setIsRefreshingCard(false);
     }, 400);
   };
 
@@ -76,7 +73,7 @@ export const BingoCard = () => {
       {!contractData?.isPlayerExists && (
         <RefreshCcw
           className={`${styles.refreshIcon} ${
-            isRefreshing ? styles.spinning : ""
+            isRefreshingCard ? styles.spinning : ""
           }`}
           onClick={handleCardRefresh}
         />
@@ -89,7 +86,7 @@ export const BingoCard = () => {
           {cardNumbers.map((number, index) => {
             const isNumberDrawn = drawnNumbers.includes(number);
             const cellClassName = getCardCellClassName(
-              showAnimation,
+              isRefreshingCard,
               isPlayerCardComplete()
             );
 
