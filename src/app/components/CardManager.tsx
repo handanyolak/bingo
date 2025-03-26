@@ -13,7 +13,7 @@ import { startDrawing } from "@/lib/store/bingo/bingoSlice";
 import { selectIsDrawing } from "@/lib/store/bingo/bingoSelector";
 import { useBingoDrawing } from "@/lib/store/bingo/hooks";
 import timerAnimation from "../../../public/animations/timer.json";
-import { toast } from "react-toastify";
+import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +21,14 @@ export const CardManager = () => {
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
   const isDrawing = useAppSelector(selectIsDrawing);
   const { drawnNumbers, isGameOver } = useBingoDrawing();
+  const {
+    showInitiatingTransactionToast,
+    showConfirmingTransactionToast,
+    showSuccessToast,
+    showErrorToast,
+    dismissToast,
+    showWaitingForEventToast,
+  } = useTransactionToast();
 
   const {
     buyBingoCard,
@@ -33,6 +41,8 @@ export const CardManager = () => {
     isSubmitCardPending,
     isSubmitCardConfirming,
     isSubmitCardSuccess,
+    isBuyCardSuccess,
+    isRequestRandomSuccess,
   } = useContractWrite();
 
   const { data: contractData, isLoading, refetch } = useContractReads();
@@ -42,7 +52,7 @@ export const CardManager = () => {
   const [waitingSubmitEvent, setWaitingSubmitEvent] = useState(false);
 
   const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer({
-    contractData: contractData,
+    contractData,
     lottieRef: lottieAnimationRef,
     timerAnimation,
     isGameOver,
@@ -69,18 +79,48 @@ export const CardManager = () => {
   ]);
 
   const handleCardPurchased = useCallback(() => {
-    toast.dismiss("waitingCardEvent");
-    setWaitingCardEvent(false);
-    toast.success("Card successfully purchased!");
+    if (waitingCardEvent) {
+      dismissToast("waitingCardEvent");
+      setWaitingCardEvent(false);
+      showSuccessToast("waitingCardEvent", "Card successfully purchased!");
+    }
     refetch();
-  }, [refetch]);
+  }, [refetch, waitingCardEvent, dismissToast, showSuccessToast]);
 
   const handleDrawnNumbersFilled = useCallback(() => {
-    toast.dismiss("waitingRandomEvent");
-    setWaitingRandomEvent(false);
-    toast.success("Random numbers received! Game will start soon.");
+    if (waitingRandomEvent) {
+      dismissToast("waitingRandomEvent");
+      setWaitingRandomEvent(false);
+      showSuccessToast(
+        "waitingRandomEvent",
+        "Random numbers received! Game will start soon."
+      );
+    }
     refetch();
-  }, [refetch]);
+  }, [refetch, waitingRandomEvent, dismissToast, showSuccessToast]);
+
+  const handleCardSubmitSuccess = useCallback(() => {
+    if (waitingSubmitEvent) {
+      setWaitingSubmitEvent(false);
+      showSuccessToast("waitingSubmitEvent", "Card successfully submitted!");
+    }
+  }, [waitingSubmitEvent, showSuccessToast]);
+
+  const handleBuyCardSuccess = useCallback(() => {
+    if (waitingCardEvent) {
+      setWaitingCardEvent(false);
+      showSuccessToast("waitingCardEvent", "Card purchased successfully!");
+    }
+  }, [waitingCardEvent, showSuccessToast]);
+
+  const handleRequestRandomSuccess = useCallback(() => {
+    if (waitingRandomEvent) {
+      showWaitingForEventToast(
+        "waitingRandomEvent",
+        "Transaction confirmed. Waiting for random numbers to be generated..."
+      );
+    }
+  }, [waitingRandomEvent, showWaitingForEventToast]);
 
   useContractEvents({
     onCardPurchased: handleCardPurchased,
@@ -89,60 +129,79 @@ export const CardManager = () => {
   });
 
   useEffect(() => {
-    if (waitingCardEvent && !isBuyCardPending && !isBuyCardConfirming) {
-      toast.loading("Getting card details...", {
-        toastId: "waitingCardEvent",
-      });
+    if (waitingCardEvent && isBuyCardConfirming) {
+      showConfirmingTransactionToast("waitingCardEvent");
     }
-    if (
-      waitingRandomEvent &&
-      !isRequestRandomPending &&
-      !isRequestRandomConfirming
-    ) {
-      toast.loading("Getting random numbers...", {
-        toastId: "waitingRandomEvent",
-      });
+    if (waitingRandomEvent && isRequestRandomConfirming) {
+      showConfirmingTransactionToast("waitingRandomEvent");
+    }
+    if (waitingSubmitEvent && isSubmitCardConfirming) {
+      showConfirmingTransactionToast("waitingSubmitEvent");
     }
   }, [
     waitingCardEvent,
     waitingRandomEvent,
     waitingSubmitEvent,
-    isBuyCardPending,
     isBuyCardConfirming,
-    isRequestRandomPending,
     isRequestRandomConfirming,
+    isSubmitCardConfirming,
+    showConfirmingTransactionToast,
   ]);
+
+  useEffect(() => {
+    if (isSubmitCardSuccess) {
+      handleCardSubmitSuccess();
+    }
+  }, [isSubmitCardSuccess, handleCardSubmitSuccess]);
+
+  useEffect(() => {
+    if (isBuyCardSuccess) {
+      handleBuyCardSuccess();
+    }
+  }, [isBuyCardSuccess, handleBuyCardSuccess]);
+
+  useEffect(() => {
+    if (isRequestRandomSuccess) {
+      handleRequestRandomSuccess();
+    }
+  }, [isRequestRandomSuccess, handleRequestRandomSuccess]);
 
   const handleBuyCard = async () => {
     try {
       setWaitingCardEvent(true);
+      showInitiatingTransactionToast("waitingCardEvent");
       await buyBingoCard();
     } catch (error) {
       setWaitingCardEvent(false);
+      dismissToast("waitingCardEvent");
+      showErrorToast(error);
       console.error("Error in handleBuyCard:", error);
-      toast.error("Error occurred while purchasing the card");
     }
   };
 
   const handleRequestRandomNumbers = async () => {
     try {
       setWaitingRandomEvent(true);
+      showInitiatingTransactionToast("waitingRandomEvent");
       await requestRandomNumbers();
     } catch (error) {
       setWaitingRandomEvent(false);
+      dismissToast("waitingRandomEvent");
+      showErrorToast(error);
       console.error("Error in handleRequestRandomNumbers:", error);
-      toast.error("Error occurred while getting random numbers");
     }
   };
 
   const handleCardSubmit = async () => {
     try {
       setWaitingSubmitEvent(true);
+      showInitiatingTransactionToast("waitingSubmitEvent");
       await submitCard();
     } catch (error) {
       setWaitingSubmitEvent(false);
+      dismissToast("waitingSubmitEvent");
+      showErrorToast(error);
       console.error("Error in handleCardSubmit:", error);
-      toast.error("Error occurred while submitting the card");
     }
   };
 
