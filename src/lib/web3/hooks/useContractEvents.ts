@@ -143,5 +143,5 @@ export const useContractEvents = ({
         }
       });
     };
-  }, [handleCardPurchase, handleDrawnNumbers]);
+  }, [handleCardPurchase, handleDrawnNumbers, handleRequestRandomness]);
 };
