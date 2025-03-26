@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { simulateContract, writeContract } from "@wagmi/core";
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { useState } from "react";
 import { Hash } from "viem";
 import { useWaitForTransactionReceipt } from "wagmi";
 import { sepolia } from "wagmi/chains";
@@ -34,44 +33,15 @@ interface ContractWriteState {
   requestRandomHash: Hash | undefined;
   submitCardHash: Hash | undefined;
   claimRewardHash: Hash | undefined;
-  error: Error | null;
 }
-
-const useSuccessTransactionToast = (
-  toastId: string,
-  successMessage: string,
-  isSuccess: boolean
-) => {
-  useEffect(() => {
-    if (isSuccess) {
-      toast.update(toastId, {
-        render: successMessage,
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
-    }
-  }, [isSuccess, toastId, successMessage]);
-};
 
 export const useContractWrite = (): ContractWriteState => {
   const [buyCardHash, setBuyCardHash] = useState<Hash>();
   const [requestRandomHash, setRequestRandomHash] = useState<Hash>();
   const [submitCardHash, setSubmitCardHash] = useState<Hash>();
   const [claimRewardHash, setClaimRewardHash] = useState<Hash>();
-  const [error, setError] = useState<Error | null>(null);
   const cardNumbers = useAppSelector(selectCardNumbers);
   const { data } = useContractReads();
-
-  const handleError = (err: any, toastId: string) => {
-    const trimmedMessage = err?.message
-      .split("Contract Call:")[0]
-      .trim()
-      .split("\n")[0];
-    toast.error(trimmedMessage);
-    setError(err instanceof Error ? err : new Error(String(err)));
-    toast.dismiss(toastId);
-  };
 
   const { mutateAsync: buyBingoCard, isPending: isBuyCardPending } =
     useMutation({
@@ -86,18 +56,9 @@ export const useContractWrite = (): ContractWriteState => {
         });
         return await writeContract(config, result.request);
       },
-      onMutate: () =>
-        toast.loading("Simulating transaction...", { toastId: "buyCardToast" }),
       onSuccess: (result) => {
         setBuyCardHash(result);
-        setError(null);
-        toast.update("buyCardToast", {
-          render: "Confirming transaction...",
-          type: "info",
-          isLoading: true,
-        });
       },
-      onError: (err) => handleError(err, "buyCardToast"),
     });
 
   const {
@@ -113,20 +74,9 @@ export const useContractWrite = (): ContractWriteState => {
       });
       return await writeContract(config, result.request);
     },
-    onMutate: () =>
-      toast.loading("Simulating transaction...", {
-        toastId: "requestRandomToast",
-      }),
     onSuccess: (result) => {
       setRequestRandomHash(result);
-      setError(null);
-      toast.update("requestRandomToast", {
-        render: "Sending transaction...",
-        type: "info",
-        isLoading: true,
-      });
     },
-    onError: (err) => handleError(err, "requestRandomToast"),
   });
 
   const { mutateAsync: submitCard, isPending: isSubmitCardPending } =
@@ -140,20 +90,9 @@ export const useContractWrite = (): ContractWriteState => {
         });
         return await writeContract(config, result.request);
       },
-      onMutate: () =>
-        toast.loading("Simulating transaction...", {
-          toastId: "submitCardToast",
-        }),
       onSuccess: (result) => {
         setSubmitCardHash(result);
-        setError(null);
-        toast.update("submitCardToast", {
-          render: "Confirming transaction...",
-          type: "info",
-          isLoading: true,
-        });
       },
-      onError: (err) => handleError(err, "submitCardToast"),
     });
 
   const { mutateAsync: claimReward, isPending: isClaimRewardPending } =
@@ -168,20 +107,9 @@ export const useContractWrite = (): ContractWriteState => {
         });
         return await writeContract(config, result.request);
       },
-      onMutate: () =>
-        toast.loading("Simulating transaction...", {
-          toastId: "claimRewardToast",
-        }),
       onSuccess: (result) => {
         setClaimRewardHash(result);
-        setError(null);
-        toast.update("claimRewardToast", {
-          render: "Confirming transaction...",
-          type: "info",
-          isLoading: true,
-        });
       },
-      onError: (err) => handleError(err, "claimRewardToast"),
     });
 
   const { isLoading: isBuyCardConfirming, isSuccess: isBuyCardSuccess } =
@@ -199,30 +127,6 @@ export const useContractWrite = (): ContractWriteState => {
     isLoading: isClaimRewardConfirming,
     isSuccess: isClaimRewardSuccess,
   } = useWaitForTransactionReceipt({ hash: claimRewardHash });
-
-  useSuccessTransactionToast(
-    "buyCardToast",
-    "Card purchased successfully!",
-    isBuyCardSuccess
-  );
-
-  useSuccessTransactionToast(
-    "requestRandomToast",
-    "Random numbers requested successfully!",
-    isRequestRandomSuccess
-  );
-
-  useSuccessTransactionToast(
-    "submitCardToast",
-    "Card submitted successfully!",
-    isSubmitCardSuccess
-  );
-
-  useSuccessTransactionToast(
-    "claimRewardToast",
-    "Reward claimed successfully!",
-    isClaimRewardSuccess
-  );
 
   return {
     buyBingoCard,
@@ -245,6 +149,5 @@ export const useContractWrite = (): ContractWriteState => {
     requestRandomHash,
     submitCardHash,
     claimRewardHash,
-    error,
   };
 };
