@@ -105,15 +105,17 @@ export const CardManager = () => {
     if (waitingSubmitEvent) {
       setWaitingSubmitEvent(false);
       showSuccessToast("waitingSubmitEvent", "Card successfully submitted!");
+      refetch();
     }
-  }, [waitingSubmitEvent, showSuccessToast]);
+  }, [waitingSubmitEvent, showSuccessToast, refetch]);
 
   const handleBuyCardSuccess = useCallback(() => {
     if (waitingCardEvent) {
       setWaitingCardEvent(false);
       showSuccessToast("waitingCardEvent", "Card purchased successfully!");
+      refetch();
     }
-  }, [waitingCardEvent, showSuccessToast]);
+  }, [waitingCardEvent, showSuccessToast, refetch]);
 
   const handleRequestRandomSuccess = useCallback(() => {
     if (waitingRandomEvent) {
