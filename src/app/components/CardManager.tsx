@@ -14,11 +14,13 @@ import { selectIsDrawing } from "@/lib/store/bingo/bingoSelector";
 import { useBingoDrawing } from "@/lib/store/bingo/hooks";
 import timerAnimation from "../../../public/animations/timer.json";
 import { useTransactionToast } from "@/app/hooks/useTransactionToast";
+import { useAccount } from "wagmi";
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
   const t = useTranslations("controls");
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
+  const { isConnected } = useAccount();
   const isDrawing = useAppSelector(selectIsDrawing);
   const { drawnNumbers, isGameOver } = useBingoDrawing();
   const {
@@ -222,16 +224,18 @@ export const CardManager = () => {
 
   return (
     <div className={styles.cardManager__container}>
-      {!contractData?.isPlayerExists && (
-        <AppButton
-          text={t("buyTheCard")}
-          animated
-          onClick={handleBuyCard}
-          contentPosition="right"
-          content={isBuyCardLoading && <Loader2 className="global-loader" />}
-          disabled={isBuyCardLoading}
-        />
-      )}
+      {isConnected &&
+        !contractData?.isPlayerExists &&
+        !contractData?.vrfRequested && (
+          <AppButton
+            text={t("buyTheCard")}
+            animated
+            onClick={handleBuyCard}
+            contentPosition="right"
+            content={isBuyCardLoading && <Loader2 className="global-loader" />}
+            disabled={isBuyCardLoading}
+          />
+        )}
 
       {contractData?.isPlayerExists && !contractData?.isDrawnNumbersFilled && (
         <AppButton
