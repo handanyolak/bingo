@@ -2,19 +2,22 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useAccount } from "wagmi";
+
 import { AppButton } from "@/app/components/common/AppButton";
+import { useDrawTimer } from "@/app/hooks/useDrawTimer";
+import { useTransactionToast } from "@/app/hooks/useTransactionToast";
+import { selectIsDrawing } from "@/lib/store/bingo/bingoSelector";
+import { startDrawing } from "@/lib/store/bingo/bingoSlice";
+import { useBingoDrawing } from "@/lib/store/bingo/hooks";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
 import styles from "@/styles/CardManager.module.scss";
-import { useDrawTimer } from "@/app/hooks/useDrawTimer";
-import { startDrawing } from "@/lib/store/bingo/bingoSlice";
-import { selectIsDrawing } from "@/lib/store/bingo/bingoSelector";
-import { useBingoDrawing } from "@/lib/store/bingo/hooks";
+
 import timerAnimation from "../../../public/animations/timer.json";
-import { useTransactionToast } from "@/app/hooks/useTransactionToast";
-import { useAccount } from "wagmi";
+
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +26,7 @@ export const CardManager = () => {
   const { isConnected } = useAccount();
   const isDrawing = useAppSelector(selectIsDrawing);
   const { drawnNumbers, isGameOver } = useBingoDrawing();
+
   const {
     showInitiatingTransactionToast,
     showConfirmingTransactionToast,
@@ -59,116 +63,6 @@ export const CardManager = () => {
     timerAnimation,
     isGameOver,
   });
-
-  useEffect(() => {
-    if (
-      remainingTime === 0 &&
-      contractData?.isDrawnNumbersFilled &&
-      !isDrawing &&
-      drawnNumbers.length < (contractData?.drawnNumbers?.length || 0) &&
-      !isGameOver
-    ) {
-      dispatch(startDrawing());
-    }
-  }, [
-    remainingTime,
-    contractData?.isDrawnNumbersFilled,
-    isDrawing,
-    drawnNumbers.length,
-    contractData?.drawnNumbers?.length,
-    dispatch,
-    isGameOver,
-  ]);
-
-  const handleCardPurchased = useCallback(() => {
-    if (waitingCardEvent) {
-      dismissToast("waitingCardEvent");
-      setWaitingCardEvent(false);
-      showSuccessToast("waitingCardEvent", "Card successfully purchased!");
-    }
-    refetch();
-  }, [refetch, waitingCardEvent, dismissToast, showSuccessToast]);
-
-  const handleDrawnNumbersFilled = useCallback(() => {
-    if (waitingRandomEvent) {
-      dismissToast("waitingRandomEvent");
-      setWaitingRandomEvent(false);
-      showSuccessToast(
-        "waitingRandomEvent",
-        "Random numbers received! Game will start soon."
-      );
-    }
-    refetch();
-  }, [refetch, waitingRandomEvent, dismissToast, showSuccessToast]);
-
-  const handleCardSubmitSuccess = useCallback(() => {
-    if (waitingSubmitEvent) {
-      setWaitingSubmitEvent(false);
-      showSuccessToast("waitingSubmitEvent", "Card successfully submitted!");
-      refetch();
-    }
-  }, [waitingSubmitEvent, showSuccessToast, refetch]);
-
-  const handleBuyCardSuccess = useCallback(() => {
-    if (waitingCardEvent) {
-      setWaitingCardEvent(false);
-      showSuccessToast("waitingCardEvent", "Card purchased successfully!");
-      refetch();
-    }
-  }, [waitingCardEvent, showSuccessToast, refetch]);
-
-  const handleRequestRandomSuccess = useCallback(() => {
-    if (waitingRandomEvent) {
-      showWaitingForEventToast(
-        "waitingRandomEvent",
-        "Transaction confirmed. Waiting for random numbers to be generated..."
-      );
-    }
-  }, [waitingRandomEvent, showWaitingForEventToast]);
-
-  useContractEvents({
-    onCardPurchased: handleCardPurchased,
-    onDrawnNumbersFilled: handleDrawnNumbersFilled,
-    refetchData: refetch,
-  });
-
-  useEffect(() => {
-    if (waitingCardEvent && isBuyCardConfirming) {
-      showConfirmingTransactionToast("waitingCardEvent");
-    }
-    if (waitingRandomEvent && isRequestRandomConfirming) {
-      showConfirmingTransactionToast("waitingRandomEvent");
-    }
-    if (waitingSubmitEvent && isSubmitCardConfirming) {
-      showConfirmingTransactionToast("waitingSubmitEvent");
-    }
-  }, [
-    waitingCardEvent,
-    waitingRandomEvent,
-    waitingSubmitEvent,
-    isBuyCardConfirming,
-    isRequestRandomConfirming,
-    isSubmitCardConfirming,
-    showConfirmingTransactionToast,
-  ]);
-
-  useEffect(() => {
-    if (isSubmitCardSuccess) {
-      handleCardSubmitSuccess();
-    }
-  }, [isSubmitCardSuccess, handleCardSubmitSuccess]);
-
-  useEffect(() => {
-    if (isBuyCardSuccess) {
-      handleBuyCardSuccess();
-    }
-  }, [isBuyCardSuccess, handleBuyCardSuccess]);
-
-  useEffect(() => {
-    if (isRequestRandomSuccess) {
-      handleRequestRandomSuccess();
-    }
-  }, [isRequestRandomSuccess, handleRequestRandomSuccess]);
 
   const handleBuyCard = async () => {
     try {
@@ -208,6 +102,116 @@ export const CardManager = () => {
       console.error("Error in handleCardSubmit:", error);
     }
   };
+
+  const handleCardPurchased = useCallback(() => {
+    if (waitingCardEvent) {
+      dismissToast("waitingCardEvent");
+      setWaitingCardEvent(false);
+      showSuccessToast("waitingCardEvent", "Card successfully purchased!");
+    }
+    refetch();
+  }, [refetch, waitingCardEvent, dismissToast, showSuccessToast]);
+
+  const handleDrawnNumbersFilled = useCallback(() => {
+    if (waitingRandomEvent) {
+      dismissToast("waitingRandomEvent");
+      setWaitingRandomEvent(false);
+      showSuccessToast(
+        "waitingRandomEvent",
+        "Random numbers received! Game will start soon."
+      );
+    }
+    refetch();
+  }, [refetch, waitingRandomEvent, dismissToast, showSuccessToast]);
+
+  const handleBuyCardSuccess = useCallback(() => {
+    if (waitingCardEvent) {
+      setWaitingCardEvent(false);
+      showSuccessToast("waitingCardEvent", "Card purchased successfully!");
+      refetch();
+    }
+  }, [waitingCardEvent, showSuccessToast, refetch]);
+
+  const handleRequestRandomSuccess = useCallback(() => {
+    if (waitingRandomEvent) {
+      showWaitingForEventToast(
+        "waitingRandomEvent",
+        "Transaction confirmed. Waiting for random numbers to be generated..."
+      );
+    }
+  }, [waitingRandomEvent, showWaitingForEventToast]);
+
+  const handleCardSubmitSuccess = useCallback(() => {
+    if (waitingSubmitEvent) {
+      setWaitingSubmitEvent(false);
+      showSuccessToast("waitingSubmitEvent", "Card successfully submitted!");
+      refetch();
+    }
+  }, [waitingSubmitEvent, showSuccessToast, refetch]);
+
+  useContractEvents({
+    onCardPurchased: handleCardPurchased,
+    onDrawnNumbersFilled: handleDrawnNumbersFilled,
+    refetchData: refetch,
+  });
+
+  useEffect(() => {
+    if (waitingCardEvent && isBuyCardConfirming) {
+      showConfirmingTransactionToast("waitingCardEvent");
+    }
+    if (waitingRandomEvent && isRequestRandomConfirming) {
+      showConfirmingTransactionToast("waitingRandomEvent");
+    }
+    if (waitingSubmitEvent && isSubmitCardConfirming) {
+      showConfirmingTransactionToast("waitingSubmitEvent");
+    }
+  }, [
+    waitingCardEvent,
+    waitingRandomEvent,
+    waitingSubmitEvent,
+    isBuyCardConfirming,
+    isRequestRandomConfirming,
+    isSubmitCardConfirming,
+    showConfirmingTransactionToast,
+  ]);
+
+  useEffect(() => {
+    if (isBuyCardSuccess) {
+      handleBuyCardSuccess();
+    }
+  }, [isBuyCardSuccess, handleBuyCardSuccess]);
+
+  useEffect(() => {
+    if (isRequestRandomSuccess) {
+      handleRequestRandomSuccess();
+    }
+  }, [isRequestRandomSuccess, handleRequestRandomSuccess]);
+
+  useEffect(() => {
+    if (isSubmitCardSuccess) {
+      handleCardSubmitSuccess();
+    }
+  }, [isSubmitCardSuccess, handleCardSubmitSuccess]);
+
+  useEffect(() => {
+    if (
+      remainingTime === 0 &&
+      contractData?.isDrawnNumbersFilled &&
+      !isDrawing &&
+      drawnNumbers.length < (contractData?.drawnNumbers?.length || 0) &&
+      !isGameOver
+    ) {
+      dispatch(startDrawing());
+    }
+  }, [
+    remainingTime,
+    contractData?.isDrawnNumbersFilled,
+    isDrawing,
+    drawnNumbers.length,
+    contractData?.drawnNumbers?.length,
+    dispatch,
+    isGameOver,
+  ]);
 
   const isBuyCardLoading =
     isBuyCardPending || isBuyCardConfirming || waitingCardEvent;
