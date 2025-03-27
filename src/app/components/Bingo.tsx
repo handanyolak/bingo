@@ -16,12 +16,14 @@ import { useContractReads } from "@/lib/web3";
 import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 import { PoolInfo } from "@/app/components/PoolInfo";
+import { useAccountChange } from "@/app/contexts/AccountChangeContext";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const { isDrawing, isGameOver } = useBingoDrawing();
   const dispatch = useAppDispatch();
+  const { key } = useAccountChange();
 
   const { data: contractData, isLoading: contractLoading } = useContractReads();
   const { selectedGameId, updateSelectedGameId, maxGameId } =
@@ -38,7 +40,7 @@ export const Bingo = () => {
   };
 
   return (
-    <div className={styles.bingo__page}>
+    <div key={key} className={styles.bingo__page}>
       <div className={styles.bingo__container}>
         <div className={styles.bingo__wrapper}>
           <PoolInfo
