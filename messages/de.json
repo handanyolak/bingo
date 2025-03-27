@@ -15,6 +15,7 @@
     "claimReward": "Preis beanspruchen",
     "claiming": "Beanspruchung...",
     "claimInfo": "Herzlichen Glückwunsch! Sie haben gewonnen! Klicken Sie auf die Schaltfläche 'Preis beanspruchen', um Ihren Preis zu erhalten.",
-    "rewardClaimed": "Preis beansprucht ✓"
+    "rewardClaimed": "Preis beansprucht ✓",
+    "notParticipated": "Sie haben an diesem Spiel nicht teilgenommen"
   }
 }

@@ -15,6 +15,7 @@
     "claimReward": "Ödülü Talep Et",
     "claiming": "Talep Ediliyor...",
     "claimInfo": "Tebrikler! Kazandınız! Ödülünüzü almak için 'Ödülü Talep Et' buttonuna tıklayın.",
-    "rewardClaimed": "Ödül Alındı ✓"
+    "rewardClaimed": "Ödül Alındı ✓",
+    "notParticipated": "Bu oyuna katılmadınız"
   }
 }

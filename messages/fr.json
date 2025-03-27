@@ -15,6 +15,7 @@
     "claimReward": "Réclamer la Récompense",
     "claiming": "Réclamation...",
     "claimInfo": "Félicitations! Vous avez gagné! Cliquez sur le bouton 'Réclamer la Récompense' pour obtenir votre prix.",
-    "rewardClaimed": "Récompense Réclamée ✓"
+    "rewardClaimed": "Récompense Réclamée ✓",
+    "notParticipated": "Vous n'avez pas participé à ce jeu"
   }
 }

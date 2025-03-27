@@ -15,6 +15,7 @@
     "claimReward": "Claim Reward",
     "claiming": "Claiming...",
     "claimInfo": "Congratulations! You won! Click the 'Claim Reward' button to get your prize.",
-    "rewardClaimed": "Reward Claimed ✓"
+    "rewardClaimed": "Reward Claimed ✓",
+    "notParticipated": "You did not participate in this game"
   }
 }
