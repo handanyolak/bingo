@@ -93,7 +93,9 @@ export const BingoCard = () => {
             return (
               <div key={index} className={cellClassName}>
                 <span>{number}</span>
-                {isNumberDrawn && <span className={styles.bingoCard__marker} />}
+                {isNumberDrawn && contractData?.isPlayerExists && (
+                  <span className={styles.bingoCard__marker} />
+                )}
               </div>
             );
           })}
