@@ -10,6 +10,7 @@ import { setLocale, getLocale } from "@/lib/actions";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import { queryClient } from "@/lib/queryClient";
+import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
 
 type ContextType = {
   locale: LanguageCode;
@@ -59,8 +60,10 @@ export const LocaleProvider = ({ messages, children }: Props) => {
               <ContextProvider
                 cookies={typeof window !== "undefined" ? document.cookie : null}
               >
-                <ToastContainer />
-                {children}
+                <AccountChangeProvider>
+                  <ToastContainer />
+                  {children}
+                </AccountChangeProvider>
               </ContextProvider>
             </LocaleContext.Provider>
           </NextIntlClientProvider>
