@@ -11,17 +11,33 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/BingoCard.module.scss";
 import { RefreshCcw } from "lucide-react";
+import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
+import { useTranslations } from "next-intl";
 
 export const BingoCard = () => {
+  const t = useTranslations("controls");
   const { data: contractData, isLoading: isContractDataLoading } =
     useContractReads();
 
   const [isRefreshingCard, setIsRefreshingCard] = useState(false);
+  const { selectedGameId, maxGameId } = useSelectedGameId();
 
   const cardNumbers = useAppSelector(selectCardNumbers);
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const { isPlayerCardComplete } = useBingoDrawing();
   const dispatch = useAppDispatch();
+
+  const isCurrentGame = useMemo(() => {
+    if (!maxGameId || !selectedGameId) return true;
+    return selectedGameId === maxGameId;
+  }, [selectedGameId, maxGameId]);
+
+  const playerParticipationStatus = useMemo(() => {
+    if (isCurrentGame || contractData?.isPlayerExists) {
+      return "active";
+    }
+    return "notPlayed";
+  }, [isCurrentGame, contractData?.isPlayerExists]);
 
   const getCardConfig = useMemo(() => {
     if (!contractData) return null;
@@ -68,9 +84,13 @@ export const BingoCard = () => {
       ${isCompleted ? styles.bingoCard__winner : ""}`;
   };
 
+  const emptyGridCells = useMemo(() => {
+    return Array.from({ length: 25 }, (_, i) => i);
+  }, []);
+
   return (
     <div className={styles.bingoCardWrapper}>
-      {!contractData?.isPlayerExists && (
+      {!contractData?.isPlayerExists && isCurrentGame && (
         <RefreshCcw
           className={`${styles.refreshIcon} ${
             isRefreshingCard ? styles.spinning : ""
@@ -82,24 +102,35 @@ export const BingoCard = () => {
       <div className={styles.bingoCard}>
         <h1 className={styles.bingoCard__bingoTitle}>BINGO</h1>
 
-        <div className={styles.bingoCard__cardGrid}>
-          {cardNumbers.map((number, index) => {
-            const isNumberDrawn = drawnNumbers.includes(number);
-            const cellClassName = getCardCellClassName(
-              isRefreshingCard,
-              isPlayerCardComplete()
-            );
+        {playerParticipationStatus === "active" ? (
+          <div className={styles.bingoCard__cardGrid}>
+            {cardNumbers.map((number, index) => {
+              const isNumberDrawn = drawnNumbers.includes(number);
+              const cellClassName = getCardCellClassName(
+                isRefreshingCard,
+                isPlayerCardComplete()
+              );
 
-            return (
-              <div key={index} className={cellClassName}>
-                <span>{number}</span>
-                {isNumberDrawn && contractData?.isPlayerExists && (
-                  <span className={styles.bingoCard__marker} />
-                )}
-              </div>
-            );
-          })}
-        </div>
+              return (
+                <div key={index} className={cellClassName}>
+                  <span>{number}</span>
+                  {isNumberDrawn && contractData?.isPlayerExists && (
+                    <span className={styles.bingoCard__marker} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className={styles.bingoCard__cardGrid}>
+            {emptyGridCells.map((index) => (
+              <div key={index} className={styles.bingoCard__emptyCell} />
+            ))}
+            <div className={styles.bingoCard__notPlayedText}>
+              {t("notParticipated")}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
