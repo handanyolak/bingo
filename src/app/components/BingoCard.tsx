@@ -90,7 +90,7 @@ export const BingoCard = () => {
 
   return (
     <div className={styles.bingoCardWrapper}>
-      {!contractData?.isPlayerExists && isCurrentGame && (
+      {isCurrentGame && (
         <RefreshCcw
           className={`${styles.refreshIcon} ${
             isRefreshingCard ? styles.spinning : ""
