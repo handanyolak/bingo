@@ -4,9 +4,9 @@
     "drawnNumbers": "Çekilen Sayılar",
     "previousGame": "Önceki Oyun",
     "nextGame": "Sonraki Oyun",
-    "buyTheCard": "Kartı Satın Al",
-    "submitCard": "Kartınızı doğrulama için gönderin",
-    "requestRandomNumbers": "Rastgele Sayı İste",
+    "buyTheCard": "Kartı satın al",
+    "submitCard": "Kartını doğrulama için gönder",
+    "requestRandomNumbers": "Rastgele Sayılar İste",
     "winners": "Kazananlar",
     "players": "Oyuncular",
     "participants": "Katılımcılar",
@@ -14,8 +14,12 @@
     "noWinners": "Kazanan Yok",
     "claimReward": "Ödülü Talep Et",
     "claiming": "Talep Ediliyor...",
-    "claimInfo": "Tebrikler! Kazandınız! Ödülünüzü almak için 'Ödülü Talep Et' buttonuna tıklayın.",
+    "claimInfo": "Tebrikler! Kazandın! Ödülünü almak için 'Ödülü Talep Et' butonuna tıkla.",
     "rewardClaimed": "Ödül Alındı ✓",
     "notParticipated": "Bu oyuna katılmadınız"
+  },
+  "toast": {
+    "gameWon": "Tebrikler! Kazandınız!",
+    "gameLost": "Üzgünüz! Oyun bitti, kaybettiniz."
   }
 }

@@ -17,5 +17,9 @@
     "claimInfo": "Congratulations! You won! Click the 'Claim Reward' button to get your prize.",
     "rewardClaimed": "Reward Claimed ✓",
     "notParticipated": "You did not participate in this game"
+  },
+  "toast": {
+    "gameWon": "Congratulations! You won!",
+    "gameLost": "Sorry! The game is over, you lost."
   }
 }

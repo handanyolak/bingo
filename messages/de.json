@@ -17,5 +17,9 @@
     "claimInfo": "Herzlichen Glückwunsch! Sie haben gewonnen! Klicken Sie auf die Schaltfläche 'Preis beanspruchen', um Ihren Preis zu erhalten.",
     "rewardClaimed": "Preis beansprucht ✓",
     "notParticipated": "Sie haben an diesem Spiel nicht teilgenommen"
+  },
+  "toast": {
+    "gameWon": "Herzlichen Glückwunsch! Sie haben gewonnen!",
+    "gameLost": "Es tut uns leid! Das Spiel ist vorbei, Sie haben verloren."
   }
 }
