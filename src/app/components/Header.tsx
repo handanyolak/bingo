@@ -11,7 +11,7 @@ import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
 import { useColor } from "@/app/contexts/ColorContext";
-import { useSelectedAddress } from "@/app/hooks/routing/useSelectedAddress";
+import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
 import { useContractReads, useContractWrite } from "@/lib/web3/";
 import styles from "@/styles/Header.module.scss";
 import { useAccount } from "wagmi";

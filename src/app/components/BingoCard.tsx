@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/BingoCard.module.scss";
 import { RefreshCcw } from "lucide-react";
-import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
+import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
 import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { useTranslations } from "next-intl";
 

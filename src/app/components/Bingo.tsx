@@ -14,7 +14,7 @@ import { selectDrawnNumbers } from "@/lib/store/bingo";
 import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 
 import { useContractReads } from "@/lib/web3";
-import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
+import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 import { PoolInfo } from "@/app/components/PoolInfo";
 import { useAccountChange } from "@/app/contexts/AccountChangeContext";
