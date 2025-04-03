@@ -51,12 +51,6 @@ export const bingoSlice = createSlice({
         state.drawnNumbers.push(action.payload);
       }
     },
-    resetDrawnNumbers: (state) => {
-      state.drawnNumbers = [];
-      state.isDrawing = false;
-      state.isGameFinishedInUi = false;
-      state.drawnNumbersWithTimestamp = [];
-    },
     setGameFinishedInUi: (state, action: PayloadAction<boolean>) => {
       state.isGameFinishedInUi = action.payload;
     },
@@ -91,7 +85,6 @@ export const {
   startDrawing,
   stopDrawing,
   addDrawnNumber,
-  resetDrawnNumbers,
   setCardNumbers,
   generateCardNumbers,
   setGameFinishedInUi,
