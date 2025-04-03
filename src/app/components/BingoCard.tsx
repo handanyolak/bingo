@@ -4,7 +4,6 @@ import {
   generateCardNumbers,
   selectDrawnNumbers,
   setCardNumbers,
-  useBingoDrawing,
 } from "@/lib/store/bingo";
 import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -12,6 +11,7 @@ import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/BingoCard.module.scss";
 import { RefreshCcw } from "lucide-react";
 import { useSelectedGameId } from "@/app/hooks/routing/useSelectedGameId";
+import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { useTranslations } from "next-intl";
 
 export const BingoCard = () => {

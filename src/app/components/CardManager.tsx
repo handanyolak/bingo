@@ -9,7 +9,7 @@ import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { selectIsDrawing } from "@/lib/store/bingo/bingoSelector";
 import { startDrawing } from "@/lib/store/bingo/bingoSlice";
-import { useBingoDrawing } from "@/lib/store/bingo/hooks";
+import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import { useContractWrite } from "@/lib/web3";
@@ -17,7 +17,6 @@ import { useContractEvents } from "@/lib/web3";
 import styles from "@/styles/CardManager.module.scss";
 
 import timerAnimation from "../../../public/animations/timer.json";
-
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
