@@ -3,7 +3,9 @@
 import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useEffect, useMemo } from "react";
+import { toast } from "react-toastify";
 import { Address } from "viem";
+import { useAccount } from "wagmi";
 
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
@@ -12,10 +14,9 @@ import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
 import { useColor } from "@/app/contexts/ColorContext";
 import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { useContractReads, useContractWrite } from "@/lib/web3/";
 import styles from "@/styles/Header.module.scss";
-import { useAccount } from "wagmi";
-import { toast } from "react-toastify";
 
 export const Header = () => {
   const t = useTranslations("controls");
@@ -33,13 +34,41 @@ export const Header = () => {
   } = useContractWrite();
 
   const { updateURL } = useSelectedAddress();
+  const {
+    showInitiatingTransactionToast,
+    showConfirmingTransactionToast,
+    showSuccessToast,
+    showErrorToast,
+    dismissToast,
+  } = useTransactionToast();
+
+  const [claimingInProgress, setClaimingInProgress] = useState(false);
 
   useEffect(() => {
-    if (isClaimRewardSuccess) {
-      setHasClaimedReward(true);
-      toast.success(t("rewardClaimedMessage"));
+    setHasClaimedReward(false);
+  }, [contractData?.targetGameId, address]);
+
+  useEffect(() => {
+    const toastId = "claimRewardToast";
+    if (claimingInProgress) {
+      if (isClaimRewardConfirming) {
+        showConfirmingTransactionToast(toastId);
+      }
+
+      if (isClaimRewardSuccess) {
+        setClaimingInProgress(false);
+        showSuccessToast(toastId, t("rewardClaimedMessage"));
+        setHasClaimedReward(true);
+      }
     }
-  }, [isClaimRewardSuccess, t]);
+  }, [
+    isClaimRewardConfirming,
+    isClaimRewardSuccess,
+    claimingInProgress,
+    showConfirmingTransactionToast,
+    showSuccessToast,
+    t,
+  ]);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -57,16 +86,29 @@ export const Header = () => {
   };
 
   const handleClaimReward = async () => {
+    const toastId = "claimRewardToast";
     try {
       if (!contractData?.targetGameId) {
         toast.error(t("gameIdNotAvailable"));
         return;
       }
 
-      await claimReward(contractData.targetGameId);
+      setClaimingInProgress(true);
+      showInitiatingTransactionToast(toastId);
+
+      try {
+        await claimReward(contractData.targetGameId);
+      } catch (txError) {
+        setClaimingInProgress(false);
+        dismissToast(toastId);
+        showErrorToast(txError);
+        console.error("Transaction error:", txError);
+      }
     } catch (error) {
       console.error("Error claiming reward:", error);
-      toast.error(t("claimRewardError"));
+      setClaimingInProgress(false);
+      dismissToast(toastId);
+      showErrorToast(error);
     }
   };
 
@@ -77,10 +119,6 @@ export const Header = () => {
       contractData?.winners.winnerAddresses.includes(address as Address)
     );
   }, [contractData?.winners.winnerAddresses, address]);
-
-  useEffect(() => {
-    setHasClaimedReward(false);
-  }, [contractData?.targetGameId, address]);
 
   return (
     <header className={styles.header}>
