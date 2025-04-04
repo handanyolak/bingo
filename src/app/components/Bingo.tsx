@@ -1,44 +1,67 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
-import styles from "@/styles/Bingo.module.scss";
-import { AppButton } from "@/app/components/common/AppButton";
 import { BingoCard } from "@/app/components/BingoCard";
-import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import { CardManager } from "@/app/components/CardManager";
-
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { selectDrawnNumbers } from "@/lib/store/bingo";
-import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
-
-import { useContractReads } from "@/lib/web3";
-import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
-import { useDrawTimer } from "@/app/hooks/useDrawTimer";
+import { AppButton } from "@/app/components/common/AppButton";
+import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import { PoolInfo } from "@/app/components/PoolInfo";
 import { useAccountChange } from "@/app/contexts/AccountChangeContext";
+import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
+import { useGameToasts } from "@/app/hooks/toast/useGameToasts";
+import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
+import { useDrawTimer } from "@/app/hooks/useDrawTimer";
+import { resetStateForNewGame } from "@/lib/store/bingo";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { useContractReads } from "@/lib/web3";
+import styles from "@/styles/Bingo.module.scss";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
-  const drawnNumbers = useAppSelector(selectDrawnNumbers);
-  const { isDrawing, isGameOver } = useBingoDrawing();
+  const { isGameOver } = useBingoDrawing();
   const dispatch = useAppDispatch();
   const { key } = useAccountChange();
 
-  const { data: contractData, isLoading: contractLoading } = useContractReads();
+  const {
+    data: contractData,
+    isLoading: contractLoading,
+    refetch,
+  } = useContractReads();
   const { selectedGameId, updateSelectedGameId, maxGameId } =
     useSelectedGameId();
+
+  const { dismissAllToasts } = useGameToasts(contractData);
 
   useDrawTimer({
     contractData: contractData,
     isGameOver,
   });
 
-  const handleSwitchGame = (offset: number) => {
+  const handleSwitchGame = async (offset: number) => {
     const newGameId = selectedGameId + BigInt(offset);
+
+    dismissAllToasts();
+
+    dispatch(resetStateForNewGame());
+
     updateSelectedGameId(newGameId);
+
+    await refetch();
   };
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (!contractLoading) {
+        await refetch();
+      }
+    };
+
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGameId]);
 
   return (
     <div key={key} className={styles.bingo__page}>

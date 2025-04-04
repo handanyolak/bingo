@@ -1,18 +1,16 @@
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState, useCallback } from "react";
-import { toast } from "react-toastify";
-import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
 
+import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
+import { useGameToasts } from "@/app/hooks/toast/useGameToasts";
 import {
   selectDrawnNumbers,
   selectIsDrawing,
-  selectCardNumbers,
   selectIsGameFinishedInUi,
   selectDrawnNumbersWithTimestamp,
 } from "@/lib/store/bingo";
 import {
   addDrawnNumber,
-  stopDrawing,
   setGameFinishedInUi,
   setDrawnNumbersWithTimestamp,
   startDrawing,
@@ -33,7 +31,8 @@ const NUMBER_DRAWING_INITIAL_DELAY_SEC = 5;
  * Schedules timestamps for drawn numbers based on contract data
  */
 const useDrawnNumbersTimestampScheduler = (
-  contractData: ContractReads | undefined
+  contractData: ContractReads | undefined,
+  contractLoading: boolean = false
 ) => {
   const dispatch = useAppDispatch();
   const drawnNumbersWithTimestamp = useAppSelector(
@@ -41,37 +40,61 @@ const useDrawnNumbersTimestampScheduler = (
   );
 
   useEffect(() => {
-    if (!contractData) return;
+    if (!contractData || contractLoading) return;
 
     if (
-      contractData.isDrawnNumbersFilled &&
+      contractData.gameId === contractData.targetGameId &&
+      !contractData.isDrawnNumbersFilled
+    ) {
+      return;
+    }
+
+    if (
+      contractData.drawnNumbers &&
       contractData.drawnNumbers.length > 0 &&
       drawnNumbersWithTimestamp.length === 0
     ) {
-      const drawingStartTime =
-        Number(contractData.drawnNumbersTimestamp) +
-        Number(contractData.finalizationCooldown);
+      if (contractData.isDrawnNumbersFilled) {
+        const drawingStartTime =
+          Number(contractData.drawnNumbersTimestamp) +
+          Number(contractData.finalizationCooldown);
 
-      const scheduledDrawnNumbers = contractData.drawnNumbers.map(
-        (number, index) => ({
-          number,
-          timestamp:
-            drawingStartTime +
-            index * DRAWN_NUMBER_INTERVAL_SEC +
-            NUMBER_DRAWING_INITIAL_DELAY_SEC,
-        })
-      );
+        const scheduledDrawnNumbers = contractData.drawnNumbers.map(
+          (number, index) => ({
+            number,
+            timestamp:
+              drawingStartTime +
+              index * DRAWN_NUMBER_INTERVAL_SEC +
+              NUMBER_DRAWING_INITIAL_DELAY_SEC,
+          })
+        );
 
-      const lastDrawnNumberIndexToInclude =
-        contractData.winningDrawnNumberIndex > 0
-          ? contractData.winningDrawnNumberIndex + 1
-          : contractData.drawnNumbers.length;
+        const lastDrawnNumberIndexToInclude =
+          contractData.winningDrawnNumberIndex > 0
+            ? contractData.winningDrawnNumberIndex + 1
+            : contractData.drawnNumbers.length;
 
-      dispatch(
-        setDrawnNumbersWithTimestamp(
-          scheduledDrawnNumbers.slice(0, lastDrawnNumberIndexToInclude)
-        )
-      );
+        dispatch(
+          setDrawnNumbersWithTimestamp(
+            scheduledDrawnNumbers.slice(0, lastDrawnNumberIndexToInclude)
+          )
+        );
+      } else {
+        if (
+          contractData.gameId !== contractData.targetGameId ||
+          contractData.drawnNumbersTimestamp > 0
+        ) {
+          const drawnNumbersWithTimes = contractData.drawnNumbers.map(
+            (number, index) => ({
+              number,
+              timestamp:
+                Number(contractData.drawnNumbersTimestamp) +
+                index * DRAWN_NUMBER_INTERVAL_SEC,
+            })
+          );
+          dispatch(setDrawnNumbersWithTimestamp(drawnNumbersWithTimes));
+        }
+      }
     }
   }, [
     contractData?.isDrawnNumbersFilled,
@@ -79,8 +102,12 @@ const useDrawnNumbersTimestampScheduler = (
     contractData?.drawnNumbersTimestamp,
     contractData?.finalizationCooldown,
     contractData?.winningDrawnNumberIndex,
+    contractData?.gameId,
+    contractData?.targetGameId,
     drawnNumbersWithTimestamp.length,
     dispatch,
+    contractData,
+    contractLoading,
   ]);
 };
 
@@ -254,108 +281,10 @@ const useDrawnNumberDisplayer = (
       timeoutRefs.forEach((timeoutId) => clearTimeout(timeoutId));
       drawnNumbersAnimationQueue.current = [];
     };
-  }, [drawnNumbersAnimationQueue.current]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { currentDrawnNumber, setCurrentDrawnNumber };
-};
-
-/**
- * Manages win/lose states based on game conditions
- */
-const useGameStateManager = (contractData: ContractReads | undefined) => {
-  const t = useTranslations("toast");
-  const dispatch = useAppDispatch();
-  const displayedDrawnNumbers = useAppSelector(selectDrawnNumbers);
-  const playerCardNumbers = useAppSelector(selectCardNumbers);
-  const drawnNumbersWithTimestamp = useAppSelector(
-    selectDrawnNumbersWithTimestamp
-  );
-  const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
-  const isDrawing = useAppSelector(selectIsDrawing);
-
-  const [hasShownWinToast, setHasShownWinToast] = useState(false);
-  const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
-
-  const isPlayerCardComplete = useCallback(() => {
-    if (!playerCardNumbers.length || !displayedDrawnNumbers.length)
-      return false;
-    return playerCardNumbers.every((number) =>
-      displayedDrawnNumbers.includes(number)
-    );
-  }, [playerCardNumbers, displayedDrawnNumbers]);
-
-  const stopDrawingProcess = useCallback(() => {
-    dispatch(stopDrawing());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!contractData || !drawnNumbersWithTimestamp.length) return;
-
-    if (
-      displayedDrawnNumbers.length === drawnNumbersWithTimestamp.length &&
-      displayedDrawnNumbers.length > 0 &&
-      !isGameFinishedInUi
-    ) {
-      dispatch(setGameFinishedInUi(true));
-      stopDrawingProcess();
-
-      if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("gameWon"));
-        setHasShownWinToast(true);
-      } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("gameLost"));
-        setHasShownLoseToast(true);
-      }
-    }
-  }, [
-    displayedDrawnNumbers.length,
-    drawnNumbersWithTimestamp.length,
-    isGameFinishedInUi,
-    contractData,
-    isPlayerCardComplete,
-    hasShownWinToast,
-    hasShownLoseToast,
-    dispatch,
-    stopDrawingProcess,
-    t,
-  ]);
-
-  useEffect(() => {
-    if (!contractData) return;
-
-    if (isPlayerCardComplete() && !hasShownWinToast && isDrawing) {
-      toast.success(t("gameWon"));
-      setHasShownWinToast(true);
-      dispatch(setGameFinishedInUi(true));
-      stopDrawingProcess();
-    } else if (
-      isGameFinishedInUi &&
-      !isPlayerCardComplete() &&
-      !hasShownLoseToast &&
-      drawnNumbersWithTimestamp.length > 0
-    ) {
-      toast.error(t("gameLost"));
-      setHasShownLoseToast(true);
-    }
-  }, [
-    isPlayerCardComplete,
-    hasShownWinToast,
-    hasShownLoseToast,
-    isDrawing,
-    isGameFinishedInUi,
-    contractData,
-    dispatch,
-    stopDrawingProcess,
-    drawnNumbersWithTimestamp.length,
-    t,
-  ]);
-
-  return {
-    isPlayerCardComplete,
-    stopDrawingProcess,
-    setHasShownWinToast,
-    setHasShownLoseToast,
-  };
 };
 
 /**
@@ -407,23 +336,33 @@ const useDrawingStarter = (contractData: ContractReads | undefined) => {
 export const useBingoDrawing = () => {
   const searchParams = useSearchParams();
   const currentGameId = searchParams.get("id");
-  const { data: contractData } = useContractReads();
+  const { data: contractData, isLoading: contractLoading } = useContractReads();
   const dispatch = useAppDispatch();
+  const { selectedGameId, isInitialized } = useSelectedGameId();
+
+  const { isPlayerCardComplete, dismissAllToasts } =
+    useGameToasts(contractData);
 
   useEffect(() => {
-    dispatch(resetStateForNewGame());
-  }, [currentGameId, dispatch]);
+    if (isInitialized) {
+      dispatch(resetStateForNewGame());
 
-  useDrawnNumbersTimestampScheduler(contractData);
-  const {
-    drawnNumbersAnimationQueue,
-    displayedDrawnNumbers,
-    drawnNumbersWithTimestamp,
-  } = useDrawnNumbersUpdater();
+      dismissAllToasts();
+    }
+  }, [
+    currentGameId,
+    selectedGameId,
+    dispatch,
+    isInitialized,
+    dismissAllToasts,
+  ]);
+
+  useDrawnNumbersTimestampScheduler(contractData, contractLoading);
+  const { drawnNumbersAnimationQueue, displayedDrawnNumbers } =
+    useDrawnNumbersUpdater();
   const { currentDrawnNumber } = useDrawnNumberDisplayer(
     drawnNumbersAnimationQueue
   );
-  const { isPlayerCardComplete } = useGameStateManager(contractData);
   useDrawingStarter(contractData);
 
   const isDrawing = useAppSelector(selectIsDrawing);
