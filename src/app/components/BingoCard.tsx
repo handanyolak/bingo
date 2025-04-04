@@ -1,4 +1,9 @@
+import { RefreshCcw } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState, useMemo } from "react";
+
+import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
+import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import {
   BingoCardNumbers,
   generateCardNumbers,
@@ -9,15 +14,14 @@ import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/BingoCard.module.scss";
-import { RefreshCcw } from "lucide-react";
-import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
-import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
-import { useTranslations } from "next-intl";
 
 export const BingoCard = () => {
   const t = useTranslations("controls");
-  const { data: contractData, isLoading: isContractDataLoading } =
-    useContractReads();
+  const {
+    data: contractData,
+    isLoading: isContractDataLoading,
+    refetch,
+  } = useContractReads();
 
   const [isRefreshingCard, setIsRefreshingCard] = useState(false);
   const { selectedGameId, maxGameId } = useSelectedGameId();
@@ -52,19 +56,36 @@ export const BingoCard = () => {
   useEffect(() => {
     if (isContractDataLoading || !contractData) return;
 
-    if (
+    const areCardsEmpty = cardNumbers.every((num) => num === 0);
+    const hasValidPlayerCards =
       contractData.isPlayerExists &&
-      contractData.playerDetails?.cardNumbers
-    ) {
+      contractData.playerDetails &&
+      contractData.playerDetails.cardNumbers &&
+      Array.isArray(contractData.playerDetails.cardNumbers) &&
+      contractData.playerDetails.cardNumbers.some((n) => n > 0);
+
+    if (hasValidPlayerCards) {
       dispatch(
         setCardNumbers(
-          contractData.playerDetails.cardNumbers as BingoCardNumbers
+          contractData.playerDetails!.cardNumbers as BingoCardNumbers
         )
       );
-    } else if (getCardConfig) {
+    } else if (getCardConfig && areCardsEmpty) {
       dispatch(generateCardNumbers(getCardConfig));
     }
-  }, [isContractDataLoading, contractData, dispatch, getCardConfig]);
+  }, [
+    isContractDataLoading,
+    contractData,
+    dispatch,
+    getCardConfig,
+    cardNumbers,
+  ]);
+
+  useEffect(() => {
+    if (!isContractDataLoading) {
+      refetch();
+    }
+  }, [selectedGameId, refetch, isContractDataLoading]);
 
   const handleCardRefresh = () => {
     if (!getCardConfig) return;
