@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import { bingoReducer } from "@/lib/store/bingo";
 
 export const makeStore = () => {

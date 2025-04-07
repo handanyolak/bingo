@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { getContract, isAddress } from "viem";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
@@ -9,7 +10,6 @@ import { env } from "@/config/env";
 import { publicClient } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { ContractReads } from "@/lib/web3";
-import { useSearchParams } from "next/navigation";
 
 export const useContractReads = () => {
   const { address } = useAccount();

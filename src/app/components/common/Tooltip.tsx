@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, ReactNode } from "react";
+
 import styles from "@/styles/Tooltip.module.scss";
 
 type TooltipPosition = "top" | "bottom";

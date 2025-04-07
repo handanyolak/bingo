@@ -1,5 +1,6 @@
-import styles from "@/styles/MobileMenu.module.scss";
 import { Menu, X } from "lucide-react";
+
+import styles from "@/styles/MobileMenu.module.scss";
 
 interface MobileMenuProps {
   isOpen: boolean;

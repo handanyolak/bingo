@@ -1,10 +1,11 @@
 "use client";
 
-import { wagmiAdapter, projectId, networks } from "@/lib/web3/reown/config";
 import { createAppKit } from "@reown/appkit/react";
+import { useTheme } from "next-themes";
 import React, { type ReactNode, useEffect } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
-import { useTheme } from "next-themes";
+
+import { wagmiAdapter, projectId, networks } from "@/lib/web3/reown/config";
 
 if (!projectId) {
   throw new Error("Project ID is not defined");

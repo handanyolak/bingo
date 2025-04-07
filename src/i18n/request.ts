@@ -1,4 +1,5 @@
 import { getRequestConfig } from "next-intl/server";
+
 import { DEFAULT_LOCALE } from "@/i18n/config";
 
 const getMessages = async (locale: string) => {

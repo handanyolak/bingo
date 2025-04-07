@@ -1,8 +1,10 @@
 import "./globals.css";
-import { Header } from "@/app/components/Header";
 import { Comfortaa } from "next/font/google";
-import { LocaleProvider } from "./contexts/LocaleContext";
+
+import { Header } from "@/app/components/Header";
 import { getStaticMessages } from "@/i18n/config";
+
+import { LocaleProvider } from "./contexts/LocaleContext";
 
 const comfortaa = Comfortaa({
   subsets: ["latin"],

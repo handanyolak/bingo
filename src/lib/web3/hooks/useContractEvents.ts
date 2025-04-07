@@ -1,7 +1,8 @@
 import { useEffect, useCallback } from "react";
 import { Address, Log, decodeEventLog } from "viem";
-import { publicClient } from "@/lib/web3";
+
 import { env } from "@/config/env";
+import { publicClient } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 
 interface ContractEventsParams {

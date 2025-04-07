@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useAppKitAccount } from "@reown/appkit/react";
 import { ThemeProvider } from "next-themes";
-import useCardColors from "@/app/hooks/useCardColors";
+import { useState, useEffect } from "react";
+
 import { Loader } from "@/app/components/Loader";
 import { ColorProvider } from "@/app/contexts/ColorContext";
-import { useAppKitAccount } from "@reown/appkit/react";
+import useCardColors from "@/app/hooks/useCardColors";
 
 export function ThemeColorProvider({
   children,

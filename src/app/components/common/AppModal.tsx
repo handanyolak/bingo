@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode } from "react";
-import styles from "@/styles/AppModal.module.scss";
 import { X } from "lucide-react";
+import { ReactNode } from "react";
+
 import { useClickOutside } from "@/app/hooks/useClickOutside";
+import styles from "@/styles/AppModal.module.scss";
 
 interface AppModalProps {
   children: ReactNode;

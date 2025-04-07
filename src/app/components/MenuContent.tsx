@@ -1,10 +1,11 @@
-import { useTranslations } from "next-intl";
-import { AppButton } from "@/app/components/common/AppButton";
 import { Palette, UsersRound } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+
+import { AppButton } from "@/app/components/common/AppButton";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import styles from "@/styles/MenuContent.module.scss";
-import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
 
 interface MenuContentProps {
   onModalOpen: () => void;

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useContext } from "react";
 import { lighten, darken } from "polished";
+import React, { createContext, useContext } from "react";
 
 type ColorContextType = {
   color: string;

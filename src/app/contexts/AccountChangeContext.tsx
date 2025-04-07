@@ -1,8 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, ReactNode } from "react";
-import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
+import { useAccount } from "wagmi";
 
 interface AccountChangeContextType {
   key: string;

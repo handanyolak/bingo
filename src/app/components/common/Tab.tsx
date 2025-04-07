@@ -1,7 +1,8 @@
 "use client";
 
-import styles from "@/styles/Tab.module.scss";
 import React, { useState, Children, ReactElement } from "react";
+
+import styles from "@/styles/Tab.module.scss";
 
 type TabItemProps = {
   title: string;

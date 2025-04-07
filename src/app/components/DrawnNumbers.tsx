@@ -1,8 +1,9 @@
-import styles from "@/styles/DrawnNumbers.module.scss";
-import { useAppSelector } from "@/lib/store/hooks";
-import { selectDrawnNumbers, selectIsDrawing } from "@/lib/store/bingo";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import { selectDrawnNumbers, selectIsDrawing } from "@/lib/store/bingo";
+import { useAppSelector } from "@/lib/store/hooks";
+import styles from "@/styles/DrawnNumbers.module.scss";
 
 interface DrawnNumbersProps {
   loading?: boolean;

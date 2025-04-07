@@ -1,6 +1,7 @@
 import { formatEther } from "viem";
-import { Tooltip } from "@/app/components/common/Tooltip";
+
 import { AppButton } from "@/app/components/common/AppButton";
+import { Tooltip } from "@/app/components/common/Tooltip";
 
 interface PoolInfoProps {
   prizePoolBalance: bigint;

@@ -1,16 +1,17 @@
 "use client";
 
+import { QueryClientProvider } from "@tanstack/react-query";
 import { NextIntlClientProvider } from "next-intl";
-import StoreProvider from "@/app/StoreProvider";
-import ContextProvider from "@/app/contexts/ReownContext";
-import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { createContext, useContext, useState } from "react";
+import { ToastContainer } from "react-toastify";
+
+import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
+import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
+import ContextProvider from "@/app/contexts/ReownContext";
+import StoreProvider from "@/app/StoreProvider";
 import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { ToastContainer } from "react-toastify";
 import { queryClient } from "@/lib/queryClient";
-import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
 
 type ContextType = {
   locale: LanguageCode;
