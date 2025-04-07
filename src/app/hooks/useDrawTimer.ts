@@ -11,12 +11,19 @@ import {
 } from "@/lib/utils/time";
 import { ContractReads } from "@/lib/web3";
 
+interface LottieAnimationData {
+  ip: number;
+  op: number;
+  fr: number;
+  [key: string]: unknown;
+}
+
 interface UseDrawTimerProps {
   contractData?: ContractReads;
   isLoading?: boolean;
   isError?: boolean;
   lottieRef?: React.RefObject<LottieRefCurrentProps | null>;
-  timerAnimation?: any;
+  timerAnimation?: LottieAnimationData;
   isGameOver?: boolean;
 }
 
