@@ -1,11 +1,10 @@
 import { LottieRefCurrentProps } from "lottie-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
 import {
   getUnixTimestamp,
-  useUnixTimestamp,
   secondsToMinutes,
   getRemainingSeconds,
 } from "@/lib/utils/time";
@@ -43,7 +42,8 @@ export const useDrawTimer = ({
   isGameOver = false,
 }: UseDrawTimerProps): UseDrawTimerReturn => {
   const dispatch = useAppDispatch();
-  const currentTimestamp = useUnixTimestamp();
+  const [currentTimestamp, setCurrentTimestamp] = useState(getUnixTimestamp());
+  const [isTimerActive, setIsTimerActive] = useState(false);
 
   const isDataReady = !isLoading && !isError && contractData;
 
@@ -60,6 +60,24 @@ export const useDrawTimer = ({
   const remainingTime = Math.max(0, endTime - currentTimestamp);
   const minutesRemaining = secondsToMinutes(remainingTime);
   const secondsRemaining = getRemainingSeconds(remainingTime);
+
+  useEffect(() => {
+    if (contractData?.isDrawnNumbersFilled && !isGameOver) {
+      setIsTimerActive(true);
+    } else {
+      setIsTimerActive(false);
+    }
+  }, [contractData?.isDrawnNumbersFilled, isGameOver]);
+
+  useEffect(() => {
+    if (!isTimerActive) return;
+
+    const interval = setInterval(() => {
+      setCurrentTimestamp(getUnixTimestamp());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isTimerActive]);
 
   useEffect(() => {
     if (contractData?.isDrawnNumbersFilled && !isGameOver) {
