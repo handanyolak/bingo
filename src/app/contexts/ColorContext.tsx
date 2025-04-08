@@ -44,7 +44,9 @@ export const ColorProvider: React.FC<ColorProviderProps> = ({
     if (!colors?.length) return;
     const nextIndex = (currentIndex + 1) % colors.length;
     setCurrentIndex(nextIndex);
-    localStorage.setItem("selectedColorIndex", nextIndex.toString());
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedColorIndex", nextIndex.toString());
+    }
   };
 
   return (
