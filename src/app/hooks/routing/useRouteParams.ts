@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { zeroAddress } from "viem";
@@ -9,6 +10,7 @@ import { useAccount } from "wagmi";
 import { useContractReads } from "@/lib/web3";
 
 export const useRouteParams = () => {
+  const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: contractData, isLoading: isContractLoading } =
@@ -51,12 +53,12 @@ export const useRouteParams = () => {
           if (gameId >= BigInt(0) && gameId <= contractData.gameId) {
             setSelectedGameId(gameId);
           } else {
-            toast.error("Invalid game ID");
+            toast.error(t("toast.invalidGameId"));
             setSelectedGameId(contractData.gameId);
             updateURL({ gameId: contractData.gameId });
           }
         } catch (error) {
-          toast.error("Invalid game ID format");
+          toast.error(t("toast.invalidGameIdFormat"));
           console.error(error);
           setSelectedGameId(contractData.gameId);
           updateURL({ gameId: contractData.gameId });
@@ -80,7 +82,7 @@ export const useRouteParams = () => {
       setSelectedGameId(newValue);
       updateURL({ gameId: newValue });
     } else {
-      toast.error("Invalid game ID");
+      toast.error(t("toast.invalidGameId"));
     }
   };
 

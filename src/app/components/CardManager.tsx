@@ -261,7 +261,8 @@ export const CardManager = () => {
             />
           </div>
           <div className={styles.cardManager__time}>
-            Time Remaining: {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
+            {t("controls.timeRemaining")}{" "}
+            {!isNaN(minutesRemaining) ? minutesRemaining : 0}:
             {!isNaN(secondsRemaining)
               ? secondsRemaining.toString().padStart(2, "0")
               : "00"}
