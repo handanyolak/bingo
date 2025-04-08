@@ -16,10 +16,20 @@
     "claiming": "Beanspruchung...",
     "claimInfo": "Herzlichen Glückwunsch! Sie haben gewonnen! Klicken Sie auf die Schaltfläche 'Preis beanspruchen', um Ihren Preis zu erhalten.",
     "rewardClaimed": "Preis beansprucht ✓",
-    "notParticipated": "Sie haben an diesem Spiel nicht teilgenommen"
+    "notParticipated": "Sie haben an diesem Spiel nicht teilgenommen",
+    "rewardClaimedMessage": "Belohnung erfolgreich beansprucht!"
   },
   "toast": {
     "gameWon": "Herzlichen Glückwunsch! Sie haben gewonnen!",
-    "gameLost": "Es tut uns leid! Das Spiel ist vorbei, Sie haben verloren."
+    "gameLost": "Es tut uns leid! Das Spiel ist vorbei, Sie haben verloren.",
+    "gameIdNotAvailable": "Spiel-ID ist nicht verfügbar",
+    "initiating": "Blockchain-Transaktion wird initiiert...",
+    "confirming": "Transaktion wird in der Blockchain bestätigt...",
+    "error": "Fehler: {errorMessage}",
+    "unknownError": "Unbekannter Fehler",
+    "cardPurchased": "Karte erfolgreich gekauft!",
+    "randomNumbersReceived": "Zufällige Zahlen erhalten! Das Spiel beginnt in Kürze.",
+    "waitingRandomNumbers": "Transaktion bestätigt. Warten auf Generierung von Zufallszahlen...",
+    "cardSubmitted": "Karte erfolgreich eingereicht!"
   }
 }

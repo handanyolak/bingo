@@ -16,10 +16,20 @@
     "claiming": "Talep Ediliyor...",
     "claimInfo": "Tebrikler! Kazandın! Ödülünü almak için 'Ödülü Talep Et' butonuna tıkla.",
     "rewardClaimed": "Ödül Alındı ✓",
-    "notParticipated": "Bu oyuna katılmadınız"
+    "notParticipated": "Bu oyuna katılmadınız",
+    "rewardClaimedMessage": "Ödül başarıyla talep edildi!"
   },
   "toast": {
     "gameWon": "Tebrikler! Kazandınız!",
-    "gameLost": "Üzgünüz! Oyun bitti, kaybettiniz."
+    "gameLost": "Üzgünüz! Oyun bitti, kaybettiniz.",
+    "gameIdNotAvailable": "Oyun ID'si mevcut değil",
+    "initiating": "Blokzincir işlemi başlatılıyor...",
+    "confirming": "Blokzincirde işlem onaylanıyor...",
+    "error": "Hata: {errorMessage}",
+    "unknownError": "Bilinmeyen hata",
+    "cardPurchased": "Kart başarıyla satın alındı!",
+    "randomNumbersReceived": "Rastgele sayılar alındı! Oyun yakında başlayacak.",
+    "waitingRandomNumbers": "İşlem onaylandı. Rastgele sayıların oluşturulması bekleniyor...",
+    "cardSubmitted": "Kart başarıyla gönderildi!"
   }
 }

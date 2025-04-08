@@ -16,10 +16,20 @@
     "claiming": "Claiming...",
     "claimInfo": "Congratulations! You won! Click the 'Claim Reward' button to get your prize.",
     "rewardClaimed": "Reward Claimed ✓",
-    "notParticipated": "You did not participate in this game"
+    "notParticipated": "You did not participate in this game",
+    "rewardClaimedMessage": "Reward claimed successfully!"
   },
   "toast": {
     "gameWon": "Congratulations! You won!",
-    "gameLost": "Sorry! The game is over, you lost."
+    "gameLost": "Sorry! The game is over, you lost.",
+    "gameIdNotAvailable": "Game ID is not available",
+    "initiating": "Initiating blockchain transaction...",
+    "confirming": "Confirming transaction on blockchain...",
+    "error": "Error: {errorMessage}",
+    "unknownError": "Unknown error",
+    "cardPurchased": "Card successfully purchased!",
+    "randomNumbersReceived": "Random numbers received! Game will start soon.",
+    "waitingRandomNumbers": "Transaction confirmed. Waiting for random numbers to be generated...",
+    "cardSubmitted": "Card successfully submitted!"
   }
 }
