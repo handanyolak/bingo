@@ -1,7 +1,9 @@
 import { LOCAL_STORAGE_NAME, DEFAULT_LOCALE } from "@/i18n/config";
 
 export const setLocale = (locale: string): void => {
-  localStorage.setItem(LOCAL_STORAGE_NAME, locale);
+  if (typeof window !== "undefined") {
+    localStorage.setItem(LOCAL_STORAGE_NAME, locale);
+  }
 };
 
 export const getLocale = (): string => {
