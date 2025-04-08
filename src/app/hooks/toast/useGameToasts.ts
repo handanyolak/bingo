@@ -35,6 +35,14 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
   const [hasShownWinToast, setHasShownWinToast] = useState(false);
   const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
 
+  const getWinToastId = useCallback(() => {
+    return `game-won-${selectedGameId?.toString()}`;
+  }, [selectedGameId]);
+
+  const getLoseToastId = useCallback(() => {
+    return `game-lost-${selectedGameId?.toString()}`;
+  }, [selectedGameId]);
+
   useEffect(() => {
     if (
       contractData &&
@@ -103,18 +111,18 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
       stopDrawingProcess();
 
       if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("toast.gameWon"));
+        toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("toast.gameLost"));
+        toast.error(t("toast.gameLost"), { toastId: getLoseToastId() });
         setHasShownLoseToast(true);
       }
     } else if (gameFinished && isGameFinishedInUi) {
       if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("toast.gameWon"));
+        toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("toast.gameLost"));
+        toast.error(t("toast.gameLost"), { toastId: getLoseToastId() });
         setHasShownLoseToast(true);
       }
     }
@@ -130,6 +138,8 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
     stopDrawingProcess,
     t,
     hasUserParticipatedInGame,
+    getWinToastId,
+    getLoseToastId,
   ]);
 
   useEffect(() => {
@@ -144,7 +154,7 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
     if (!hasUserParticipatedInGame()) return;
 
     if (isDrawing && isPlayerCardComplete() && !hasShownWinToast) {
-      toast.success(t("toast.gameWon"));
+      toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
       setHasShownWinToast(true);
       dispatch(setGameFinishedInUi(true));
       stopDrawingProcess();
@@ -158,6 +168,7 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
     stopDrawingProcess,
     t,
     hasUserParticipatedInGame,
+    getWinToastId,
   ]);
 
   const dismissAllToasts = useCallback(() => {
