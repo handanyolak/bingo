@@ -17,7 +17,8 @@
     "claimInfo": "Tebrikler! Kazandın! Ödülünü almak için 'Ödülü Talep Et' butonuna tıkla.",
     "rewardClaimed": "Ödül Alındı ✓",
     "notParticipated": "Bu oyuna katılmadınız",
-    "rewardClaimedMessage": "Ödül başarıyla talep edildi!"
+    "rewardClaimedMessage": "Ödül başarıyla talep edildi!",
+    "timeRemaining": "Kalan Süre:"
   },
   "toast": {
     "gameWon": "Tebrikler! Kazandınız!",
@@ -30,6 +31,8 @@
     "cardPurchased": "Kart başarıyla satın alındı!",
     "randomNumbersReceived": "Rastgele sayılar alındı! Oyun yakında başlayacak.",
     "waitingRandomNumbers": "İşlem onaylandı. Rastgele sayıların oluşturulması bekleniyor...",
-    "cardSubmitted": "Kart başarıyla gönderildi!"
+    "cardSubmitted": "Kart başarıyla gönderildi!",
+    "invalidGameId": "Geçersiz oyun ID'si",
+    "invalidGameIdFormat": "Geçersiz oyun ID formatı"
   }
 }

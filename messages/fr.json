@@ -17,7 +17,8 @@
     "claimInfo": "Félicitations! Vous avez gagné! Cliquez sur le bouton 'Réclamer la Récompense' pour obtenir votre prix.",
     "rewardClaimed": "Récompense Réclamée ✓",
     "notParticipated": "Vous n'avez pas participé à ce jeu",
-    "rewardClaimedMessage": "Récompense réclamée avec succès!"
+    "rewardClaimedMessage": "Récompense réclamée avec succès!",
+    "timeRemaining": "Temps Restant:"
   },
   "toast": {
     "gameWon": "Félicitations! Vous avez gagné!",
@@ -30,6 +31,8 @@
     "cardPurchased": "Carte achetée avec succès!",
     "randomNumbersReceived": "Numéros aléatoires reçus! Le jeu va bientôt commencer.",
     "waitingRandomNumbers": "Transaction confirmée. En attente de génération des numéros aléatoires...",
-    "cardSubmitted": "Carte soumise avec succès!"
+    "cardSubmitted": "Carte soumise avec succès!",
+    "invalidGameId": "ID de jeu invalide",
+    "invalidGameIdFormat": "Format d'ID de jeu invalide"
   }
 }

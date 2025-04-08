@@ -17,7 +17,8 @@
     "claimInfo": "Herzlichen Glückwunsch! Sie haben gewonnen! Klicken Sie auf die Schaltfläche 'Preis beanspruchen', um Ihren Preis zu erhalten.",
     "rewardClaimed": "Preis beansprucht ✓",
     "notParticipated": "Sie haben an diesem Spiel nicht teilgenommen",
-    "rewardClaimedMessage": "Belohnung erfolgreich beansprucht!"
+    "rewardClaimedMessage": "Belohnung erfolgreich beansprucht!",
+    "timeRemaining": "Verbleibende Zeit:"
   },
   "toast": {
     "gameWon": "Herzlichen Glückwunsch! Sie haben gewonnen!",
@@ -30,6 +31,8 @@
     "cardPurchased": "Karte erfolgreich gekauft!",
     "randomNumbersReceived": "Zufällige Zahlen erhalten! Das Spiel beginnt in Kürze.",
     "waitingRandomNumbers": "Transaktion bestätigt. Warten auf Generierung von Zufallszahlen...",
-    "cardSubmitted": "Karte erfolgreich eingereicht!"
+    "cardSubmitted": "Karte erfolgreich eingereicht!",
+    "invalidGameId": "Ungültige Spiel-ID",
+    "invalidGameIdFormat": "Ungültiges Spiel-ID-Format"
   }
 }

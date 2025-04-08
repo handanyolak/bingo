@@ -17,7 +17,8 @@
     "claimInfo": "Congratulations! You won! Click the 'Claim Reward' button to get your prize.",
     "rewardClaimed": "Reward Claimed ✓",
     "notParticipated": "You did not participate in this game",
-    "rewardClaimedMessage": "Reward claimed successfully!"
+    "rewardClaimedMessage": "Reward claimed successfully!",
+    "timeRemaining": "Time Remaining:"
   },
   "toast": {
     "gameWon": "Congratulations! You won!",
@@ -30,6 +31,8 @@
     "cardPurchased": "Card successfully purchased!",
     "randomNumbersReceived": "Random numbers received! Game will start soon.",
     "waitingRandomNumbers": "Transaction confirmed. Waiting for random numbers to be generated...",
-    "cardSubmitted": "Card successfully submitted!"
+    "cardSubmitted": "Card successfully submitted!",
+    "invalidGameId": "Invalid game ID",
+    "invalidGameIdFormat": "Invalid game ID format"
   }
 }
