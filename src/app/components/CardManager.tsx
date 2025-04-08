@@ -20,7 +20,7 @@ import timerAnimation from "../../../public/animations/timer.json";
 
 export const CardManager = () => {
   const dispatch = useAppDispatch();
-  const t = useTranslations("controls");
+  const t = useTranslations();
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
   const { isConnected } = useAccount();
   const isDrawing = useAppSelector(selectIsDrawing);
@@ -106,47 +106,44 @@ export const CardManager = () => {
     if (waitingCardEvent) {
       dismissToast("waitingCardEvent");
       setWaitingCardEvent(false);
-      showSuccessToast("waitingCardEvent", "Card successfully purchased!");
+      showSuccessToast("waitingCardEvent", t("toast.cardPurchased"));
     }
     refetch();
-  }, [refetch, waitingCardEvent, dismissToast, showSuccessToast]);
+  }, [refetch, waitingCardEvent, dismissToast, showSuccessToast, t]);
 
   const handleDrawnNumbersFilled = useCallback(() => {
     if (waitingRandomEvent) {
       dismissToast("waitingRandomEvent");
       setWaitingRandomEvent(false);
-      showSuccessToast(
-        "waitingRandomEvent",
-        "Random numbers received! Game will start soon."
-      );
+      showSuccessToast("waitingRandomEvent", t("toast.randomNumbersReceived"));
     }
     refetch();
-  }, [refetch, waitingRandomEvent, dismissToast, showSuccessToast]);
+  }, [refetch, waitingRandomEvent, dismissToast, showSuccessToast, t]);
 
   const handleBuyCardSuccess = useCallback(() => {
     if (waitingCardEvent) {
       setWaitingCardEvent(false);
-      showSuccessToast("waitingCardEvent", "Card purchased successfully!");
+      showSuccessToast("waitingCardEvent", t("toast.cardPurchased"));
       refetch();
     }
-  }, [waitingCardEvent, showSuccessToast, refetch]);
+  }, [waitingCardEvent, showSuccessToast, refetch, t]);
 
   const handleRequestRandomSuccess = useCallback(() => {
     if (waitingRandomEvent) {
       showWaitingForEventToast(
         "waitingRandomEvent",
-        "Transaction confirmed. Waiting for random numbers to be generated..."
+        t("toast.waitingRandomNumbers")
       );
     }
-  }, [waitingRandomEvent, showWaitingForEventToast]);
+  }, [waitingRandomEvent, showWaitingForEventToast, t]);
 
   const handleCardSubmitSuccess = useCallback(() => {
     if (waitingSubmitEvent) {
       setWaitingSubmitEvent(false);
-      showSuccessToast("waitingSubmitEvent", "Card successfully submitted!");
+      showSuccessToast("waitingSubmitEvent", t("toast.cardSubmitted"));
       refetch();
     }
-  }, [waitingSubmitEvent, showSuccessToast, refetch]);
+  }, [waitingSubmitEvent, showSuccessToast, refetch, t]);
 
   useContractEvents({
     onCardPurchased: handleCardPurchased,
@@ -233,7 +230,7 @@ export const CardManager = () => {
         !contractData?.isPlayerExists &&
         !contractData?.vrfRequested && (
           <AppButton
-            text={t("buyTheCard")}
+            text={t("controls.buyTheCard")}
             animated
             onClick={handleBuyCard}
             contentPosition="right"
@@ -244,7 +241,7 @@ export const CardManager = () => {
 
       {contractData?.isPlayerExists && !contractData?.isDrawnNumbersFilled && (
         <AppButton
-          text={t("requestRandomNumbers")}
+          text={t("controls.requestRandomNumbers")}
           onClick={handleRequestRandomNumbers}
           disabled={isRequestRandomLoading}
           content={
@@ -273,7 +270,7 @@ export const CardManager = () => {
             contractData?.playerDetails?.remainingNumbersCount ===
               contractData?.BINGO_CARD_NUMBERS_COUNT && (
               <AppButton
-                text={t("submitCard")}
+                text={t("controls.submitCard")}
                 onClick={handleCardSubmit}
                 disabled={isSubmitCardLoading}
                 content={

@@ -19,7 +19,7 @@ import { useContractReads, useContractWrite } from "@/lib/web3/";
 import styles from "@/styles/Header.module.scss";
 
 export const Header = () => {
-  const t = useTranslations("controls");
+  const t = useTranslations();
   const { cycleColor } = useColor();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -57,7 +57,7 @@ export const Header = () => {
 
       if (isClaimRewardSuccess) {
         setClaimingInProgress(false);
-        showSuccessToast(toastId, t("rewardClaimedMessage"));
+        showSuccessToast(toastId, t("controls.rewardClaimedMessage"));
         setHasClaimedReward(true);
       }
     }
@@ -89,7 +89,7 @@ export const Header = () => {
     const toastId = "claimRewardToast";
     try {
       if (!contractData?.targetGameId) {
-        toast.error(t("gameIdNotAvailable"));
+        toast.error(t("toast.gameIdNotAvailable"));
         return;
       }
 
@@ -167,7 +167,7 @@ export const Header = () => {
       >
         <Tab>
           <TabItem
-            title={t("players")}
+            title={t("controls.players")}
             icon={<Users size={20} strokeWidth={2.5} />}
           >
             {gameLoading ? (
@@ -184,13 +184,15 @@ export const Header = () => {
                   </div>
                 ))}
                 {contractData?.players.playerAddresses.length === 0 && (
-                  <div className={styles.emptyState}>{t("noPlayers")}</div>
+                  <div className={styles.emptyState}>
+                    {t("controls.noPlayers")}
+                  </div>
                 )}
               </div>
             )}
           </TabItem>
           <TabItem
-            title={t("winners")}
+            title={t("controls.winners")}
             icon={<Trophy size={20} strokeWidth={2.5} />}
           >
             {gameLoading ? (
@@ -209,22 +211,26 @@ export const Header = () => {
                         disabled={isClaimButtonDisabled}
                       >
                         {isClaimButtonDisabled
-                          ? t("claiming")
-                          : t("claimReward")}
+                          ? t("controls.claiming")
+                          : t("controls.claimReward")}
                       </button>
                     )}
                     {address === winnerAddress && hasClaimedReward && (
                       <div className={styles.claimedStatus}>
-                        {t("rewardClaimed")}
+                        {t("controls.rewardClaimed")}
                       </div>
                     )}
                   </div>
                 ))}
                 {contractData?.winners.winnerAddresses.length === 0 && (
-                  <div className={styles.emptyState}>{t("noWinners")}</div>
+                  <div className={styles.emptyState}>
+                    {t("controls.noWinners")}
+                  </div>
                 )}
                 {isWinner && !hasClaimedReward && (
-                  <div className={styles.claimInfoBox}>{t("claimInfo")}</div>
+                  <div className={styles.claimInfoBox}>
+                    {t("controls.claimInfo")}
+                  </div>
                 )}
               </div>
             )}

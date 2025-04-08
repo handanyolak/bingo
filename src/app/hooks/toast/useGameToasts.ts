@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { ContractReads } from "@/lib/web3";
 
 export const useGameToasts = (contractData: ContractReads | undefined) => {
-  const t = useTranslations("toast");
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const displayedDrawnNumbers = useAppSelector(selectDrawnNumbers);
   const playerCardNumbers = useAppSelector(selectCardNumbers);
@@ -103,18 +103,18 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
       stopDrawingProcess();
 
       if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("gameWon"));
+        toast.success(t("toast.gameWon"));
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("gameLost"));
+        toast.error(t("toast.gameLost"));
         setHasShownLoseToast(true);
       }
     } else if (gameFinished && isGameFinishedInUi) {
       if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("gameWon"));
+        toast.success(t("toast.gameWon"));
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("gameLost"));
+        toast.error(t("toast.gameLost"));
         setHasShownLoseToast(true);
       }
     }
@@ -144,7 +144,7 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
     if (!hasUserParticipatedInGame()) return;
 
     if (isDrawing && isPlayerCardComplete() && !hasShownWinToast) {
-      toast.success(t("gameWon"));
+      toast.success(t("toast.gameWon"));
       setHasShownWinToast(true);
       dispatch(setGameFinishedInUi(true));
       stopDrawingProcess();

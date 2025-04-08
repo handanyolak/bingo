@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { toast } from "react-toastify";
 
@@ -11,30 +12,41 @@ interface UseTransactionToastReturn {
 }
 
 export const useTransactionToast = (): UseTransactionToastReturn => {
-  const showInitiatingTransactionToast = useCallback((toastId: string) => {
-    toast.loading("Initiating blockchain transaction...", { toastId });
-  }, []);
+  const t = useTranslations();
 
-  const showConfirmingTransactionToast = useCallback((toastId: string) => {
-    toast.update(toastId, {
-      render: "Confirming transaction on blockchain...",
-      type: "info",
-      isLoading: true,
-    });
-  }, []);
+  const showInitiatingTransactionToast = useCallback(
+    (toastId: string) => {
+      toast.loading(t("toast.initiating"), { toastId });
+    },
+    [t]
+  );
+
+  const showConfirmingTransactionToast = useCallback(
+    (toastId: string) => {
+      toast.update(toastId, {
+        render: t("toast.confirming"),
+        type: "info",
+        isLoading: true,
+      });
+    },
+    [t]
+  );
 
   const showSuccessToast = useCallback((toastId: string, message: string) => {
     toast.dismiss(toastId);
     toast.success(message);
   }, []);
 
-  const showErrorToast = useCallback((error: unknown) => {
-    const errorMessage =
-      error instanceof Error
-        ? error.message.split("Contract Call:")[0].trim().split("\n")[0]
-        : "Unknown error";
-    toast.error(errorMessage);
-  }, []);
+  const showErrorToast = useCallback(
+    (error: unknown) => {
+      const errorMessage =
+        error instanceof Error
+          ? error.message.split("Contract Call:")[0].trim().split("\n")[0]
+          : t("toast.unknownError");
+      toast.error(t("toast.error", { errorMessage }));
+    },
+    [t]
+  );
 
   const dismissToast = useCallback((toastId: string) => {
     toast.dismiss(toastId);
