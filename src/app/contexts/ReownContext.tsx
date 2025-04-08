@@ -23,7 +23,7 @@ export const modal = createAppKit({
   projectId,
   networks,
   metadata,
-  themeMode: (localStorage?.getItem("theme") as "dark" | "light") || "light",
+  themeMode: "light",
 });
 
 function ContextProvider({
@@ -40,6 +40,12 @@ function ContextProvider({
   );
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedTheme =
+        (localStorage.getItem("theme") as "dark" | "light") || "light";
+      modal.setThemeMode(storedTheme);
+    }
+
     if (theme) {
       modal.setThemeMode(theme as "dark" | "light");
     }
