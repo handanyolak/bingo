@@ -19,8 +19,10 @@ export function ThemeColorProvider({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const savedIndex = localStorage?.getItem("selectedColorIndex");
-    setCurrentIndex(savedIndex ? Number(savedIndex) : 0);
+    if (typeof window !== "undefined") {
+      const savedIndex = localStorage.getItem("selectedColorIndex");
+      setCurrentIndex(savedIndex ? Number(savedIndex) : 0);
+    }
     setMounted(true);
   }, []);
 
