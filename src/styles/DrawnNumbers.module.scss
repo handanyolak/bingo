@@ -32,7 +32,7 @@
     width: 50px;
     font-weight: 700;
     background-color: var(--card-color);
-    color: var(--text);
+    color: #fff;
     will-change: transform, background-color;
     transition: all 0.3s ease;
     box-shadow: inset 0px 2px 3px rgba(255, 255, 255, 0.3),
@@ -108,7 +108,7 @@
     justify-content: center;
     align-items: center;
     background-color: var(--card-color);
-    color: var(--text);
+    color: #fff;
     font-size: 4rem;
     font-weight: bold;
     z-index: 1000;
