@@ -33,6 +33,16 @@
     font-weight: 700;
     background-color: var(--card-color);
     color: var(--text);
+    will-change: transform, background-color;
+    transition: background-color 0.3s ease;
+
+    &_latest {
+      animation-name: pulseColor;
+      animation-duration: 1.5s;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
+      animation-iteration-count: 1;
+    }
   }
 
   &__placeholder {
@@ -43,39 +53,55 @@
     border: 1px dashed var(--card-dark-color);
   }
 
-  &__marker {
-    position: absolute;
-    top: 35px;
-    left: 0;
+  &__centerNumber {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 100%;
-    width: 60px;
-    height: 60px;
+    width: 150px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--card-color);
     color: var(--text);
-    opacity: 1;
-    animation: slideAndSpin 1.5s ease-out forwards;
-    pointer-events: none;
+    font-size: 4rem;
+    font-weight: bold;
     z-index: 1000;
-    box-shadow: 0 0 2px rgba(167, 164, 164, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    animation: appearCenter 2s ease-out forwards;
   }
 }
 
-@keyframes slideAndSpin {
+@keyframes appearCenter {
   0% {
-    opacity: 1;
-    left: 0%;
-    transform: translate(0%, -50%) rotate(0deg);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
   }
-  50% {
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(180deg);
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
   100% {
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+@keyframes pulseColor {
+  0% {
+    background-color: var(--card-color);
+  }
+  50% {
+    background-color: var(--primary-color, #ffcc00);
+  }
+  100% {
+    background-color: var(--card-color);
   }
 }
 
@@ -101,11 +127,10 @@
       font-size: 10px;
     }
 
-    &__marker {
-      top: 15px;
-      width: 40px;
-      height: 40px;
-      font-size: 14px;
+    &__centerNumber {
+      width: 100px;
+      height: 100px;
+      font-size: 3rem;
     }
   }
 }

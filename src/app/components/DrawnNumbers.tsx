@@ -1,5 +1,5 @@
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { selectDrawnNumbers, selectIsDrawing } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
@@ -13,12 +13,45 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   const drawnNumbers = useAppSelector(selectDrawnNumbers);
   const isDrawing = useAppSelector(selectIsDrawing);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentNumber, setCurrentNumber] = useState<number | null>(null);
+  const [showingNumber, setShowingNumber] = useState(false);
+  const [pulseOnce, setPulseOnce] = useState(false);
+  const prevDrawnLength = useRef<number>(0);
 
   useEffect(() => {
     if (drawnNumbers.length > 0 || isDrawing) {
       setIsVisible(true);
     }
   }, [drawnNumbers.length, isDrawing]);
+
+  useEffect(() => {
+    if (
+      drawnNumbers.length > 0 &&
+      drawnNumbers.length > prevDrawnLength.current
+    ) {
+      const lastDrawnNumber = drawnNumbers[drawnNumbers.length - 1];
+      setCurrentNumber(lastDrawnNumber);
+      setShowingNumber(true);
+
+      setPulseOnce(true);
+
+      const timer = setTimeout(() => {
+        setShowingNumber(false);
+
+        setTimeout(() => {
+          setPulseOnce(false);
+        }, 1000);
+      }, 2000);
+
+      prevDrawnLength.current = drawnNumbers.length;
+
+      return () => clearTimeout(timer);
+    }
+
+    if (prevDrawnLength.current === 0 && drawnNumbers.length > 0) {
+      prevDrawnLength.current = drawnNumbers.length;
+    }
+  }, [drawnNumbers]);
 
   if (loading) {
     return (
@@ -36,12 +69,27 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
 
   return (
     <div className={styles.drawnNumbers}>
+      {showingNumber && currentNumber && (
+        <div
+          className={styles.drawnNumbers__centerNumber}
+          key={`center-number-${currentNumber}`}
+        >
+          {currentNumber}
+        </div>
+      )}
+
       <div className={styles.drawnNumbers__container}>
         <div className={styles.drawnNumbers__grid}>
           {drawnNumbers.map((drawnNumber, index) => (
-            <div key={index}>
-              <div className={styles.drawnNumbers__cell}>{drawnNumber}</div>
-              <span className={styles.drawnNumbers__marker}>{drawnNumber}</span>
+            <div key={index} className={styles.drawnNumbers__cellContainer}>
+              <div
+                className={`${styles.drawnNumbers__cell} ${
+                  pulseOnce ? styles.drawnNumbers__cell_latest : ""
+                }`}
+                key={`cell-${drawnNumber}`}
+              >
+                {drawnNumber}
+              </div>
             </div>
           ))}
 
