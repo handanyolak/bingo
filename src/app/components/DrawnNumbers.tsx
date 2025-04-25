@@ -17,6 +17,7 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   const [showingNumber, setShowingNumber] = useState(false);
   const [pulseOnce, setPulseOnce] = useState(false);
   const prevDrawnLength = useRef<number>(0);
+  const animationKey = useRef<number>(0);
 
   useEffect(() => {
     if (drawnNumbers.length > 0 || isDrawing) {
@@ -25,11 +26,11 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   }, [drawnNumbers.length, isDrawing]);
 
   useEffect(() => {
-    if (
-      drawnNumbers.length > 0 &&
-      drawnNumbers.length > prevDrawnLength.current
-    ) {
+    if (drawnNumbers.length > prevDrawnLength.current) {
       const lastDrawnNumber = drawnNumbers[drawnNumbers.length - 1];
+
+      animationKey.current += 1;
+
       setCurrentNumber(lastDrawnNumber);
       setShowingNumber(true);
 
@@ -66,13 +67,15 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   if (!isVisible) return null;
 
   const totalCells = 15 * 5;
+  const latestDrawnNumber =
+    drawnNumbers.length > 0 ? drawnNumbers[drawnNumbers.length - 1] : null;
 
   return (
     <div className={styles.drawnNumbers}>
       {showingNumber && currentNumber && (
         <div
           className={styles.drawnNumbers__centerNumber}
-          key={`center-number-${currentNumber}`}
+          key={`center-number-${currentNumber}-${animationKey.current}`}
         >
           {currentNumber}
         </div>
@@ -80,18 +83,27 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
 
       <div className={styles.drawnNumbers__container}>
         <div className={styles.drawnNumbers__grid}>
-          {drawnNumbers.map((drawnNumber, index) => (
-            <div key={index} className={styles.drawnNumbers__cellContainer}>
+          {drawnNumbers.map((drawnNumber, index) => {
+            const isLatestNumber =
+              pulseOnce && drawnNumber === latestDrawnNumber;
+            return (
               <div
-                className={`${styles.drawnNumbers__cell} ${
-                  pulseOnce ? styles.drawnNumbers__cell_latest : ""
-                }`}
-                key={`cell-${drawnNumber}`}
+                key={`container-${drawnNumber}-${index}`}
+                className={styles.drawnNumbers__cellContainer}
               >
-                {drawnNumber}
+                <div
+                  className={`${styles.drawnNumbers__cell} ${
+                    isLatestNumber ? styles.drawnNumbers__cell_latest : ""
+                  }`}
+                  key={`cell-${drawnNumber}-${
+                    isLatestNumber ? animationKey.current : index
+                  }`}
+                >
+                  {drawnNumber}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {isDrawing && drawnNumbers.length === 0 && (
             <div key="loading-indicator">
