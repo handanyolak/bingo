@@ -242,6 +242,7 @@ export const CardManager = () => {
       {contractData?.isPlayerExists && !contractData?.isDrawnNumbersFilled && (
         <AppButton
           text={t("controls.requestRandomNumbers")}
+          animated
           onClick={handleRequestRandomNumbers}
           disabled={isRequestRandomLoading}
           content={
@@ -272,6 +273,7 @@ export const CardManager = () => {
               contractData?.BINGO_CARD_NUMBERS_COUNT && (
               <AppButton
                 text={t("controls.submitCard")}
+                animated
                 onClick={handleCardSubmit}
                 disabled={isSubmitCardLoading}
                 content={
