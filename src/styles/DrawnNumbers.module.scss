@@ -1,5 +1,4 @@
 .drawnNumbers {
-  padding: 40px 0 0 0;
   position: relative;
 
   &__container {
@@ -193,8 +192,6 @@
 
 @media screen and (max-width: 767px) {
   .drawnNumbers {
-    padding: 20px 0 0 0;
-
     &__container {
       margin: 10px 0;
     }
