@@ -26,6 +26,13 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   }, [drawnNumbers.length, isDrawing]);
 
   useEffect(() => {
+    if (drawnNumbers.length === 0 && !isDrawing) {
+      setIsVisible(false);
+      prevDrawnLength.current = 0;
+    }
+  }, [drawnNumbers.length, isDrawing]);
+
+  useEffect(() => {
     if (drawnNumbers.length > prevDrawnLength.current) {
       const lastDrawnNumber = drawnNumbers[drawnNumbers.length - 1];
 
