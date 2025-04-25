@@ -111,7 +111,7 @@ export const BingoCard = () => {
 
   return (
     <div className={styles.bingoCardWrapper}>
-      {isCurrentGame && (
+      {isCurrentGame && !contractData?.isPlayerExists && (
         <RefreshCcw
           className={`${styles.refreshIcon} ${
             isRefreshingCard ? styles.spinning : ""
