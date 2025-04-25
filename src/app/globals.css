@@ -21,9 +21,9 @@
   --surface-bg: white;
   --loader-animation: spin 1s linear infinite;
   --loader-color: var(--text);
-  --wave-color-1: rgba(255, 255, 255, 0.15);
-  --wave-color-2: rgba(255, 255, 255, 0.15);
-  --wave-color-3: rgba(255, 255, 255, 0.15);
+  --blob-color-1: rgba(235, 197, 154, 0.25);
+  --blob-color-2: rgba(229, 181, 131, 0.2);
+  --blob-color-3: rgba(222, 165, 108, 0.15);
 }
 
 .dark {
@@ -43,9 +43,9 @@
   --drawer-bg: rgba(26, 27, 38, 0.9);
   --surface-bg: #20212e;
   --loader-color: var(--text);
-  --wave-color-1: rgba(255, 255, 255, 0.15);
-  --wave-color-2: rgba(255, 255, 255, 0.15);
-  --wave-color-3: rgba(255, 255, 255, 0.15);
+  --blob-color-1: rgba(70, 73, 102, 0.25);
+  --blob-color-2: rgba(80, 83, 112, 0.2);
+  --blob-color-3: rgba(90, 93, 122, 0.15);
 }
 
 .global-loader {
@@ -86,19 +86,19 @@ body::before {
   height: 100%;
   background-color: var(--background);
   background-image: radial-gradient(
-      circle at 10% 20%,
-      var(--wave-color-1) 0%,
-      transparent 20%
+      circle at 10% 15%,
+      var(--blob-color-1) 0%,
+      transparent 15%
     ),
-    radial-gradient(circle at 90% 80%, var(--wave-color-2) 0%, transparent 17%),
-    radial-gradient(circle at 80% 5%, var(--wave-color-3) 0%, transparent 15%),
-    radial-gradient(circle at 20% 85%, var(--wave-color-1) 0%, transparent 15%),
-    radial-gradient(circle at 50% 30%, var(--wave-color-1) 0%, transparent 10%),
-    radial-gradient(circle at 30% 55%, var(--wave-color-2) 0%, transparent 10%),
-    radial-gradient(circle at 70% 40%, var(--wave-color-3) 0%, transparent 10%);
+    radial-gradient(circle at 90% 70%, var(--blob-color-2) 0%, transparent 12%),
+    radial-gradient(circle at 80% 8%, var(--blob-color-3) 0%, transparent 10%),
+    radial-gradient(circle at 25% 80%, var(--blob-color-1) 0%, transparent 10%),
+    radial-gradient(circle at 50% 40%, var(--blob-color-2) 0%, transparent 15%);
+  filter: blur(20px);
   z-index: -1;
-  opacity: 1;
+  opacity: 0.5;
   pointer-events: none;
+  transition: opacity 0.5s ease;
 }
 
 * {

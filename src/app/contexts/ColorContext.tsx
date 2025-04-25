@@ -77,22 +77,22 @@ export const ColorProvider: React.FC<ColorProviderProps> = ({
 
       const [r, g, b] = getRGBValues(color);
 
-      const waveOpacity = theme === "dark" ? 0.9 : 0.98;
+      const blobOpacity = theme === "dark" ? 0.9 : 0.98;
       const borderOpacity = theme === "dark" ? 0.7 : 0.6;
       const letterOpacity = theme === "dark" ? 0.45 : 0.4;
 
       const setCSSVariables = () => {
         root.style.setProperty(
-          "--wave-color-1",
-          `rgba(${r}, ${g}, ${b}, ${waveOpacity})`
+          "--blob-color-1",
+          `rgba(${r}, ${g}, ${b}, ${blobOpacity})`
         );
         root.style.setProperty(
-          "--wave-color-2",
-          `rgba(${r}, ${g}, ${b}, ${waveOpacity * 0.85})`
+          "--blob-color-2",
+          `rgba(${r}, ${g}, ${b}, ${blobOpacity * 0.85})`
         );
         root.style.setProperty(
-          "--wave-color-3",
-          `rgba(${r}, ${g}, ${b}, ${waveOpacity * 0.7})`
+          "--blob-color-3",
+          `rgba(${r}, ${g}, ${b}, ${blobOpacity * 0.7})`
         );
 
         root.style.setProperty("--card-color", color);
