@@ -2,20 +2,19 @@
 
 import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useEffect, useMemo } from "react";
-import { toast } from "react-toastify";
+import { useState } from "react";
 import { Address } from "viem";
-import { useAccount } from "wagmi";
 
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
 import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
+import { Players } from "@/app/components/Players";
+import { Winners } from "@/app/components/Winners";
 import { useColor } from "@/app/contexts/ColorContext";
 import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
-import { useTransactionToast } from "@/app/hooks/useTransactionToast";
-import { useContractReads, useContractWrite } from "@/lib/web3/";
+import { useContractReads } from "@/lib/web3/";
 import styles from "@/styles/Header.module.scss";
 
 export const Header = () => {
@@ -23,52 +22,8 @@ export const Header = () => {
   const { cycleColor } = useColor();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [hasClaimedReward, setHasClaimedReward] = useState(false);
   const { data: contractData, isLoading: gameLoading } = useContractReads();
-  const { address } = useAccount();
-  const {
-    claimReward,
-    isClaimRewardPending,
-    isClaimRewardConfirming,
-    isClaimRewardSuccess,
-  } = useContractWrite();
-
   const { updateURL } = useSelectedAddress();
-  const {
-    showInitiatingTransactionToast,
-    showConfirmingTransactionToast,
-    showSuccessToast,
-    showErrorToast,
-    dismissToast,
-  } = useTransactionToast();
-
-  const [claimingInProgress, setClaimingInProgress] = useState(false);
-
-  useEffect(() => {
-    setHasClaimedReward(false);
-  }, [contractData?.targetGameId, address]);
-
-  useEffect(() => {
-    const toastId = "claimRewardToast";
-    if (claimingInProgress) {
-      if (isClaimRewardConfirming) {
-        showConfirmingTransactionToast(toastId);
-      }
-
-      if (isClaimRewardSuccess) {
-        setClaimingInProgress(false);
-        showSuccessToast(toastId, t("controls.rewardClaimedMessage"));
-        setHasClaimedReward(true);
-      }
-    }
-  }, [
-    isClaimRewardConfirming,
-    isClaimRewardSuccess,
-    claimingInProgress,
-    showConfirmingTransactionToast,
-    showSuccessToast,
-    t,
-  ]);
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -84,41 +39,6 @@ export const Header = () => {
     updateURL(address);
     setIsModalOpen(false);
   };
-
-  const handleClaimReward = async () => {
-    const toastId = "claimRewardToast";
-    try {
-      if (!contractData?.targetGameId) {
-        toast.error(t("toast.gameIdNotAvailable"));
-        return;
-      }
-
-      setClaimingInProgress(true);
-      showInitiatingTransactionToast(toastId);
-
-      try {
-        await claimReward(contractData.targetGameId);
-      } catch (txError) {
-        setClaimingInProgress(false);
-        dismissToast(toastId);
-        showErrorToast(txError);
-        console.error("Transaction error:", txError);
-      }
-    } catch (error) {
-      console.error("Error claiming reward:", error);
-      setClaimingInProgress(false);
-      dismissToast(toastId);
-      showErrorToast(error);
-    }
-  };
-
-  const isClaimButtonDisabled = isClaimRewardPending || isClaimRewardConfirming;
-  const isWinner = useMemo(() => {
-    return (
-      address &&
-      contractData?.winners.winnerAddresses.includes(address as Address)
-    );
-  }, [contractData?.winners.winnerAddresses, address]);
 
   return (
     <header className={styles.header}>
@@ -170,70 +90,13 @@ export const Header = () => {
             title={t("controls.players")}
             icon={<Users size={20} strokeWidth={2.5} />}
           >
-            {gameLoading ? (
-              <Loader2 className="global-loader" />
-            ) : (
-              <div className={styles.addressList}>
-                {contractData?.players.playerAddresses.map((address) => (
-                  <div
-                    key={address}
-                    className={styles.addressItem}
-                    onClick={() => handleAddressClick(address)}
-                  >
-                    {address}
-                  </div>
-                ))}
-                {contractData?.players.playerAddresses.length === 0 && (
-                  <div className={styles.emptyState}>
-                    {t("controls.noPlayers")}
-                  </div>
-                )}
-              </div>
-            )}
+            <Players onAddressClick={handleAddressClick} />
           </TabItem>
           <TabItem
             title={t("controls.winners")}
             icon={<Trophy size={20} strokeWidth={2.5} />}
           >
-            {gameLoading ? (
-              <Loader2 className="global-loader" />
-            ) : (
-              <div className={styles.addressList}>
-                {contractData?.winners.winnerAddresses.map((winnerAddress) => (
-                  <div key={winnerAddress} className={styles.addressItem}>
-                    <span onClick={() => handleAddressClick(winnerAddress)}>
-                      {winnerAddress}
-                    </span>
-                    {address === winnerAddress && !hasClaimedReward && (
-                      <button
-                        className={styles.claimButton}
-                        onClick={handleClaimReward}
-                        disabled={isClaimButtonDisabled}
-                      >
-                        {isClaimButtonDisabled
-                          ? t("controls.claiming")
-                          : t("controls.claimReward")}
-                      </button>
-                    )}
-                    {address === winnerAddress && hasClaimedReward && (
-                      <div className={styles.claimedStatus}>
-                        {t("controls.rewardClaimed")}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {contractData?.winners.winnerAddresses.length === 0 && (
-                  <div className={styles.emptyState}>
-                    {t("controls.noWinners")}
-                  </div>
-                )}
-                {isWinner && !hasClaimedReward && (
-                  <div className={styles.claimInfoBox}>
-                    {t("controls.claimInfo")}
-                  </div>
-                )}
-              </div>
-            )}
+            <Winners onAddressClick={handleAddressClick} />
           </TabItem>
         </Tab>
       </AppModal>
