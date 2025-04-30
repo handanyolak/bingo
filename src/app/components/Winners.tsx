@@ -3,13 +3,14 @@
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useCallback } from "react";
-import { toast } from "react-toastify";
 import { Address } from "viem";
 import { decodeEventLog } from "viem";
 import { useAccount } from "wagmi";
 
 import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { env } from "@/config/env";
+import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
+import { useAppSelector } from "@/lib/store/hooks";
 import { publicClient } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { useContractReads, useContractWrite } from "@/lib/web3";
@@ -23,6 +24,8 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
   const t = useTranslations();
   const { address } = useAccount();
   const { data: contractData, isLoading } = useContractReads();
+
+  const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
 
   const {
     claimReward,
@@ -120,11 +123,10 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
       });
     } catch (error) {
       console.error("Error fetching claimed rewards:", error);
-      toast.error(t("toast.errorLoadingClaimStatus"));
     } finally {
       setIsLoadingClaimStatus(false);
     }
-  }, [address, contractData?.targetGameId, t]);
+  }, [address, contractData?.targetGameId]);
 
   useEffect(() => {
     if (address) {
@@ -167,7 +169,8 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
         <div className={styles.winners__loading}>
           <Loader2 className="global-loader" />
         </div>
-      ) : contractData?.winners.winnerAddresses.length === 0 ? (
+      ) : !isGameFinishedInUi ||
+        contractData?.winners.winnerAddresses.length === 0 ? (
         <div className={styles.winners__empty}>{t("controls.noWinners")}</div>
       ) : (
         contractData?.winners.winnerAddresses.map((winnerAddress) => (
@@ -211,6 +214,7 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
 
       {!isLoading &&
         isWinner &&
+        isGameFinishedInUi &&
         !hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
           <div className={styles["winners__info-box"]}>
             {t("controls.claimInfo")}
