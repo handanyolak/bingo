@@ -1,7 +1,11 @@
 import { Loader2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
-import { selectDrawnNumbers, selectIsDrawing } from "@/lib/store/bingo";
+import {
+  selectDrawnNumbers,
+  selectIsDrawing,
+  selectIsGameFinishedInUi,
+} from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import styles from "@/styles/DrawnNumbers.module.scss";
 
@@ -18,6 +22,7 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   const [pulseOnce, setPulseOnce] = useState(false);
   const prevDrawnLength = useRef<number>(0);
   const animationKey = useRef<number>(0);
+  const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
 
   useEffect(() => {
     if (drawnNumbers.length > 0 || isDrawing) {
@@ -79,7 +84,7 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
 
   return (
     <div className={styles.drawnNumbers}>
-      {showingNumber && currentNumber && (
+      {showingNumber && currentNumber && !isGameFinishedInUi && (
         <div
           className={styles.drawnNumbers__centerNumber}
           key={`center-number-${currentNumber}-${animationKey.current}`}
@@ -100,7 +105,9 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
               >
                 <div
                   className={`${styles.drawnNumbers__cell} ${
-                    isLatestNumber ? styles.drawnNumbers__cell_latest : ""
+                    isLatestNumber && !isGameFinishedInUi
+                      ? styles.drawnNumbers__cell_latest
+                      : ""
                   }`}
                   key={`cell-${drawnNumber}-${
                     isLatestNumber ? animationKey.current : index
