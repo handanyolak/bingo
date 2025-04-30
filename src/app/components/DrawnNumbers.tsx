@@ -38,6 +38,14 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   }, [drawnNumbers.length, isDrawing]);
 
   useEffect(() => {
+    if (drawnNumbers.length === 0) {
+      setCurrentNumber(null);
+      setShowingNumber(false);
+      setPulseOnce(false);
+    }
+  }, [drawnNumbers.length]);
+
+  useEffect(() => {
     if (drawnNumbers.length > prevDrawnLength.current) {
       const lastDrawnNumber = drawnNumbers[drawnNumbers.length - 1];
 
