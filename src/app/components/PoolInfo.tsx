@@ -1,3 +1,4 @@
+import { Info } from "lucide-react";
 import { formatEther } from "viem";
 
 import { AppButton } from "@/app/components/common/AppButton";
@@ -33,6 +34,8 @@ export const PoolInfo = ({
       <AppButton
         text={`Total Pool Balance: ${formatEther(prizePoolBalance)} ETH`}
         rounded="lg"
+        contentPosition="left"
+        content={<Info size={20} strokeWidth={2.5} />}
       />
     </Tooltip>
   );
