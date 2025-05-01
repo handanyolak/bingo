@@ -39,8 +39,8 @@ export function ThemeColorProvider({
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
-      enableSystem={true}
+      defaultTheme="dark"
+      enableSystem={false}
       disableTransitionOnChange
     >
       <ColorProvider
