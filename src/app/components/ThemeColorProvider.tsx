@@ -4,7 +4,6 @@ import { useAppKitAccount } from "@reown/appkit/react";
 import { ThemeProvider } from "next-themes";
 import { useState, useEffect } from "react";
 
-import { Loader } from "@/app/components/Loader";
 import { ColorProvider } from "@/app/contexts/ColorContext";
 import useCardColors from "@/app/hooks/useCardColors";
 
@@ -14,7 +13,7 @@ export function ThemeColorProvider({
   children: React.ReactNode;
 }) {
   const { address } = useAppKitAccount();
-  const { colors, isLoading } = useCardColors(address || undefined);
+  const { colors } = useCardColors(address || undefined);
   const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -34,7 +33,6 @@ export function ThemeColorProvider({
     : DEFAULT_COLOR;
 
   if (!mounted) return null;
-  if (isLoading) return <Loader />;
 
   return (
     <ThemeProvider
