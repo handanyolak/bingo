@@ -128,10 +128,11 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
           })}
 
           {isDrawing && drawnNumbers.length === 0 && (
-            <div key="loading-indicator">
-              <div className={styles.drawnNumbers__cell}>
-                <Loader2 className="animate-spin" size={20} />
-              </div>
+            <div
+              key="loading-indicator"
+              className={styles.drawnNumbers__centered}
+            >
+              <Loader2 className="animate-spin" size={100} />
             </div>
           )}
 
