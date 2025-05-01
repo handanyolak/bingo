@@ -231,7 +231,7 @@ export const CardManager = () => {
         !contractData?.vrfRequested && (
           <AppButton
             text={t("controls.buyTheCard")}
-            animated
+            animated={!isBuyCardLoading}
             onClick={handleBuyCard}
             contentPosition="right"
             content={isBuyCardLoading && <Loader2 className="global-loader" />}
@@ -242,7 +242,7 @@ export const CardManager = () => {
       {contractData?.isPlayerExists && !contractData?.isDrawnNumbersFilled && (
         <AppButton
           text={t("controls.requestRandomNumbers")}
-          animated
+          animated={!isRequestRandomLoading}
           onClick={handleRequestRandomNumbers}
           disabled={isRequestRandomLoading}
           content={
@@ -273,7 +273,7 @@ export const CardManager = () => {
               contractData?.BINGO_CARD_NUMBERS_COUNT && (
               <AppButton
                 text={t("controls.submitCard")}
-                animated
+                animated={!isSubmitCardLoading}
                 onClick={handleCardSubmit}
                 disabled={isSubmitCardLoading}
                 content={
