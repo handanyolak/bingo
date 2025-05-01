@@ -11,6 +11,7 @@ import { BingoCard } from "@/app/components/BingoCard";
 import { CardManager } from "@/app/components/CardManager";
 import { AppButton } from "@/app/components/common/AppButton";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
+import { Loader } from "@/app/components/Loader";
 import { PoolInfo } from "@/app/components/PoolInfo";
 import { useAccountChange } from "@/app/contexts/AccountChangeContext";
 import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
@@ -75,6 +76,10 @@ export const Bingo = () => {
       setShowConfetti(true);
     }
   }, [isGameFinishedInUi, isWinner]);
+
+  if (contractLoading) {
+    return <Loader />;
+  }
 
   return (
     <div key={key} className={styles.bingo__page}>
