@@ -194,7 +194,7 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
                   >
                     {isClaimButtonDisabled ? (
                       <>
-                        <Loader2 className="button-loader" size={14} />
+                        <Loader2 className="global-loader" size={14} />
                         {t("controls.claiming")}
                       </>
                     ) : (

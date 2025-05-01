@@ -87,10 +87,6 @@
     justify-content: center;
     gap: 0.5rem;
 
-    .button-loader {
-      animation: spin 1s linear infinite;
-    }
-
     &:hover:not(:disabled) {
       opacity: 0.9;
       transform: translateY(-1px);
