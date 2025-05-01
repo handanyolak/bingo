@@ -112,12 +112,15 @@ export const BingoCard = () => {
   return (
     <div className={styles.bingoCardWrapper}>
       {isCurrentGame && !contractData?.isPlayerExists && (
-        <RefreshCcw
-          className={`${styles.refreshIcon} ${
-            isRefreshingCard ? styles.spinning : ""
-          }`}
-          onClick={handleCardRefresh}
-        />
+        <div className={styles.refreshIconWrapper}>
+          <RefreshCcw
+            size={30}
+            className={`${styles.refreshIcon} ${
+              isRefreshingCard ? styles.spinning : ""
+            }`}
+            onClick={handleCardRefresh}
+          />
+        </div>
       )}
 
       <div className={styles.bingoCard}>

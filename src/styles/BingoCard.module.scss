@@ -1,17 +1,29 @@
 .bingoCardWrapper {
   position: relative;
 
-  .refreshIcon {
+  .refreshIconWrapper {
     position: absolute;
     z-index: 50;
     right: -0.5rem;
     top: -0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .refreshIcon {
     cursor: pointer;
     color: var(--card-dark-color);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease;
+    background-color: #fff0d9;
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    animation: pulseAttention 2s infinite;
 
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.1) rotate(15deg);
+      color: var(--card-color);
     }
 
     &.spinning {
@@ -211,6 +223,21 @@
   100% {
     transform: scale(1);
     box-shadow: 0 0 5px var(--card-color), 0 0 10px var(--card-dark-color);
+  }
+}
+
+@keyframes pulseAttention {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 0 15px var(--card-color);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 }
 
