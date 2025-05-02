@@ -4,8 +4,8 @@
   .refreshIconWrapper {
     position: absolute;
     z-index: 50;
-    right: -0.5rem;
-    top: -0.5rem;
+    right: 0;
+    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,9 +13,8 @@
 
   .refreshIcon {
     cursor: pointer;
-    color: var(--card-dark-color);
+    color: #fff;
     transition: transform 0.3s ease, color 0.3s ease;
-    background-color: #fff0d9;
     border-radius: 50%;
     padding: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
