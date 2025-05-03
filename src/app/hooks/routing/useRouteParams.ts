@@ -35,7 +35,10 @@ export const useRouteParams = () => {
   };
 
   const updateAddressURL = (address: string) => {
-    const currentGameId = searchParams.get("id");
+    const currentGameId =
+      searchParams.get("id") ||
+      (contractData ? contractData.gameId.toString() : null);
+
     router.replace(
       `?${
         currentGameId ? `id=${currentGameId}&` : ""
@@ -87,6 +90,8 @@ export const useRouteParams = () => {
   };
 
   useEffect(() => {
+    if (!contractData || isContractLoading) return;
+
     if (isConnected && connectedAddress) {
       updateAddressURL(connectedAddress);
       setSelectedAddress(connectedAddress);
@@ -95,7 +100,7 @@ export const useRouteParams = () => {
       setSelectedAddress(zeroAddress);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connectedAddress, isConnected]);
+  }, [connectedAddress, isConnected, contractData, isContractLoading]);
 
   const updateSelectedAddress = (address: string) => {
     setSelectedAddress(address);
