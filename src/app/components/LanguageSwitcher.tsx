@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { useLocale } from "@/app/contexts/LocaleContext";
+import { useClickOutside } from "@/app/hooks/useClickOutside";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
 import styles from "@/styles/LanguageSwitcher.module.scss";
 
@@ -17,8 +18,12 @@ export const LanguageSwitcher = () => {
     setIsOpen(false);
   };
 
+  const dropdownRef = useClickOutside<HTMLDivElement>(() => {
+    setIsOpen(false);
+  });
+
   return (
-    <div className={styles.languageSwitcher}>
+    <div className={styles.languageSwitcher} ref={dropdownRef}>
       <AppButton
         text={LANGUAGES[locale]}
         contentPosition="right"
