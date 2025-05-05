@@ -29,12 +29,10 @@ export const Header = () => {
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
-    setIsMobileMenuOpen(false);
   };
 
   const handleColorChange = () => {
     cycleColor();
-    setIsMobileMenuOpen(false);
   };
 
   const handleAddressClick = (address: Address) => {
