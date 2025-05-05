@@ -33,11 +33,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0;
     padding: 0.5rem;
-    background-color: var(--button-bg);
-    border: 1px solid var(--button-border);
-    border-radius: 0.25rem;
 
     .global-loader {
       animation: spin 1s linear infinite;
