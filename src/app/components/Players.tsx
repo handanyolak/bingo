@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useMemo } from "react";
 import { Address } from "viem";
+import { useAccount } from "wagmi";
 
 import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
 import { useContractReads } from "@/lib/web3";
@@ -28,12 +29,13 @@ export const Players = ({
 }: PlayersProps) => {
   const t = useTranslations();
   const { data: contractData, isLoading } = useContractReads();
+  const { isConnected } = useAccount();
 
   const playerAddresses = useMemo(() => {
     return contractData?.players.playerAddresses || [];
   }, [contractData?.players.playerAddresses]);
 
-  if (isLoading) {
+  if (isLoading && isConnected) {
     return (
       <div className={styles.players__list}>
         <div className={styles.players__loading}>

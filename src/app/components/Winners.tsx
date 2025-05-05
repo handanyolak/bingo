@@ -38,7 +38,7 @@ export const Winners = ({
   horizontal = false,
 }: WinnersProps) => {
   const t = useTranslations();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: contractData, isLoading } = useContractReads();
 
   const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
@@ -184,7 +184,7 @@ export const Winners = ({
   const isWinner =
     address && contractData?.winners.winnerAddresses?.includes(address);
 
-  if (isLoading) {
+  if (isLoading && isConnected) {
     return (
       <div className={styles.winners__list}>
         <div className={styles.winners__loading}>
