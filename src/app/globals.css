@@ -19,6 +19,7 @@
   --input-border: rgba(0, 0, 0, 0.1);
   --drawer-bg: rgba(255, 255, 255, 0.9);
   --surface-bg: white;
+  --surface-bg-rgb: 255, 255, 255;
   --loader-animation: spin 1s linear infinite;
   --loader-color: var(--text);
   --blob-color-1: rgba(235, 197, 154, 0.25);
@@ -42,6 +43,7 @@
   --input-border: rgba(255, 255, 255, 0.1);
   --drawer-bg: rgba(26, 27, 38, 0.9);
   --surface-bg: #20212e;
+  --surface-bg-rgb: 32, 33, 46;
   --loader-color: var(--text);
   --blob-color-1: rgba(70, 73, 102, 0.25);
   --blob-color-2: rgba(80, 83, 112, 0.2);
@@ -108,4 +110,19 @@ body::before {
 ::selection {
   background: var(--text);
   color: var(--background);
+}
+
+.Toastify__toast {
+  font-family: inherit;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(var(--surface-bg-rgb, 255, 255, 255), 0.6) !important;
+}
+
+.Toastify__close-button {
+  color: var(--text);
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
 }

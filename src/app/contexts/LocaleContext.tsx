@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { NextIntlClientProvider } from "next-intl";
 import { createContext, useContext, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
@@ -62,7 +63,19 @@ export const LocaleProvider = ({ messages, children }: Props) => {
                 cookies={typeof window !== "undefined" ? document.cookie : null}
               >
                 <AccountChangeProvider>
-                  <ToastContainer />
+                  <ToastContainer
+                    autoClose={5000}
+                    hideProgressBar={true}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    pauseOnHover
+                    theme="dark"
+                    toastStyle={{
+                      backgroundColor: "transparent",
+                      color: "var(--text)",
+                    }}
+                  />
                   {children}
                 </AccountChangeProvider>
               </ContextProvider>
