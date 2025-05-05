@@ -2,11 +2,12 @@
 
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo, ReactNode } from "react";
 import { Address } from "viem";
 import { decodeEventLog } from "viem";
 import { useAccount } from "wagmi";
 
+import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
 import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { env } from "@/config/env";
 import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
@@ -18,9 +19,24 @@ import styles from "@/styles/Winners.module.scss";
 
 interface WinnersProps {
   onAddressClick: (address: Address) => void;
+  renderMode?: "virtualized" | "normal";
+  customRender?: (
+    addresses: readonly Address[],
+    renderWinner: (address: Address, index: number) => ReactNode
+  ) => ReactNode;
+  enableDynamicMeasurement?: boolean;
+  debug?: boolean;
+  horizontal?: boolean;
 }
 
-export const Winners = ({ onAddressClick }: WinnersProps) => {
+export const Winners = ({
+  onAddressClick,
+  renderMode = "virtualized",
+  customRender,
+  enableDynamicMeasurement = false,
+  debug = false,
+  horizontal = false,
+}: WinnersProps) => {
   const t = useTranslations();
   const { address } = useAccount();
   const { data: contractData, isLoading } = useContractReads();
@@ -43,6 +59,11 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
 
   const [claimedGameIds, setClaimedGameIds] = useState<string[]>([]);
   const [isLoadingClaimStatus, setIsLoadingClaimStatus] = useState(false);
+
+  const winnerAddresses = useMemo(() => {
+    if (!isGameFinishedInUi) return [];
+    return contractData?.winners.winnerAddresses || [];
+  }, [isGameFinishedInUi, contractData?.winners.winnerAddresses]);
 
   const hasUserClaimedGame = useCallback(
     (gameId: bigint) => {
@@ -161,65 +182,154 @@ export const Winners = ({ onAddressClick }: WinnersProps) => {
   ]);
 
   const isWinner =
-    address && contractData?.winners.winnerAddresses.includes(address);
+    address && contractData?.winners.winnerAddresses?.includes(address);
 
-  return (
-    <div className={styles.winners__list}>
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <div className={styles.winners__list}>
         <div className={styles.winners__loading}>
           <Loader2 className="global-loader" />
         </div>
-      ) : !isGameFinishedInUi ||
-        contractData?.winners.winnerAddresses.length === 0 ? (
-        <div className={styles.winners__empty}>{t("controls.noWinners")}</div>
-      ) : (
-        contractData?.winners.winnerAddresses.map((winnerAddress) => (
-          <div key={winnerAddress} className={styles.winners__item}>
-            <span onClick={() => onAddressClick(winnerAddress)}>
-              {winnerAddress}
-            </span>
-            {address === winnerAddress && (
-              <>
-                {isLoadingClaimStatus ? (
-                  <div className={styles["winners__claim-loading"]}>
-                    <Loader2 className="global-loader" size={18} />
-                  </div>
-                ) : !hasUserClaimedGame(
-                    contractData?.targetGameId || BigInt(0)
-                  ) ? (
-                  <button
-                    className={styles["winners__claim-button"]}
-                    onClick={handleClaimReward}
-                    disabled={isClaimButtonDisabled}
-                  >
-                    {isClaimButtonDisabled ? (
-                      <>
-                        <Loader2 className="global-loader" size={14} />
-                        {t("controls.claiming")}
-                      </>
-                    ) : (
-                      t("controls.claimReward")
-                    )}
-                  </button>
-                ) : (
-                  <div className={styles["winners__claimed-status"]}>
-                    {t("controls.rewardClaimed")}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        ))
-      )}
+      </div>
+    );
+  }
 
-      {!isLoading &&
-        isWinner &&
-        isGameFinishedInUi &&
-        !hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
-          <div className={styles["winners__info-box"]}>
-            {t("controls.claimInfo")}
+  if (!isGameFinishedInUi || winnerAddresses.length === 0) {
+    return (
+      <div className={styles.winners__list}>
+        <div className={styles.winners__empty}>{t("controls.noWinners")}</div>
+      </div>
+    );
+  }
+
+  const renderWinner = (winnerAddress: Address, index: number) => {
+    if (!winnerAddress) return null;
+
+    return (
+      <div className={styles.winners__item}>
+        <span onClick={() => onAddressClick(winnerAddress)}>
+          {index + 1}. {winnerAddress}
+        </span>
+      </div>
+    );
+  };
+
+  const renderClaimControls = () => {
+    if (!isWinner || !isGameFinishedInUi || !address) return null;
+
+    const winnerIndex = winnerAddresses.findIndex((addr) => addr === address);
+    if (winnerIndex === -1) return null;
+
+    return (
+      <div className="w-full">
+        {isLoadingClaimStatus ? (
+          <div className={styles["winners__claim-loading"]}>
+            <Loader2 className="global-loader" size={18} />
+          </div>
+        ) : !hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) ? (
+          <button
+            className={styles["winners__claim-button"]}
+            onClick={handleClaimReward}
+            disabled={isClaimButtonDisabled}
+          >
+            {isClaimButtonDisabled ? (
+              <>
+                <Loader2 className="global-loader" size={14} />
+                {t("controls.claiming")}
+              </>
+            ) : (
+              t("controls.claimReward")
+            )}
+          </button>
+        ) : (
+          <div className={styles["winners__claimed-status"]}>
+            {t("controls.rewardClaimed")}
           </div>
         )}
-    </div>
+      </div>
+    );
+  };
+
+  if (customRender) {
+    return (
+      <>
+        {!isLoading && isWinner && isGameFinishedInUi && (
+          <>
+            {!hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
+              <div className={styles["winners__info-box"]}>
+                {t("controls.claimInfo")}
+              </div>
+            )}
+            {renderClaimControls()}
+          </>
+        )}
+        <div className={styles.winners__list}>
+          {customRender(winnerAddresses, renderWinner)}
+        </div>
+      </>
+    );
+  }
+
+  if (renderMode === "virtualized") {
+    return (
+      <>
+        {!isLoading && isWinner && isGameFinishedInUi && (
+          <>
+            {!hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
+              <div className={styles["winners__info-box"]}>
+                {t("controls.claimInfo")}
+              </div>
+            )}
+            {renderClaimControls()}
+          </>
+        )}
+        <VirtualizedContent
+          data={winnerAddresses}
+          className={styles.winners__list}
+          estimateSize={60}
+          overscan={20}
+          renderItem={renderWinner}
+          getItemKey={(index) => `winner-${index}`}
+          horizontal={horizontal}
+          debug={debug}
+          enableDynamicMeasurement={enableDynamicMeasurement}
+        />
+      </>
+    );
+  }
+
+  return (
+    <>
+      {!isLoading && isWinner && isGameFinishedInUi && (
+        <>
+          {!hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
+            <div className={styles["winners__info-box"]}>
+              {t("controls.claimInfo")}
+            </div>
+          )}
+          {renderClaimControls()}
+        </>
+      )}
+      <div
+        className={styles.winners__list}
+        style={{
+          maxHeight: "500px",
+          overflowY: "auto",
+          border: "1px solid #ddd",
+          borderRadius: "4px",
+        }}
+      >
+        {winnerAddresses.map((winnerAddress, index) => (
+          <div
+            key={`winner-${winnerAddress}-${index}`}
+            className={styles.winners__item}
+          >
+            <span onClick={() => onAddressClick(winnerAddress)}>
+              {index + 1}. {winnerAddress}
+            </span>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
