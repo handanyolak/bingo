@@ -223,12 +223,12 @@ export const Winners = ({
     return (
       <div className="w-full">
         {isLoadingClaimStatus ? (
-          <div className={styles["winners__claim-loading"]}>
+          <div className={styles.winners__claim_loading}>
             <Loader2 className="global-loader" size={18} />
           </div>
         ) : !hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) ? (
           <button
-            className={styles["winners__claim-button"]}
+            className={styles.winners__claim_button}
             onClick={handleClaimReward}
             disabled={isClaimButtonDisabled}
           >
@@ -242,7 +242,7 @@ export const Winners = ({
             )}
           </button>
         ) : (
-          <div className={styles["winners__claimed-status"]}>
+          <div className={styles.winners__claimed_status}>
             {t("controls.rewardClaimed")}
           </div>
         )}
@@ -256,7 +256,7 @@ export const Winners = ({
         {!isLoading && isWinner && isGameFinishedInUi && (
           <>
             {!hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
-              <div className={styles["winners__info-box"]}>
+              <div className={styles.winners__info_box}>
                 {t("controls.claimInfo")}
               </div>
             )}
@@ -276,7 +276,7 @@ export const Winners = ({
         {!isLoading && isWinner && isGameFinishedInUi && (
           <>
             {!hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
-              <div className={styles["winners__info-box"]}>
+              <div className={styles.winners__info_box}>
                 {t("controls.claimInfo")}
               </div>
             )}
@@ -303,7 +303,7 @@ export const Winners = ({
       {!isLoading && isWinner && isGameFinishedInUi && (
         <>
           {!hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) && (
-            <div className={styles["winners__info-box"]}>
+            <div className={styles.winners__info_box}>
               {t("controls.claimInfo")}
             </div>
           )}
