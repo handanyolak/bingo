@@ -4,6 +4,7 @@ import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Address } from "viem";
+import { useAccount } from "wagmi";
 
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
@@ -24,6 +25,7 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: contractData, isLoading: gameLoading } = useContractReads();
   const { updateURL } = useSelectedAddress();
+  const { isConnected } = useAccount();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -69,7 +71,7 @@ export const Header = () => {
       <div className={styles.header__bottom}>
         <div className={styles.header__content}>
           <ConnectButton />
-          {gameLoading && <Loader2 className="global-loader" />}
+          {gameLoading && isConnected && <Loader2 className="global-loader" />}
           <div className={styles.header__gameIdContainer}>
             {contractData && (
               <div className={styles.header__gameId}>

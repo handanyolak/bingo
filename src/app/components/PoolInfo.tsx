@@ -1,5 +1,6 @@
 import { Info } from "lucide-react";
 import { formatEther } from "viem";
+import { useAccount } from "wagmi";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { Tooltip } from "@/app/components/common/Tooltip";
@@ -16,6 +17,7 @@ export const PoolInfo = ({
   requestRandomNumbersRefund,
 }: PoolInfoProps) => {
   const tooltipTexts = [];
+  const { isConnected } = useAccount();
 
   if (requestRandomnessPayment) {
     tooltipTexts.push(
@@ -31,12 +33,14 @@ export const PoolInfo = ({
 
   return (
     <Tooltip texts={tooltipTexts} position="top">
-      <AppButton
-        text={`Total Pool Balance: ${formatEther(prizePoolBalance)} ETH`}
-        rounded="lg"
-        contentPosition="left"
-        content={<Info size={20} strokeWidth={2.5} />}
-      />
+      {isConnected && (
+        <AppButton
+          text={`Total Pool Balance: ${formatEther(prizePoolBalance)} ETH`}
+          rounded="lg"
+          contentPosition="left"
+          content={<Info size={20} strokeWidth={2.5} />}
+        />
+      )}
     </Tooltip>
   );
 };

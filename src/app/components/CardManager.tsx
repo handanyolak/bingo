@@ -216,7 +216,7 @@ export const CardManager = () => {
   const isSubmitCardLoading =
     isSubmitCardPending || isSubmitCardConfirming || waitingSubmitEvent;
 
-  if (isLoading) {
+  if (isLoading && isConnected) {
     return (
       <div className={styles.cardManager__container}>
         <Loader2 className="global-loader" />

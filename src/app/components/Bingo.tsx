@@ -28,7 +28,7 @@ import confettiAnimation from "../../../public/animations/confetti.json";
 
 export const Bingo = () => {
   const t = useTranslations("controls");
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const dispatch = useAppDispatch();
   const { key } = useAccountChange();
   const [showConfetti, setShowConfetti] = useState(true);
@@ -77,7 +77,7 @@ export const Bingo = () => {
     }
   }, [isGameFinishedInUi, isWinner]);
 
-  if (contractLoading) {
+  if (contractLoading && isConnected) {
     return <Loader />;
   }
 

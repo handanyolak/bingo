@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { useAccount } from "wagmi";
 
 import {
   selectDrawnNumbers,
@@ -23,6 +24,7 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
   const prevDrawnLength = useRef<number>(0);
   const animationKey = useRef<number>(0);
   const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
+  const { isConnected } = useAccount();
 
   useEffect(() => {
     if (drawnNumbers.length > 0 || isDrawing) {
@@ -74,7 +76,7 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
     }
   }, [drawnNumbers]);
 
-  if (loading) {
+  if (loading && isConnected) {
     return (
       <div className={styles.drawnNumbers}>
         <div className={styles.drawnNumbers__container}>
