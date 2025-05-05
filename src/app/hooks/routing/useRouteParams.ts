@@ -21,6 +21,9 @@ export const useRouteParams = () => {
   const [selectedGameId, setSelectedGameId] = useState<bigint>(BigInt(0));
   const [selectedAddress, setSelectedAddress] = useState<string>(zeroAddress);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [lastConnectedAddress, setLastConnectedAddress] = useState<
+    string | undefined
+  >(undefined);
 
   const updateURL = (params: { gameId?: bigint; address?: string }) => {
     const currentGameId = params.gameId?.toString() || searchParams.get("id");
@@ -92,17 +95,61 @@ export const useRouteParams = () => {
   useEffect(() => {
     if (!contractData || isContractLoading) return;
 
-    if (isConnected && connectedAddress) {
-      updateAddressURL(connectedAddress);
-      setSelectedAddress(connectedAddress);
-    } else {
-      updateAddressURL(zeroAddress);
-      setSelectedAddress(zeroAddress);
+    if (connectedAddress !== lastConnectedAddress && isConnected) {
+      setLastConnectedAddress(connectedAddress || undefined);
+
+      const urlAddress = searchParams.get("selectedAddress");
+
+      if (
+        connectedAddress &&
+        (!urlAddress ||
+          urlAddress === lastConnectedAddress ||
+          urlAddress === zeroAddress)
+      ) {
+        updateAddressURL(connectedAddress);
+        setSelectedAddress(connectedAddress);
+      }
+    }
+
+    if (!isConnected && lastConnectedAddress) {
+      setLastConnectedAddress(undefined);
+
+      const urlAddress = searchParams.get("selectedAddress");
+
+      if (urlAddress === lastConnectedAddress) {
+        updateAddressURL(zeroAddress);
+        setSelectedAddress(zeroAddress);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectedAddress, isConnected, contractData, isContractLoading]);
 
+  useEffect(() => {
+    if (!contractData || isContractLoading) return;
+
+    const urlAddress = searchParams.get("selectedAddress");
+
+    if (urlAddress && urlAddress !== selectedAddress) {
+      setSelectedAddress(urlAddress);
+    } else if (!urlAddress && isConnected && connectedAddress) {
+      updateAddressURL(connectedAddress);
+      setSelectedAddress(connectedAddress);
+    } else if (!urlAddress && (!isConnected || !connectedAddress)) {
+      updateAddressURL(zeroAddress);
+      setSelectedAddress(zeroAddress);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    searchParams,
+    isConnected,
+    connectedAddress,
+    contractData,
+    isContractLoading,
+  ]);
+
   const updateSelectedAddress = (address: string) => {
+    if (!address) return;
+
     setSelectedAddress(address);
     updateAddressURL(address);
   };
@@ -141,10 +188,16 @@ export const useSelectedGameId = () => {
 };
 
 export const useSelectedAddress = () => {
-  const { selectedAddress, updateAddressURL } = useRouteParams();
+  const { selectedAddress, updateSelectedAddress } = useRouteParams();
+
+  const updateURL = (address: string) => {
+    if (!address) return;
+
+    updateSelectedAddress(address);
+  };
 
   return {
     selectedAddress,
-    updateURL: updateAddressURL,
+    updateURL,
   };
 };
