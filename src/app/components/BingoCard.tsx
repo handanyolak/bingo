@@ -15,6 +15,12 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/BingoCard.module.scss";
 
+const DEFAULT_CARD_CONFIG = {
+  BINGO_MIN_NUMBER: 1,
+  BINGO_MAX_NUMBER: 75,
+  BINGO_CARD_NUMBERS_COUNT: 25,
+};
+
 export const BingoCard = () => {
   const t = useTranslations("controls");
   const {
@@ -44,27 +50,27 @@ export const BingoCard = () => {
   }, [isCurrentGame, contractData?.isPlayerExists]);
 
   const getCardConfig = useMemo(() => {
-    if (!contractData) return null;
-
-    return {
-      BINGO_MIN_NUMBER: contractData.BINGO_MIN_NUMBER,
-      BINGO_MAX_NUMBER: contractData.BINGO_MAX_NUMBER,
-      BINGO_CARD_NUMBERS_COUNT: contractData.BINGO_CARD_NUMBERS_COUNT,
-    };
+    if (contractData) {
+      return {
+        BINGO_MIN_NUMBER: contractData.BINGO_MIN_NUMBER,
+        BINGO_MAX_NUMBER: contractData.BINGO_MAX_NUMBER,
+        BINGO_CARD_NUMBERS_COUNT: contractData.BINGO_CARD_NUMBERS_COUNT,
+      };
+    }
+    return DEFAULT_CARD_CONFIG;
   }, [contractData]);
 
   useEffect(() => {
-    if (isContractDataLoading || !contractData) return;
-
     const areCardsEmpty = cardNumbers.every((num) => num === 0);
-    const hasValidPlayerCards =
-      contractData.isPlayerExists &&
-      contractData.playerDetails &&
-      contractData.playerDetails.cardNumbers &&
-      Array.isArray(contractData.playerDetails.cardNumbers) &&
-      contractData.playerDetails.cardNumbers.some((n) => n > 0);
 
-    if (hasValidPlayerCards) {
+    if (
+      !isContractDataLoading &&
+      contractData?.isPlayerExists &&
+      contractData?.playerDetails &&
+      contractData?.playerDetails.cardNumbers &&
+      Array.isArray(contractData.playerDetails.cardNumbers) &&
+      contractData.playerDetails.cardNumbers.some((n) => n > 0)
+    ) {
       dispatch(
         setCardNumbers(
           contractData.playerDetails!.cardNumbers as BingoCardNumbers
