@@ -1,0 +1,24 @@
+{
+  "rules": [
+    {
+      "description": "Run all tests after code changes",
+      "pattern": ".*değişiklik.*|.*düzenleme.*|.*güncelleme.*|.*code.*change.*",
+      "action": "run_all_tests_after_code_changes"
+    },
+    {
+      "description": "Use consistent terminology for bingo game",
+      "pattern": ".*bingo.*",
+      "action": "use_consistent_bingo_terminology"
+    },
+    {
+      "description": "Be careful with web3 and blockchain recommendations",
+      "pattern": ".*web3.*|.*blockchain.*|.*smart contract.*|.*ethereum.*",
+      "action": "be_careful_with_web3_recommendations"
+    }
+  ],
+  "customActions": {
+    "run_all_tests_after_code_changes": "Run ALL tests with 'npm test' command after code changes and check the results. Run all test suites, not just tests for the modified files.",
+    "use_consistent_bingo_terminology": "Use consistent terminology for the bingo game: 'card', 'draw', 'number', 'game', 'player', 'winner'. When speaking Turkish, use: 'kart', 'çekiliş', 'sayı', 'oyun', 'oyuncu', 'kazanan'.",
+    "be_careful_with_web3_recommendations": "Be careful with security when making recommendations related to Web3, blockchain, smart contracts, or Ethereum, and follow best practices."
+  }
+} 
