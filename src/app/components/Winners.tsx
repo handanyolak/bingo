@@ -15,6 +15,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { publicClient } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { useContractReads, useContractWrite } from "@/lib/web3";
+import { useWinnerStatus } from "@/app/hooks/useWinnerStatus";
 import styles from "@/styles/Winners.module.scss";
 
 interface WinnersProps {
@@ -40,6 +41,7 @@ export const Winners = ({
   const t = useTranslations();
   const { address, isConnected } = useAccount();
   const { data: contractData, isLoading } = useContractReads();
+  const { isWinner } = useWinnerStatus();
 
   const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
 
@@ -180,9 +182,6 @@ export const Winners = ({
     claimedGameIds,
     fetchClaimedRewards,
   ]);
-
-  const isWinner =
-    address && contractData?.winners.winnerAddresses?.includes(address);
 
   if (isLoading && isConnected) {
     return (
