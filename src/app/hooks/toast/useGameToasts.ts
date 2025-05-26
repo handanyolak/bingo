@@ -15,9 +15,14 @@ import {
   selectDrawnNumbersWithTimestamp,
 } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { ContractReads } from "@/lib/web3";
+import { useContractReads } from "@/lib/web3";
 
-export const useGameToasts = (contractData: ContractReads | undefined) => {
+export const dismissAllToasts = () => {
+  toast.dismiss();
+};
+
+export const useGameToasts = () => {
+  const { data: contractData } = useContractReads();
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const displayedDrawnNumbers = useAppSelector(selectDrawnNumbers);
@@ -49,7 +54,7 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
       selectedGameId !== undefined &&
       selectedGameId !== currentlyTrackedGameId
     ) {
-      toast.dismiss();
+      dismissAllToasts();
 
       setCurrentlyTrackedGameId(selectedGameId);
       setHasShownWinToast(false);
@@ -171,13 +176,8 @@ export const useGameToasts = (contractData: ContractReads | undefined) => {
     getWinToastId,
   ]);
 
-  const dismissAllToasts = useCallback(() => {
-    toast.dismiss();
-  }, []);
-
   return {
     isPlayerCardComplete,
-    dismissAllToasts,
     hasUserParticipatedInGame,
   };
 };
