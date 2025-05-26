@@ -1,80 +1,106 @@
 import { Loader2 } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
-import { useAccount } from "wagmi";
 
-import {
-  selectDrawnNumbers,
-  selectIsDrawing,
-  selectIsGameFinishedInUi,
-} from "@/lib/store/bingo";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useDrawnNumbersDisplay } from "@/app/hooks/useDrawnNumbersDisplay";
 import styles from "@/styles/DrawnNumbers.module.scss";
+import {
+  DrawnNumbersProps,
+  CenterNumberProps,
+  NumberCellProps,
+  NumberGridProps,
+} from "@/types/components";
 
-interface DrawnNumbersProps {
-  loading?: boolean;
-}
+const CenterNumber = ({ number, animationKey }: CenterNumberProps) => (
+  <div
+    className={styles.drawnNumbers__centerNumber}
+    key={`center-number-${number}-${animationKey}`}
+  >
+    {number}
+  </div>
+);
+
+const NumberCell = ({
+  number,
+  isLatest,
+  animationKey,
+  index,
+}: NumberCellProps) => (
+  <div
+    key={`container-${number}-${index}`}
+    className={styles.drawnNumbers__cellContainer}
+  >
+    <div
+      className={`${styles.drawnNumbers__cell} ${
+        isLatest ? styles.drawnNumbers__cell_latest : ""
+      }`}
+      key={`cell-${number}-${isLatest ? animationKey : index}`}
+    >
+      {number}
+    </div>
+  </div>
+);
+
+const LoadingState = () => (
+  <div key="loading-indicator" className={styles.drawnNumbers__centered}>
+    <Loader2 className="animate-spin" size={100} />
+  </div>
+);
+
+const NumberGrid = ({
+  drawnNumbers,
+  latestDrawnNumber,
+  pulseOnce,
+  animationKey,
+  isGameFinishedInUi,
+  isDrawing,
+  totalCells,
+}: NumberGridProps) => {
+  const placeholderCount =
+    totalCells -
+    drawnNumbers.length -
+    (isDrawing && drawnNumbers.length === 0 ? 1 : 0);
+
+  return (
+    <div className={styles.drawnNumbers__grid}>
+      {drawnNumbers.map((drawnNumber, index) => {
+        const isLatestNumber =
+          pulseOnce && drawnNumber === latestDrawnNumber && !isGameFinishedInUi;
+        return (
+          <NumberCell
+            key={`number-${drawnNumber}-${index}`}
+            number={drawnNumber}
+            isLatest={isLatestNumber}
+            animationKey={animationKey}
+            index={index}
+          />
+        );
+      })}
+
+      {isDrawing && drawnNumbers.length === 0 && <LoadingState />}
+
+      {Array.from({ length: placeholderCount }).map((_, index) => (
+        <div
+          key={`placeholder-${index}`}
+          className={styles.drawnNumbers__placeholder}
+        />
+      ))}
+    </div>
+  );
+};
 
 export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
-  const drawnNumbers = useAppSelector(selectDrawnNumbers);
-  const isDrawing = useAppSelector(selectIsDrawing);
-  const [isVisible, setIsVisible] = useState(false);
-  const [currentNumber, setCurrentNumber] = useState<number | null>(null);
-  const [showingNumber, setShowingNumber] = useState(false);
-  const [pulseOnce, setPulseOnce] = useState(false);
-  const prevDrawnLength = useRef<number>(0);
-  const animationKey = useRef<number>(0);
-  const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
-  const { isConnected } = useAccount();
-
-  useEffect(() => {
-    if (drawnNumbers.length > 0 || isDrawing) {
-      setIsVisible(true);
-    }
-  }, [drawnNumbers.length, isDrawing]);
-
-  useEffect(() => {
-    if (drawnNumbers.length === 0 && !isDrawing) {
-      setIsVisible(false);
-      prevDrawnLength.current = 0;
-    }
-  }, [drawnNumbers.length, isDrawing]);
-
-  useEffect(() => {
-    if (drawnNumbers.length === 0) {
-      setCurrentNumber(null);
-      setShowingNumber(false);
-      setPulseOnce(false);
-    }
-  }, [drawnNumbers.length]);
-
-  useEffect(() => {
-    if (drawnNumbers.length > prevDrawnLength.current) {
-      const lastDrawnNumber = drawnNumbers[drawnNumbers.length - 1];
-
-      animationKey.current += 1;
-
-      setCurrentNumber(lastDrawnNumber);
-      setShowingNumber(true);
-
-      setPulseOnce(true);
-
-      const timer = setTimeout(() => {
-        setShowingNumber(false);
-
-        setTimeout(() => {
-          setPulseOnce(false);
-        }, 1000);
-      }, 2000);
-
-      prevDrawnLength.current = drawnNumbers.length;
-
-      return () => clearTimeout(timer);
-    }
-
-    if (prevDrawnLength.current === 0 && drawnNumbers.length > 0) {
-      prevDrawnLength.current = drawnNumbers.length;
-    }
-  }, [drawnNumbers]);
+  const {
+    isVisible,
+    currentNumber,
+    showingNumber,
+    pulseOnce,
+    animationKey,
+    totalCells,
+    latestDrawnNumber,
+    drawnNumbers,
+    isDrawing,
+    isGameFinishedInUi,
+    isConnected,
+  } = useDrawnNumbersDisplay();
 
   if (loading && isConnected) {
     return (
@@ -88,68 +114,22 @@ export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
 
   if (!isVisible) return null;
 
-  const totalCells = 15 * 5;
-  const latestDrawnNumber =
-    drawnNumbers.length > 0 ? drawnNumbers[drawnNumbers.length - 1] : null;
-
   return (
     <div className={styles.drawnNumbers}>
       {showingNumber && currentNumber && !isGameFinishedInUi && (
-        <div
-          className={styles.drawnNumbers__centerNumber}
-          key={`center-number-${currentNumber}-${animationKey.current}`}
-        >
-          {currentNumber}
-        </div>
+        <CenterNumber number={currentNumber} animationKey={animationKey} />
       )}
 
       <div className={styles.drawnNumbers__container}>
-        <div className={styles.drawnNumbers__grid}>
-          {drawnNumbers.map((drawnNumber, index) => {
-            const isLatestNumber =
-              pulseOnce && drawnNumber === latestDrawnNumber;
-            return (
-              <div
-                key={`container-${drawnNumber}-${index}`}
-                className={styles.drawnNumbers__cellContainer}
-              >
-                <div
-                  className={`${styles.drawnNumbers__cell} ${
-                    isLatestNumber && !isGameFinishedInUi
-                      ? styles.drawnNumbers__cell_latest
-                      : ""
-                  }`}
-                  key={`cell-${drawnNumber}-${
-                    isLatestNumber ? animationKey.current : index
-                  }`}
-                >
-                  {drawnNumber}
-                </div>
-              </div>
-            );
-          })}
-
-          {isDrawing && drawnNumbers.length === 0 && (
-            <div
-              key="loading-indicator"
-              className={styles.drawnNumbers__centered}
-            >
-              <Loader2 className="animate-spin" size={100} />
-            </div>
-          )}
-
-          {Array.from({
-            length:
-              totalCells -
-              drawnNumbers.length -
-              (isDrawing && drawnNumbers.length === 0 ? 1 : 0),
-          }).map((_, index) => (
-            <div
-              key={`placeholder-${index}`}
-              className={styles.drawnNumbers__placeholder}
-            />
-          ))}
-        </div>
+        <NumberGrid
+          drawnNumbers={drawnNumbers}
+          latestDrawnNumber={latestDrawnNumber}
+          pulseOnce={pulseOnce}
+          animationKey={animationKey}
+          isGameFinishedInUi={isGameFinishedInUi}
+          isDrawing={isDrawing}
+          totalCells={totalCells}
+        />
       </div>
     </div>
   );
