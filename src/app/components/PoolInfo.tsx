@@ -4,20 +4,17 @@ import { useAccount } from "wagmi";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { Tooltip } from "@/app/components/common/Tooltip";
+import { useContractReads } from "@/lib/web3";
 
-interface PoolInfoProps {
-  prizePoolBalance: bigint;
-  requestRandomnessPayment?: bigint;
-  requestRandomNumbersRefund?: bigint;
-}
-
-export const PoolInfo = ({
-  prizePoolBalance,
-  requestRandomnessPayment,
-  requestRandomNumbersRefund,
-}: PoolInfoProps) => {
-  const tooltipTexts = [];
+export const PoolInfo = () => {
   const { isConnected } = useAccount();
+  const { data: contractData, isLoading } = useContractReads();
+
+  const prizePoolBalance = contractData?.prizePoolBalance ?? BigInt(0);
+  const requestRandomnessPayment = contractData?.requestRandomnessPayment;
+  const requestRandomNumbersRefund = contractData?.requestRandomNumbersRefund;
+
+  const tooltipTexts = [];
 
   if (requestRandomnessPayment) {
     tooltipTexts.push(
