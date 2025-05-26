@@ -5921,6 +5921,11 @@ next-intl@^3.26.3:
     negotiator "^1.0.0"
     use-intl "^3.26.3"
 
+next-router-mock@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/next-router-mock/-/next-router-mock-1.0.2.tgz#aab37c2c4675dab2d1b24efacc138ac615ef02f3"
+  integrity sha512-9bEA4Sytj1N6xp7UlE4L++QmuU2ZcNTs33Fx8ypNToMlIA7zEotNc0RP0POPP+C3PHWz61U66V6qRDqUg0b3Lg==
+
 next-themes@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/next-themes/-/next-themes-0.4.4.tgz#ce6f68a4af543821bbc4755b59c0d3ced55c2d13"
