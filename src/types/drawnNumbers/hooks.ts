@@ -1,4 +1,3 @@
-// DrawnNumbers Hook Types
 export interface UseDrawnNumbersDisplayReturn {
   isVisible: boolean;
   currentNumber: number | null;

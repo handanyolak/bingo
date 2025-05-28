@@ -1,4 +1,3 @@
-// DrawnNumbers Component Types
 export interface DrawnNumbersProps {
   loading?: boolean;
 }
