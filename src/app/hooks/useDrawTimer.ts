@@ -9,29 +9,11 @@ import {
   getRemainingSeconds,
 } from "@/lib/utils/time";
 import { ContractReads } from "@/lib/web3";
-
-interface LottieAnimationData {
-  ip: number;
-  op: number;
-  fr: number;
-  [key: string]: unknown;
-}
-
-interface UseDrawTimerProps {
-  contractData?: ContractReads;
-  isLoading?: boolean;
-  isError?: boolean;
-  lottieRef?: React.RefObject<LottieRefCurrentProps | null>;
-  timerAnimation?: LottieAnimationData;
-  isGameOver?: boolean;
-}
-
-interface UseDrawTimerReturn {
-  remainingTime: number;
-  minutesRemaining: number;
-  secondsRemaining: number;
-  endTime: number;
-}
+import type {
+  UseDrawTimerProps,
+  UseDrawTimerReturn,
+  LottieAnimationData,
+} from "@/types";
 
 export const useDrawTimer = ({
   contractData,
