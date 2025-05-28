@@ -9,15 +9,7 @@ import { useAccount } from "wagmi";
 import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/Players.module.scss";
-
-interface PlayersProps {
-  onAddressClick: (address: Address) => void;
-  renderMode?: "virtualized" | "normal";
-  customRender?: (addresses: readonly Address[]) => ReactNode;
-  enableDynamicMeasurement?: boolean;
-  debug?: boolean;
-  horizontal?: boolean;
-}
+import type { PlayersProps } from "@/types/participants";
 
 export const Players = ({
   onAddressClick,

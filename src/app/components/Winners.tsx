@@ -17,18 +17,7 @@ import { abi } from "@/lib/web3";
 import { useContractReads, useContractWrite } from "@/lib/web3";
 import { useWinnerStatus } from "@/app/hooks/useWinnerStatus";
 import styles from "@/styles/Winners.module.scss";
-
-interface WinnersProps {
-  onAddressClick: (address: Address) => void;
-  renderMode?: "virtualized" | "normal";
-  customRender?: (
-    addresses: readonly Address[],
-    renderWinner: (address: Address, index: number) => ReactNode
-  ) => ReactNode;
-  enableDynamicMeasurement?: boolean;
-  debug?: boolean;
-  horizontal?: boolean;
-}
+import type { WinnersProps } from "@/types/participants";
 
 export const Winners = ({
   onAddressClick,

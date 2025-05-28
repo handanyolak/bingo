@@ -5,13 +5,7 @@ import { ReactNode } from "react";
 
 import { useClickOutside } from "@/app/hooks/useClickOutside";
 import styles from "@/styles/AppModal.module.scss";
-
-interface AppModalProps {
-  children: ReactNode;
-  title?: string;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { AppModalProps } from "@/types/common";
 
 export const AppModal = ({
   children,

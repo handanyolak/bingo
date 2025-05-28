@@ -7,7 +7,7 @@ import {
   CenterNumberProps,
   NumberCellProps,
   NumberGridProps,
-} from "@/types/components";
+} from "@/types/drawnNumbers";
 
 const CenterNumber = ({ number, animationKey }: CenterNumberProps) => (
   <div

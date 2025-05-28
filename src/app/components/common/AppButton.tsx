@@ -1,19 +1,7 @@
 "use client";
 
 import styles from "@/styles/AppButton.module.scss";
-
-type RoundedSize = "full" | "lg" | "md" | "sm";
-
-interface AppButtonProps {
-  text: string;
-  content?: React.ReactNode;
-  contentPosition?: "left" | "right";
-  disabled?: boolean;
-  className?: string;
-  rounded?: RoundedSize;
-  animated?: boolean;
-  onClick?: () => void;
-}
+import type { AppButtonProps } from "@/types/common";
 
 export const AppButton = ({
   text,

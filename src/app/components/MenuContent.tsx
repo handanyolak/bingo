@@ -6,11 +6,7 @@ import { useTheme } from "next-themes";
 import { AppButton } from "@/app/components/common/AppButton";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import styles from "@/styles/MenuContent.module.scss";
-
-interface MenuContentProps {
-  onModalOpen: () => void;
-  onColorChange: () => void;
-}
+import type { MenuContentProps } from "@/types/layout";
 
 export const MenuContent = ({
   onModalOpen,
