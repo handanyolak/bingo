@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useTransactionToast } from "../useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
-import type { UseRandomNumbersReturn } from "@/types/cardManager";
+import type { UseRandomNumbersReturn } from "@/types/card-manager";
 
 export const useRandomNumbers = (
   refetch: () => void

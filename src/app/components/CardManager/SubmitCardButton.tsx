@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { useCardSubmission } from "@/app/hooks/card-manager";
-import type { SubmitCardButtonProps } from "@/types/cardManager";
+import type { SubmitCardButtonProps } from "@/types/card-manager";
 
 export const SubmitCardButton = ({
   refetch,

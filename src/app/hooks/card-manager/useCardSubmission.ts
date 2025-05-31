@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { useTransactionToast } from "../useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
-import type { UseCardSubmissionReturn } from "@/types/cardManager";
+import type { UseCardSubmissionReturn } from "@/types/card-manager";
 
 export const useCardSubmission = (
   refetch: () => void

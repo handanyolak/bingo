@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import styles from "@/styles/GameTimer.module.scss";
-import type { GameTimerProps } from "@/types/cardManager";
+import type { GameTimerProps } from "@/types/card-manager";
 
 import timerAnimation from "../../../../public/animations/timer.json";
 

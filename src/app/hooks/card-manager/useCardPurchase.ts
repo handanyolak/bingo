@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useTransactionToast } from "../useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
-import type { UseCardPurchaseReturn } from "@/types/cardManager";
+import type { UseCardPurchaseReturn } from "@/types/card-manager";
 
 export const useCardPurchase = (refetch: () => void): UseCardPurchaseReturn => {
   const t = useTranslations();

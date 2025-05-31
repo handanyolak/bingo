@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type {
   UseCardManagerStateProps,
   UseCardManagerStateReturn,
-} from "@/types/cardManager";
+} from "@/types/card-manager";
 
 export const useCardManagerState = ({
   contractData,

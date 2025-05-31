@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import type {
   UseGameStateProps,
   UseGameStateReturn,
-} from "@/types/cardManager";
+} from "@/types/card-manager";
 
 export const useGameState = ({
   contractData,

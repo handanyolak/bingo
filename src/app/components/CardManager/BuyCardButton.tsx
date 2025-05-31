@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { useCardPurchase } from "@/app/hooks/card-manager";
-import type { BuyCardButtonProps } from "@/types/cardManager";
+import type { BuyCardButtonProps } from "@/types/card-manager";
 
 export const BuyCardButton = ({ refetch }: BuyCardButtonProps) => {
   const t = useTranslations();
