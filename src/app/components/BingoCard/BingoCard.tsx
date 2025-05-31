@@ -1,7 +1,7 @@
 import { useBingoCardData, useBingoCardRefresh } from "@/app/hooks/bingo-card";
 import { RefreshButton } from "./RefreshButton";
 import { BingoCardGrid } from "./BingoCardGrid";
-import styles from "@/styles/components/bingo-card/BingoCard.module.scss";
+import styles from "@/styles/bingo-card/BingoCard.module.scss";
 
 export const BingoCard = () => {
   const {

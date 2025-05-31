@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { BingoCardCell } from "./BingoCardCell";
 import { BingoCardGridProps } from "@/types";
-import styles from "@/styles/components/bingo-card/BingoCardGrid.module.scss";
+import styles from "@/styles/bingo-card/BingoCardGrid.module.scss";
 
 export const BingoCardGrid = ({
   playerParticipationStatus,

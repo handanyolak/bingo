@@ -1,5 +1,5 @@
 import { BingoCardCellProps } from "@/types";
-import styles from "@/styles/components/bingo-card/BingoCardCell.module.scss";
+import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
 
 export const BingoCardCell = ({
   number,

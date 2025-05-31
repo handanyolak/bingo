@@ -1,6 +1,6 @@
 import { RefreshCcw } from "lucide-react";
 import { RefreshButtonProps } from "@/types";
-import styles from "@/styles/components/bingo-card/RefreshButton.module.scss";
+import styles from "@/styles/bingo-card/RefreshButton.module.scss";
 
 export const RefreshButton = ({
   isRefreshingCard,
