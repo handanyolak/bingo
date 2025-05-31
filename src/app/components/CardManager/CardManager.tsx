@@ -3,7 +3,7 @@
 import { useAccount } from "wagmi";
 
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import { useGameState, useCardManagerState } from "@/app/hooks/cardManager";
+import { useGameState, useCardManagerState } from "@/app/hooks/card-manager";
 import styles from "@/styles/CardManager.module.scss";
 
 import { BuyCardButton } from "./BuyCardButton";

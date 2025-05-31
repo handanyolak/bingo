@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
-import { useRandomNumbers } from "@/app/hooks/cardManager";
+import { useRandomNumbers } from "@/app/hooks/card-manager";
 import type { RequestRandomButtonProps } from "@/types/cardManager";
 
 export const RequestRandomButton = ({ refetch }: RequestRandomButtonProps) => {

@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
-import { useCardSubmission } from "@/app/hooks/cardManager";
+import { useCardSubmission } from "@/app/hooks/card-manager";
 import type { SubmitCardButtonProps } from "@/types/cardManager";
 
 export const SubmitCardButton = ({
