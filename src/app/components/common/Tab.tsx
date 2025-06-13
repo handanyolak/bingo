@@ -1,37 +1,22 @@
 "use client";
 
-import React, { useState, Children, ReactElement } from "react";
+import React from "react";
 
+import { useTab } from "@/app/hooks/useTab";
 import styles from "@/styles/Tab.module.scss";
-
-type TabItemProps = {
-  title: string;
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-};
-
-type TabProps = {
-  children: ReactElement<TabItemProps> | ReactElement<TabItemProps>[];
-  defaultTab?: number;
-  onTabChange?: (index: number) => void;
-};
+import type { TabItemProps, TabProps } from "@/types/tab";
 
 export const TabItem = ({ children }: TabItemProps) => {
   return <div className={styles.tab__content}>{children}</div>;
 };
 
 export const Tab = ({ children, defaultTab = 0, onTabChange }: TabProps) => {
-  const [activeTab, setActiveTab] = useState(defaultTab);
-
-  const tabs = Children.toArray(children).filter(
-    (child): child is ReactElement<TabItemProps> =>
-      React.isValidElement(child) && child.type === TabItem
+  const { activeTab, tabs, handleTabChange } = useTab(
+    children,
+    TabItem,
+    defaultTab,
+    onTabChange
   );
-
-  const handleTabChange = (index: number) => {
-    setActiveTab(index);
-    onTabChange?.(index);
-  };
 
   return (
     <div className={styles.tab}>
@@ -61,5 +46,3 @@ export const Tab = ({ children, defaultTab = 0, onTabChange }: TabProps) => {
     </div>
   );
 };
-
-export type { TabProps, TabItemProps };
