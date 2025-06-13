@@ -5,3 +5,4 @@ export * from "./common";
 export * from "./layout";
 export * from "./participants";
 export * from "./bingo-card";
+export * from "./winners";
