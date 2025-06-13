@@ -6,24 +6,27 @@ import { useContractReads } from "@/lib/web3";
 export const useBingoPayments = () => {
   const { data: contractData, isLoading } = useContractReads();
 
-  const paymentsData = useMemo(() => {
-    const requestRandomnessPayment = contractData?.requestRandomnessPayment;
-    const requestRandomNumbersRefund = contractData?.requestRandomNumbersRefund;
-    const prizePoolBalance = contractData?.prizePoolBalance ?? BigInt(0);
+  const formattedRandomnessPayment = useMemo(() => {
+    return contractData?.requestRandomnessPayment
+      ? formatEther(contractData.requestRandomnessPayment)
+      : null;
+  }, [contractData?.requestRandomnessPayment]);
 
-    return {
-      formattedRandomnessPayment: requestRandomnessPayment
-        ? formatEther(requestRandomnessPayment)
-        : null,
-      formattedRandomNumbersRefund: requestRandomNumbersRefund
-        ? formatEther(requestRandomNumbersRefund)
-        : null,
-      formattedPrizePoolBalance: formatEther(prizePoolBalance),
-    };
-  }, [contractData]);
+  const formattedRandomNumbersRefund = useMemo(() => {
+    return contractData?.requestRandomNumbersRefund
+      ? formatEther(contractData.requestRandomNumbersRefund)
+      : null;
+  }, [contractData?.requestRandomNumbersRefund]);
+
+  const formattedPrizePoolBalance = useMemo(() => {
+    const prizePoolBalance = contractData?.prizePoolBalance ?? BigInt(0);
+    return formatEther(prizePoolBalance);
+  }, [contractData?.prizePoolBalance]);
 
   return {
-    ...paymentsData,
+    formattedRandomnessPayment,
+    formattedRandomNumbersRefund,
+    formattedPrizePoolBalance,
     isLoading,
   };
 };
