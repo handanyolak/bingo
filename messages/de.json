@@ -23,6 +23,7 @@
   "toast": {
     "gameWon": "Herzlichen Glückwunsch! Sie haben gewonnen!",
     "gameLost": "Es tut uns leid! Das Spiel ist vorbei, Sie haben verloren.",
+    "cardNotSubmitted": "Es tut uns leid! Sie haben Ihre Karte nicht rechtzeitig eingereicht.",
     "gameIdNotAvailable": "Spiel-ID ist nicht verfügbar",
     "initiating": "Blockchain-Transaktion wird initiiert...",
     "confirming": "Transaktion wird in der Blockchain bestätigt...",

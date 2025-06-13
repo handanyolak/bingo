@@ -23,6 +23,7 @@
   "toast": {
     "gameWon": "Tebrikler! Kazandınız!",
     "gameLost": "Üzgünüz! Oyun bitti, kaybettiniz.",
+    "cardNotSubmitted": "Üzgünüz! Kartınızı zamanında submit etmediniz.",
     "gameIdNotAvailable": "Oyun ID'si mevcut değil",
     "initiating": "Blokzincir işlemi başlatılıyor...",
     "confirming": "Blokzincirde işlem onaylanıyor...",
