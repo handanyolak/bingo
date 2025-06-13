@@ -2,8 +2,6 @@
 
 import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { Address } from "viem";
 import { useAccount } from "wagmi";
 
 import { AppModal } from "@/app/components/common/AppModal";
@@ -13,32 +11,24 @@ import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
 import { Players } from "@/app/components/Players";
 import { Winners } from "@/app/components/Winners";
-import { useColor } from "@/app/contexts/ColorContext";
-import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useHeaderState } from "@/app/hooks/header/useHeaderState";
+import { useHeaderActions } from "@/app/hooks/header/useHeaderActions";
 import { useContractReads } from "@/lib/web3/";
 import styles from "@/styles/Header.module.scss";
 
 export const Header = () => {
   const t = useTranslations();
-  const { cycleColor } = useColor();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: contractData, isLoading: gameLoading } = useContractReads();
-  const { updateURL } = useSelectedAddress();
+  const {
+    isModalOpen,
+    isMobileMenuOpen,
+    handleModalOpen,
+    handleModalClose,
+    toggleMobileMenu,
+  } = useHeaderState();
   const { isConnected } = useAccount();
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleColorChange = () => {
-    cycleColor();
-  };
-
-  const handleAddressClick = (address: Address) => {
-    updateURL(address);
-    setIsModalOpen(false);
-  };
+  const { data: contractData, isLoading: gameLoading } = useContractReads();
+  const { handleColorChange, handleAddressClick } =
+    useHeaderActions(handleModalClose);
 
   return (
     <header className={styles.header}>
@@ -53,10 +43,7 @@ export const Header = () => {
             />
           </div>
           <div className={styles.mobileView}>
-            <MobileMenu
-              isOpen={isMobileMenuOpen}
-              onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
+            <MobileMenu isOpen={isMobileMenuOpen} onToggle={toggleMobileMenu}>
               <MenuContent
                 onModalOpen={handleModalOpen}
                 onColorChange={handleColorChange}
@@ -71,7 +58,7 @@ export const Header = () => {
           <ConnectButton />
           {gameLoading && isConnected && <Loader2 className="global-loader" />}
           <div className={styles.header__gameIdContainer}>
-            {contractData && (
+            {contractData?.targetGameId && (
               <div className={styles.header__gameId}>
                 #{contractData.targetGameId}
               </div>
@@ -80,11 +67,7 @@ export const Header = () => {
         </div>
       </div>
 
-      <AppModal
-        title="Bingo"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
+      <AppModal title="Bingo" isOpen={isModalOpen} onClose={handleModalClose}>
         <Tab>
           <TabItem
             title={t("controls.players")}
