@@ -138,12 +138,14 @@ export const useGameToasts = () => {
           toastId: getCardNotSubmittedToastId(),
         });
         setHasShownCardNotSubmittedToast(true);
-      } else if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
-        setHasShownWinToast(true);
-      } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("toast.gameLost"), { toastId: getLoseToastId() });
-        setHasShownLoseToast(true);
+      } else if (!hasPlayerNotSubmittedCard()) {
+        if (isPlayerCardComplete() && !hasShownWinToast) {
+          toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
+          setHasShownWinToast(true);
+        } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
+          toast.error(t("toast.gameLost"), { toastId: getLoseToastId() });
+          setHasShownLoseToast(true);
+        }
       }
     } else if (gameFinished && isGameFinishedInUi) {
       if (hasPlayerNotSubmittedCard() && !hasShownCardNotSubmittedToast) {
@@ -151,12 +153,14 @@ export const useGameToasts = () => {
           toastId: getCardNotSubmittedToastId(),
         });
         setHasShownCardNotSubmittedToast(true);
-      } else if (isPlayerCardComplete() && !hasShownWinToast) {
-        toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
-        setHasShownWinToast(true);
-      } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
-        toast.error(t("toast.gameLost"), { toastId: getLoseToastId() });
-        setHasShownLoseToast(true);
+      } else if (!hasPlayerNotSubmittedCard()) {
+        if (isPlayerCardComplete() && !hasShownWinToast) {
+          toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
+          setHasShownWinToast(true);
+        } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
+          toast.error(t("toast.gameLost"), { toastId: getLoseToastId() });
+          setHasShownLoseToast(true);
+        }
       }
     }
   }, [
@@ -197,7 +201,7 @@ export const useGameToasts = () => {
         setHasShownCardNotSubmittedToast(true);
         dispatch(setGameFinishedInUi(true));
         stopDrawingProcess();
-      } else {
+      } else if (!hasPlayerNotSubmittedCard()) {
         toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
         setHasShownWinToast(true);
         dispatch(setGameFinishedInUi(true));
