@@ -18,7 +18,8 @@
     "rewardClaimed": "Preis beansprucht ✓",
     "notParticipated": "Sie haben an diesem Spiel nicht teilgenommen",
     "rewardClaimedMessage": "Belohnung erfolgreich beansprucht!",
-    "timeRemaining": "Verbleibende Zeit:"
+    "timeRemaining": "Verbleibende Zeit:",
+    "totalPoolBalance": "Gesamte Pool-Balance: {amount} ETH"
   },
   "toast": {
     "gameWon": "Herzlichen Glückwunsch! Sie haben gewonnen!",
