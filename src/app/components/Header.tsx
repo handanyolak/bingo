@@ -11,8 +11,7 @@ import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
 import { Players } from "@/app/components/Players";
 import { Winners } from "@/app/components/Winners";
-import { useHeaderState } from "@/app/hooks/header/useHeaderState";
-import { useHeaderActions } from "@/app/hooks/header/useHeaderActions";
+import { useHeader } from "@/app/hooks/useHeader";
 import { useContractReads } from "@/lib/web3/";
 import styles from "@/styles/Header.module.scss";
 
@@ -24,11 +23,12 @@ export const Header = () => {
     handleModalOpen,
     handleModalClose,
     toggleMobileMenu,
-  } = useHeaderState();
+    handleColorChange,
+    handleAddressClick,
+  } = useHeader();
+
   const { isConnected } = useAccount();
   const { data: contractData, isLoading: gameLoading } = useContractReads();
-  const { handleColorChange, handleAddressClick } =
-    useHeaderActions(handleModalClose);
 
   return (
     <header className={styles.header}>
