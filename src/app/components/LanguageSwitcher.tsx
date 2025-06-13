@@ -1,26 +1,15 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 
 import { AppButton } from "@/app/components/common/AppButton";
-import { useLocale } from "@/app/contexts/LocaleContext";
-import { useClickOutside } from "@/app/hooks/useClickOutside";
+import { useLanguageSwitcher } from "@/app/hooks/useLanguageSwitcher";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
 import styles from "@/styles/LanguageSwitcher.module.scss";
 
 export const LanguageSwitcher = () => {
-  const { locale, updateLocale } = useLocale();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOptionClick = (code: LanguageCode) => {
-    updateLocale(code);
-    setIsOpen(false);
-  };
-
-  const dropdownRef = useClickOutside<HTMLDivElement>(() => {
-    setIsOpen(false);
-  });
+  const { locale, isOpen, handleOptionClick, toggleDropdown, dropdownRef } =
+    useLanguageSwitcher();
 
   return (
     <div className={styles.languageSwitcher} ref={dropdownRef}>
@@ -28,7 +17,7 @@ export const LanguageSwitcher = () => {
         text={LANGUAGES[locale]}
         contentPosition="right"
         className={styles.languageSwitcher__button}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleDropdown}
         content={
           <ChevronDown
             size={20}
