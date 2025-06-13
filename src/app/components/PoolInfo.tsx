@@ -1,4 +1,5 @@
 import { Info } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
 import { AppButton } from "@/app/components/common/AppButton";
@@ -10,12 +11,13 @@ export const PoolInfo = () => {
   const { isConnected } = useAccount();
   const { formattedPrizePoolBalance } = useBingoPayments();
   const { tooltipTexts } = usePoolTooltips();
+  const t = useTranslations("controls");
 
   return (
     <Tooltip texts={tooltipTexts} position="top">
       {isConnected && (
         <AppButton
-          text={`Total Pool Balance: ${formattedPrizePoolBalance} ETH`}
+          text={t("totalPoolBalance", { amount: formattedPrizePoolBalance })}
           rounded="lg"
           contentPosition="left"
           content={<Info size={20} strokeWidth={2.5} />}
