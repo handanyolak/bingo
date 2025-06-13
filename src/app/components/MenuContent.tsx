@@ -1,10 +1,9 @@
-import { Palette, UsersRound } from "lucide-react";
-import { Sun, Moon } from "lucide-react";
+import { Palette, UsersRound, Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
+import { useMenuContent } from "@/app/hooks/useMenuContent";
 import styles from "@/styles/MenuContent.module.scss";
 import type { MenuContentProps } from "@/types/layout";
 
@@ -13,12 +12,12 @@ export const MenuContent = ({
   onColorChange,
 }: MenuContentProps) => {
   const t = useTranslations("controls");
+  const { toggleTheme, getThemeIcon } = useMenuContent();
 
-  const { theme, setTheme } = useTheme();
   return (
     <div className={styles.menuContent}>
-      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-        {theme === "dark" ? <Sun /> : <Moon />}
+      <button onClick={toggleTheme}>
+        {getThemeIcon() === "sun" ? <Sun /> : <Moon />}
       </button>
       <AppButton
         text={t("participants")}
