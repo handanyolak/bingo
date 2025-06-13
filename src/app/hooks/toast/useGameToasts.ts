@@ -39,6 +39,8 @@ export const useGameToasts = () => {
   >(null);
   const [hasShownWinToast, setHasShownWinToast] = useState(false);
   const [hasShownLoseToast, setHasShownLoseToast] = useState(false);
+  const [hasShownCardNotSubmittedToast, setHasShownCardNotSubmittedToast] =
+    useState(false);
 
   const getWinToastId = useCallback(() => {
     return `game-won-${selectedGameId?.toString()}`;
@@ -46,6 +48,10 @@ export const useGameToasts = () => {
 
   const getLoseToastId = useCallback(() => {
     return `game-lost-${selectedGameId?.toString()}`;
+  }, [selectedGameId]);
+
+  const getCardNotSubmittedToastId = useCallback(() => {
+    return `card-not-submitted-${selectedGameId?.toString()}`;
   }, [selectedGameId]);
 
   useEffect(() => {
@@ -59,6 +65,7 @@ export const useGameToasts = () => {
       setCurrentlyTrackedGameId(selectedGameId);
       setHasShownWinToast(false);
       setHasShownLoseToast(false);
+      setHasShownCardNotSubmittedToast(false);
     }
   }, [selectedGameId, contractData, currentlyTrackedGameId]);
 
@@ -96,6 +103,17 @@ export const useGameToasts = () => {
     return false;
   }, [contractData]);
 
+  const hasPlayerNotSubmittedCard = useCallback(() => {
+    if (!contractData) return false;
+
+    return (
+      contractData.isPlayerExists &&
+      isPlayerCardComplete() &&
+      contractData.playerDetails?.remainingNumbersCount ===
+        contractData.BINGO_CARD_NUMBERS_COUNT
+    );
+  }, [contractData, isPlayerCardComplete]);
+
   useEffect(() => {
     if (!contractData || !drawnNumbersWithTimestamp.length) return;
 
@@ -115,7 +133,12 @@ export const useGameToasts = () => {
       dispatch(setGameFinishedInUi(true));
       stopDrawingProcess();
 
-      if (isPlayerCardComplete() && !hasShownWinToast) {
+      if (hasPlayerNotSubmittedCard() && !hasShownCardNotSubmittedToast) {
+        toast.error(t("toast.cardNotSubmitted"), {
+          toastId: getCardNotSubmittedToastId(),
+        });
+        setHasShownCardNotSubmittedToast(true);
+      } else if (isPlayerCardComplete() && !hasShownWinToast) {
         toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
@@ -123,7 +146,12 @@ export const useGameToasts = () => {
         setHasShownLoseToast(true);
       }
     } else if (gameFinished && isGameFinishedInUi) {
-      if (isPlayerCardComplete() && !hasShownWinToast) {
+      if (hasPlayerNotSubmittedCard() && !hasShownCardNotSubmittedToast) {
+        toast.error(t("toast.cardNotSubmitted"), {
+          toastId: getCardNotSubmittedToastId(),
+        });
+        setHasShownCardNotSubmittedToast(true);
+      } else if (isPlayerCardComplete() && !hasShownWinToast) {
         toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
         setHasShownWinToast(true);
       } else if (!isPlayerCardComplete() && !hasShownLoseToast) {
@@ -139,12 +167,15 @@ export const useGameToasts = () => {
     isPlayerCardComplete,
     hasShownWinToast,
     hasShownLoseToast,
+    hasShownCardNotSubmittedToast,
+    hasPlayerNotSubmittedCard,
     dispatch,
     stopDrawingProcess,
     t,
     hasUserParticipatedInGame,
     getWinToastId,
     getLoseToastId,
+    getCardNotSubmittedToastId,
   ]);
 
   useEffect(() => {
@@ -159,21 +190,33 @@ export const useGameToasts = () => {
     if (!hasUserParticipatedInGame()) return;
 
     if (isDrawing && isPlayerCardComplete() && !hasShownWinToast) {
-      toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
-      setHasShownWinToast(true);
-      dispatch(setGameFinishedInUi(true));
-      stopDrawingProcess();
+      if (hasPlayerNotSubmittedCard() && !hasShownCardNotSubmittedToast) {
+        toast.error(t("toast.cardNotSubmitted"), {
+          toastId: getCardNotSubmittedToastId(),
+        });
+        setHasShownCardNotSubmittedToast(true);
+        dispatch(setGameFinishedInUi(true));
+        stopDrawingProcess();
+      } else {
+        toast.success(t("toast.gameWon"), { toastId: getWinToastId() });
+        setHasShownWinToast(true);
+        dispatch(setGameFinishedInUi(true));
+        stopDrawingProcess();
+      }
     }
   }, [
     contractData,
     isPlayerCardComplete,
     hasShownWinToast,
+    hasShownCardNotSubmittedToast,
+    hasPlayerNotSubmittedCard,
     isDrawing,
     dispatch,
     stopDrawingProcess,
     t,
     hasUserParticipatedInGame,
     getWinToastId,
+    getCardNotSubmittedToastId,
   ]);
 
   return {
