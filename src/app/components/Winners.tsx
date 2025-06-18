@@ -16,6 +16,22 @@ import { useWinnerStatus } from "@/app/hooks/useWinnerStatus";
 import styles from "@/styles/Winners.module.scss";
 import type { WinnersProps } from "@/types/participants";
 
+const renderWinnerItem = (
+  address: Address,
+  index: number,
+  onAddressClick: (address: Address) => void
+) => {
+  if (!address) return null;
+
+  return (
+    <div className={styles.winners__item}>
+      <span onClick={() => onAddressClick(address)}>
+        {index + 1}. {address}
+      </span>
+    </div>
+  );
+};
+
 export const Winners = ({
   onAddressClick,
   renderMode = "virtualized",
@@ -101,17 +117,8 @@ export const Winners = ({
     );
   }
 
-  // Helper functions for rendering
   const renderWinner = (winnerAddress: Address, index: number) => {
-    if (!winnerAddress) return null;
-
-    return (
-      <div className={styles.winners__item}>
-        <span onClick={() => onAddressClick(winnerAddress)}>
-          {index + 1}. {winnerAddress}
-        </span>
-      </div>
-    );
+    return renderWinnerItem(winnerAddress, index, onAddressClick);
   };
 
   const renderClaimControls = () => {
@@ -147,7 +154,7 @@ export const Winners = ({
     );
   };
 
-  const renderClaimSection = () => (
+  const claimSection = (
     <>
       {shouldShowClaimInfo && (
         <div className={styles.winners__info_box}>
@@ -162,7 +169,7 @@ export const Winners = ({
   if (customRender) {
     return (
       <>
-        {renderClaimSection()}
+        {claimSection}
         <div className={styles.winners__list}>
           {customRender(winnerAddresses, renderWinner)}
         </div>
@@ -174,7 +181,7 @@ export const Winners = ({
   if (renderMode === "virtualized") {
     return (
       <>
-        {renderClaimSection()}
+        {claimSection}
         <VirtualizedContent
           data={winnerAddresses}
           className={styles.winners__list}
@@ -193,7 +200,7 @@ export const Winners = ({
   // Default render mode
   return (
     <>
-      {renderClaimSection()}
+      {claimSection}
       <div
         className={styles.winners__list}
         style={{
