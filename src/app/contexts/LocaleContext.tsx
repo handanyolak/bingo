@@ -1,88 +1,14 @@
 "use client";
 
-import { QueryClientProvider } from "@tanstack/react-query";
-import { NextIntlClientProvider } from "next-intl";
-import { createContext, useContext, useState } from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { createContext, useContext } from "react";
+import type { LocaleContextType, LocaleProviderProps } from "@/types/contexts";
 
-import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
-import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
-import ContextProvider from "@/app/contexts/ReownContext";
-import StoreProvider from "@/app/StoreProvider";
-import { LanguageCode } from "@/i18n/config";
-import { setLocale, getLocale } from "@/lib/actions";
-import { queryClient } from "@/lib/queryClient";
-
-type ContextType = {
-  locale: LanguageCode;
-  updateLocale: (newLocale: LanguageCode) => void;
-};
-
-type Messages = {
-  [K in LanguageCode]: {
-    [key: string]:
-      | string
-      | {
-          [key: string]: string;
-        };
-  };
-};
-
-type Props = {
-  messages: Messages;
-  children: React.ReactNode;
-};
-
-const LocaleContext = createContext<ContextType>({} as ContextType);
+const LocaleContext = createContext<LocaleContextType>({} as LocaleContextType);
 
 export const useLocale = () => useContext(LocaleContext);
 
-export const LocaleProvider = ({ messages, children }: Props) => {
-  const [currentLocale, setCurrentLocale] = useState<LanguageCode>(() => {
-    return getLocale() as LanguageCode;
-  });
-
-  const updateLocale = (newLocale: LanguageCode) => {
-    setCurrentLocale(newLocale);
-    setLocale(newLocale);
-  };
-
+export const LocaleProvider = ({ value, children }: LocaleProviderProps) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-        <ThemeColorProvider>
-          <NextIntlClientProvider
-            messages={messages[currentLocale]}
-            locale={currentLocale}
-          >
-            <LocaleContext.Provider
-              value={{ locale: currentLocale, updateLocale }}
-            >
-              <ContextProvider
-                cookies={typeof window !== "undefined" ? document.cookie : null}
-              >
-                <AccountChangeProvider>
-                  <ToastContainer
-                    autoClose={5000}
-                    hideProgressBar={true}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    pauseOnHover
-                    theme="dark"
-                    toastStyle={{
-                      backgroundColor: "transparent",
-                      color: "var(--text)",
-                    }}
-                  />
-                  {children}
-                </AccountChangeProvider>
-              </ContextProvider>
-            </LocaleContext.Provider>
-          </NextIntlClientProvider>
-        </ThemeColorProvider>
-      </StoreProvider>
-    </QueryClientProvider>
+    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
   );
 };

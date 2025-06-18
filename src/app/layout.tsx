@@ -2,9 +2,8 @@ import "./globals.css";
 import { Comfortaa } from "next/font/google";
 
 import { Header } from "@/app/components/Header";
+import { AppProviders } from "@/app/components/AppProviders";
 import { getStaticMessages } from "@/i18n/config";
-
-import { LocaleProvider } from "./contexts/LocaleContext";
 
 const comfortaa = Comfortaa({
   subsets: ["latin"],
@@ -26,10 +25,10 @@ export default async function RootLayout({
   return (
     <html>
       <body className={`${comfortaa.className}`} lang="en">
-        <LocaleProvider messages={messages}>
+        <AppProviders messages={messages}>
           <Header />
           {children}
-        </LocaleProvider>
+        </AppProviders>
       </body>
     </html>
   );
