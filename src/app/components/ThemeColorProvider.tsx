@@ -1,8 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-
-import { ColorProvider } from "@/app/contexts/ColorContext";
+import { ColorThemeProvider } from "@/app/components/ColorThemeProvider";
 import { useThemeColorProvider } from "@/app/hooks/useThemeColorProvider";
 
 export function ThemeColorProvider({
@@ -22,14 +21,14 @@ export function ThemeColorProvider({
       enableSystem={false}
       disableTransitionOnChange
     >
-      <ColorProvider
+      <ColorThemeProvider
         color={currentColor}
         colors={colors}
         currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
       >
         {children}
-      </ColorProvider>
+      </ColorThemeProvider>
     </ThemeProvider>
   );
 }
