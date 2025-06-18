@@ -1,3 +1,4 @@
+import { useBingoCardCell } from "@/app/hooks/bingo-card";
 import { BingoCardCellProps } from "@/types";
 import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
 
@@ -8,14 +9,13 @@ export const BingoCardCell = ({
   isRefreshingCard,
   isGameFinished,
 }: BingoCardCellProps) => {
-  const getCellClassName = () => {
-    return `${styles.bingoCardCell__grid} 
-      ${isRefreshingCard ? styles["bingoCardCell__grid--changed"] : ""} 
-      ${isGameFinished ? styles["bingoCardCell__grid--complete"] : ""}`;
-  };
+  const { cellClassName } = useBingoCardCell({
+    isRefreshingCard,
+    isGameFinished,
+  });
 
   return (
-    <div className={getCellClassName()}>
+    <div className={cellClassName}>
       <span>{number}</span>
       {isNumberDrawn && isPlayerExists && (
         <span className={styles.bingoCardCell__marker} />
