@@ -3,3 +3,8 @@ export interface CardConfig {
   BINGO_MAX_NUMBER: number;
   BINGO_CARD_NUMBERS_COUNT: number;
 }
+
+export interface UseBingoCardCellProps {
+  isRefreshingCard: boolean;
+  isGameFinished: boolean;
+}

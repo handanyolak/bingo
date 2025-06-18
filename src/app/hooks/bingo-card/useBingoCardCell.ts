@@ -1,10 +1,6 @@
 import { useMemo } from "react";
 import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
-
-interface UseBingoCardCellProps {
-  isRefreshingCard: boolean;
-  isGameFinished: boolean;
-}
+import type { UseBingoCardCellProps } from "@/types/bingo-card";
 
 export const useBingoCardCell = ({
   isRefreshingCard,
