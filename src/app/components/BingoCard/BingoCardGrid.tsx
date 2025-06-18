@@ -1,42 +1,36 @@
-import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { BingoCardCell } from "./BingoCardCell";
+import { useBingoCardGrid } from "@/app/hooks/bingo-card";
 import { BingoCardGridProps } from "@/types";
 import styles from "@/styles/bingo-card/BingoCardGrid.module.scss";
 
-export const BingoCardGrid = ({
-  playerParticipationStatus,
-  cardNumbers,
-  drawnNumbers,
-  isPlayerExists = false,
-  isRefreshingCard,
-  isPlayerCardComplete,
-  isGameFinished,
-}: BingoCardGridProps) => {
-  const t = useTranslations("controls");
+export const BingoCardGrid = (props: BingoCardGridProps) => {
+  const {
+    playerParticipationStatus,
+    isPlayerExists = false,
+    isRefreshingCard,
+    isPlayerCardComplete,
+    isGameFinished,
+  } = props;
 
-  const emptyGridCells = useMemo(() => {
-    return Array.from({ length: 25 }, (_, i) => i);
-  }, []);
+  const t = useTranslations("controls");
+  const { emptyGridCells, cardNumbersWithDrawnStatus } =
+    useBingoCardGrid(props);
 
   if (playerParticipationStatus === "active") {
     return (
       <div className={styles.bingoCardGrid__container}>
-        {cardNumbers.map((number, index) => {
-          const isNumberDrawn = drawnNumbers.includes(number);
-
-          return (
-            <BingoCardCell
-              key={index}
-              number={number}
-              isNumberDrawn={isNumberDrawn}
-              isPlayerExists={isPlayerExists}
-              isRefreshingCard={isRefreshingCard}
-              isPlayerCardComplete={isPlayerCardComplete}
-              isGameFinished={isGameFinished}
-            />
-          );
-        })}
+        {cardNumbersWithDrawnStatus.map(({ number, index, isNumberDrawn }) => (
+          <BingoCardCell
+            key={index}
+            number={number}
+            isNumberDrawn={isNumberDrawn}
+            isPlayerExists={isPlayerExists}
+            isRefreshingCard={isRefreshingCard}
+            isPlayerCardComplete={isPlayerCardComplete}
+            isGameFinished={isGameFinished}
+          />
+        ))}
       </div>
     );
   }
