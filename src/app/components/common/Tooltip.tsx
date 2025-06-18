@@ -1,38 +1,27 @@
 "use client";
 
-import React, { useState, ReactNode } from "react";
+import React from "react";
 
+import { useTooltip } from "@/app/hooks/useTooltip";
 import styles from "@/styles/Tooltip.module.scss";
-
-type TooltipPosition = "top" | "bottom";
-
-interface TooltipProps {
-  texts: string[];
-  position?: TooltipPosition;
-  children: ReactNode;
-}
+import type { TooltipProps } from "@/types/common";
 
 export const Tooltip = ({
   texts,
   position = "top",
   children,
 }: TooltipProps) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const { shouldRenderTooltip, tooltipClasses, mouseHandlers } = useTooltip({
+    texts,
+    position,
+  });
 
-  if (!texts?.length) {
+  if (!shouldRenderTooltip) {
     return <>{children}</>;
   }
 
-  const tooltipClasses = `${styles.tooltip__wrapper} ${
-    styles[`tooltip--${position}`]
-  } ${isVisible && styles["tooltip--visible"]}`;
-
   return (
-    <div
-      className={tooltipClasses}
-      onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}
-    >
+    <div className={tooltipClasses} {...mouseHandlers}>
       <div className={styles.tooltip__trigger}>{children}</div>
       <div className={styles.tooltip__content}>
         {texts.map((text, index) => (

@@ -1,5 +1,7 @@
 export type RoundedSize = "full" | "lg" | "md" | "sm";
 
+export type TooltipPosition = "top" | "bottom";
+
 export interface AppButtonProps {
   text: string;
   content?: React.ReactNode;
@@ -20,10 +22,14 @@ export interface AppModalProps {
 }
 
 export interface TooltipProps {
+  texts: string[];
+  position?: TooltipPosition;
   children: React.ReactNode;
-  content: string;
-  position?: "top" | "bottom" | "left" | "right";
-  className?: string;
+}
+
+export interface UseTooltipProps {
+  texts: string[];
+  position?: TooltipPosition;
 }
 
 export interface VirtualizedContentProps<T> {
