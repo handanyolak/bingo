@@ -18,7 +18,7 @@ interface UseContractReadsOptions<T = ContractReads> {
 export const useContractReads = <T = ContractReads>(
   options?: UseContractReadsOptions<T>
 ) => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const search = useSearchParams();
 
   const urlId = search.get("id");
@@ -112,6 +112,6 @@ export const useContractReads = <T = ContractReads>(
     queryKey: ["contract", "game-reads", urlId, addressToCheck],
     queryFn: fetchContractData,
     select: options?.select,
-    enabled: !!addressToCheck,
+    enabled: !!addressToCheck && isConnected,
   });
 };
