@@ -2,12 +2,10 @@
 
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { ReactNode, useMemo } from "react";
 import { Address } from "viem";
-import { useAccount } from "wagmi";
 
 import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
-import { useContractReads } from "@/lib/web3";
+import { usePlayersData } from "@/app/hooks/usePlayersData";
 import styles from "@/styles/Players.module.scss";
 import type { PlayersProps } from "@/types/participants";
 
@@ -20,14 +18,9 @@ export const Players = ({
   horizontal = false,
 }: PlayersProps) => {
   const t = useTranslations();
-  const { data: contractData, isLoading } = useContractReads();
-  const { isConnected } = useAccount();
+  const { playerAddresses, isVisible, showLoading } = usePlayersData();
 
-  const playerAddresses = useMemo(() => {
-    return contractData?.players.playerAddresses || [];
-  }, [contractData?.players.playerAddresses]);
-
-  if (isLoading && isConnected) {
+  if (showLoading) {
     return (
       <div className={styles.players__list}>
         <div className={styles.players__loading}>
@@ -37,7 +30,7 @@ export const Players = ({
     );
   }
 
-  if (playerAddresses.length === 0) {
+  if (!isVisible) {
     return (
       <div className={styles.players__list}>
         <div className={styles.players__empty}>{t("controls.noPlayers")}</div>
@@ -45,6 +38,7 @@ export const Players = ({
     );
   }
 
+  // Custom render mode
   if (customRender) {
     return (
       <div className={styles.players__list}>
@@ -53,20 +47,23 @@ export const Players = ({
     );
   }
 
+  // Player item render function
+  const renderPlayerItem = (address: Address, index: number) => {
+    if (!address) return null;
+
+    return (
+      <button
+        type="button"
+        className={styles.players__item}
+        onClick={() => onAddressClick(address)}
+      >
+        {index + 1}. {address}
+      </button>
+    );
+  };
+
+  // Virtualized render mode
   if (renderMode === "virtualized") {
-    const renderPlayerItem = (address: Address, index: number) => {
-      if (!address) return null;
-
-      return (
-        <div
-          className={styles.players__item}
-          onClick={() => onAddressClick(address)}
-        >
-          {index + 1}. {address}
-        </div>
-      );
-    };
-
     return (
       <VirtualizedContent
         data={playerAddresses}
@@ -74,7 +71,7 @@ export const Players = ({
         estimateSize={50}
         overscan={20}
         renderItem={renderPlayerItem}
-        getItemKey={(index) => `player-${index}`}
+        getItemKey={(index) => `player-${playerAddresses[index]}`}
         horizontal={horizontal}
         debug={debug}
         enableDynamicMeasurement={enableDynamicMeasurement}
@@ -82,16 +79,18 @@ export const Players = ({
     );
   }
 
+  // Default render mode
   return (
     <div className={styles.players__list}>
       {playerAddresses.map((address, index) => (
-        <div
-          key={`player-${index}`}
+        <button
+          key={`player-${address}`}
+          type="button"
           className={styles.players__item}
           onClick={() => onAddressClick(address)}
         >
           {index + 1}. {address}
-        </div>
+        </button>
       ))}
     </div>
   );
