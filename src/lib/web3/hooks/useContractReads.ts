@@ -11,16 +11,21 @@ import { publicClient } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { ContractReads } from "@/lib/web3";
 
-export const useContractReads = () => {
-  const { address } = useAccount();
-  const searchParams = useSearchParams();
-  const urlId = searchParams.get("id");
-  const selectedAddressParam = searchParams.get("selectedAddress");
+interface UseContractReadsOptions<T = ContractReads> {
+  select?: (data: ContractReads) => T;
+}
 
-  const addressToCheck =
-    selectedAddressParam && isAddress(selectedAddressParam)
-      ? (selectedAddressParam as Address)
-      : (address as Address);
+export const useContractReads = <T = ContractReads>(
+  options?: UseContractReadsOptions<T>
+) => {
+  const { address } = useAccount();
+  const search = useSearchParams();
+
+  const urlId = search.get("id");
+  const selectedParam = search.get("selectedAddress");
+  const addressToCheck = isAddress(selectedParam ?? "")
+    ? (selectedParam as Address)
+    : (address as Address);
 
   const fetchContractData = async (): Promise<ContractReads> => {
     const contract = getContract({
@@ -106,5 +111,7 @@ export const useContractReads = () => {
   return useQuery({
     queryKey: ["contract", "game-reads", urlId, addressToCheck],
     queryFn: fetchContractData,
+    select: options?.select,
+    enabled: !!addressToCheck,
   });
 };
