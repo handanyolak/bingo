@@ -24,6 +24,11 @@ export interface AppModalProps {
   className?: string;
 }
 
+export interface LoaderProps {
+  role?: string;
+  "aria-label"?: string;
+}
+
 export interface TooltipProps {
   texts: string[];
   position?: TooltipPosition;

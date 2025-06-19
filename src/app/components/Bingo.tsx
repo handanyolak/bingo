@@ -23,7 +23,7 @@ export const Bingo = () => {
   } = useBingoGameState();
 
   if (shouldShowLoader) {
-    return <Loader />;
+    return <Loader role="status" aria-label="Loading game data" />;
   }
 
   return (
