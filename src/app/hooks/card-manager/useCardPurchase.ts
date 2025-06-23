@@ -4,11 +4,14 @@ import { useTranslations } from "next-intl";
 import { useTransactionToast } from "../useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
+import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 import type { UseCardPurchaseReturn } from "@/types/card-manager";
 
-export const useCardPurchase = (refetch: () => void): UseCardPurchaseReturn => {
+export const useCardPurchase = (): UseCardPurchaseReturn => {
   const t = useTranslations();
   const [waitingCardEvent, setWaitingCardEvent] = useState(false);
+
+  const { refetch } = useContractReads();
 
   const {
     showInitiatingTransactionToast,
