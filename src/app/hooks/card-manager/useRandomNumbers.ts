@@ -4,13 +4,14 @@ import { useTranslations } from "next-intl";
 import { useTransactionToast } from "../useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
+import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 import type { UseRandomNumbersReturn } from "@/types/card-manager";
 
-export const useRandomNumbers = (
-  refetch: () => void
-): UseRandomNumbersReturn => {
+export const useRandomNumbers = (): UseRandomNumbersReturn => {
   const t = useTranslations();
   const [waitingRandomEvent, setWaitingRandomEvent] = useState(false);
+
+  const { refetch } = useContractReads();
 
   const {
     showInitiatingTransactionToast,

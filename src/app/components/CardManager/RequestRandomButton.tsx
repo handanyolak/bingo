@@ -3,12 +3,11 @@ import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { useRandomNumbers } from "@/app/hooks/card-manager";
-import type { RequestRandomButtonProps } from "@/types/card-manager";
 
-export const RequestRandomButton = ({ refetch }: RequestRandomButtonProps) => {
+export const RequestRandomButton = () => {
   const t = useTranslations();
   const { handleRequestRandomNumbers, isRequestRandomLoading } =
-    useRandomNumbers(refetch);
+    useRandomNumbers();
 
   return (
     <AppButton
