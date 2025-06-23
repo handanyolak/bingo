@@ -5,13 +5,10 @@ import { AppButton } from "@/app/components/common/AppButton";
 import { useCardSubmission } from "@/app/hooks/card-manager";
 import type { SubmitCardButtonProps } from "@/types/card-manager";
 
-export const SubmitCardButton = ({
-  refetch,
-  shouldShow,
-}: SubmitCardButtonProps) => {
+export const SubmitCardButton = ({ shouldShow }: SubmitCardButtonProps) => {
   const t = useTranslations();
   const { handleCardSubmit, isSubmitCardLoading, isSubmitCardSuccess } =
-    useCardSubmission(refetch);
+    useCardSubmission();
 
   if (!shouldShow || isSubmitCardSuccess) return null;
 
