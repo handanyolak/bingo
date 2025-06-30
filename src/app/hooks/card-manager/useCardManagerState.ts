@@ -1,43 +1,56 @@
 import { useMemo } from "react";
 
+import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 import type {
   UseCardManagerStateProps,
   UseCardManagerStateReturn,
 } from "@/types/card-manager";
 
 export const useCardManagerState = ({
-  contractData,
   isConnected,
   remainingTime,
 }: UseCardManagerStateProps): UseCardManagerStateReturn => {
+  const {
+    data: {
+      isPlayerExists,
+      vrfRequested,
+      isDrawnNumbersFilled,
+      playerDetails,
+      BINGO_CARD_NUMBERS_COUNT,
+    } = {},
+  } = useContractReads({
+    select: (data) => ({
+      isPlayerExists: data.isPlayerExists,
+      vrfRequested: data.vrfRequested,
+      isDrawnNumbersFilled: data.isDrawnNumbersFilled,
+      playerDetails: data.playerDetails,
+      BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
+    }),
+  });
+
   const shouldShowBuyCard = useMemo(() => {
-    return (
-      isConnected &&
-      !contractData?.isPlayerExists &&
-      !contractData?.vrfRequested
-    );
-  }, [isConnected, contractData?.isPlayerExists, contractData?.vrfRequested]);
+    return isConnected && !isPlayerExists && !vrfRequested;
+  }, [isConnected, isPlayerExists, vrfRequested]);
 
   const shouldShowRequestRandom = useMemo(() => {
-    return contractData?.isPlayerExists && !contractData?.isDrawnNumbersFilled;
-  }, [contractData?.isPlayerExists, contractData?.isDrawnNumbersFilled]);
+    return !!(isPlayerExists && !isDrawnNumbersFilled);
+  }, [isPlayerExists, isDrawnNumbersFilled]);
 
   const shouldShowTimer = useMemo(() => {
-    return contractData?.isDrawnNumbersFilled && remainingTime > 0;
-  }, [contractData?.isDrawnNumbersFilled, remainingTime]);
+    return !!(isDrawnNumbersFilled && remainingTime > 0);
+  }, [isDrawnNumbersFilled, remainingTime]);
 
   const shouldShowSubmitCard = useMemo(() => {
-    return (
-      contractData?.isDrawnNumbersFilled &&
+    return !!(
+      isDrawnNumbersFilled &&
       remainingTime > 0 &&
-      contractData?.playerDetails?.remainingNumbersCount ===
-        contractData?.BINGO_CARD_NUMBERS_COUNT
+      playerDetails?.remainingNumbersCount === BINGO_CARD_NUMBERS_COUNT
     );
   }, [
-    contractData?.isDrawnNumbersFilled,
+    isDrawnNumbersFilled,
     remainingTime,
-    contractData?.playerDetails?.remainingNumbersCount,
-    contractData?.BINGO_CARD_NUMBERS_COUNT,
+    playerDetails?.remainingNumbersCount,
+    BINGO_CARD_NUMBERS_COUNT,
   ]);
 
   return {
