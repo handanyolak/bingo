@@ -2,7 +2,10 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
-import { useGameToasts, dismissAllToasts } from "@/app/hooks/toast/useGameToasts";
+import {
+  useGameToasts,
+  dismissAllToasts,
+} from "@/app/hooks/toast/useGameToasts";
 import {
   selectDrawnNumbers,
   selectIsDrawing,
@@ -348,12 +351,7 @@ export const useBingoDrawing = () => {
 
       dismissAllToasts();
     }
-  }, [
-    currentGameId,
-    selectedGameId,
-    dispatch,
-    isInitialized,
-  ]);
+  }, [currentGameId, selectedGameId, dispatch, isInitialized]);
 
   useDrawnNumbersTimestampScheduler(contractData, contractLoading);
   const { drawnNumbersAnimationQueue, displayedDrawnNumbers } =
@@ -367,7 +365,7 @@ export const useBingoDrawing = () => {
   const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
 
   return {
-    drawnNumbers: displayedDrawnNumbers,
+    displayedDrawnNumbers,
     isDrawing,
     isPlayerCardComplete,
     isGameOver: isGameFinishedInUi,
