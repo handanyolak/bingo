@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
-import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import styles from "@/styles/GameTimer.module.scss";
 
 import timerAnimation from "../../../../public/animations/timer.json";
@@ -11,12 +10,10 @@ import timerAnimation from "../../../../public/animations/timer.json";
 export const GameTimer = () => {
   const t = useTranslations();
   const lottieAnimationRef = useRef<LottieRefCurrentProps>(null);
-  const { isGameOver } = useBingoDrawing();
 
   const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer({
     lottieRef: lottieAnimationRef,
     timerAnimation,
-    isGameOver,
   });
 
   if (remainingTime <= 0) return null;

@@ -1,28 +1,28 @@
-import { LottieRefCurrentProps } from "lottie-react";
 import { useEffect, useState } from "react";
 
 import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
+import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 import {
   getUnixTimestamp,
   secondsToMinutes,
   getRemainingSeconds,
 } from "@/lib/utils/time";
-import type {
-  UseDrawTimerProps,
-  UseDrawTimerReturn,
-  LottieAnimationData,
-} from "@/types";
+import type { UseDrawTimerProps, UseDrawTimerReturn } from "@/types";
 
 export const useDrawTimer = ({
   isLoading = false,
   isError = false,
   lottieRef,
   timerAnimation,
-  isGameOver = false,
-}: Omit<UseDrawTimerProps, "contractData">): UseDrawTimerReturn => {
+}: Omit<
+  UseDrawTimerProps,
+  "contractData" | "isGameOver"
+>): UseDrawTimerReturn => {
   const dispatch = useAppDispatch();
+  const { isGameOver } = useBingoDrawing();
+
   const {
     data: {
       drawnNumbersTimestamp,
