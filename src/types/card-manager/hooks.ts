@@ -1,9 +1,3 @@
-export interface UseGameStateProps {
-  contractData: any;
-  lottieRef: any;
-  timerAnimation: any;
-}
-
 export interface UseCardPurchaseReturn {
   handleBuyCard: () => Promise<void>;
   isBuyCardLoading: boolean;
@@ -20,14 +14,7 @@ export interface UseCardSubmissionReturn {
   isSubmitCardSuccess: boolean;
 }
 
-export interface UseGameStateReturn {
-  remainingTime: number;
-  minutesRemaining: number;
-  secondsRemaining: number;
-}
-
 export interface UseCardManagerStateProps {
-  contractData: any;
   isConnected: boolean;
   remainingTime: number;
 }
@@ -37,4 +24,19 @@ export interface UseCardManagerStateReturn {
   shouldShowRequestRandom: boolean;
   shouldShowTimer: boolean;
   shouldShowSubmitCard: boolean;
+}
+
+export interface CardManagerStepData {
+  isPlayerExists: boolean;
+  vrfRequested?: boolean;
+  isDrawnNumbersFilled?: boolean;
+  playerDetails?: {
+    remainingNumbersCount: number;
+  };
+  BINGO_CARD_NUMBERS_COUNT?: number;
+}
+
+export interface GameStateData {
+  isDrawnNumbersFilled: boolean;
+  drawnNumbers: readonly number[];
 }
