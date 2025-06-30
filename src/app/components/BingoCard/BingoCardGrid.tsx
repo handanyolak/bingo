@@ -9,7 +9,6 @@ export const BingoCardGrid = (props: BingoCardGridProps) => {
     playerParticipationStatus,
     isPlayerExists = false,
     isRefreshingCard,
-    isPlayerCardComplete,
     isGameFinished,
   } = props;
 
@@ -27,7 +26,6 @@ export const BingoCardGrid = (props: BingoCardGridProps) => {
             isNumberDrawn={isNumberDrawn}
             isPlayerExists={isPlayerExists}
             isRefreshingCard={isRefreshingCard}
-            isPlayerCardComplete={isPlayerCardComplete}
             isGameFinished={isGameFinished}
           />
         ))}

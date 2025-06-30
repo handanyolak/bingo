@@ -11,7 +11,6 @@ export const BingoCard = () => {
     isCurrentGame,
     playerParticipationStatus,
     cardConfig,
-    isPlayerCardComplete,
     isGameFinishedInUi,
   } = useBingoCardData();
 
@@ -39,7 +38,6 @@ export const BingoCard = () => {
           drawnNumbers={drawnNumbers}
           isPlayerExists={contractData?.isPlayerExists}
           isRefreshingCard={isRefreshingCard}
-          isPlayerCardComplete={isPlayerCardComplete()}
           isGameFinished={isGameFinishedInUi}
         />
       </div>

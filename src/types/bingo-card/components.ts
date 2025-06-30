@@ -8,7 +8,6 @@ export interface BingoCardCellProps {
   isNumberDrawn: boolean;
   isPlayerExists: boolean;
   isRefreshingCard: boolean;
-  isPlayerCardComplete: boolean;
   isGameFinished: boolean;
 }
 
@@ -18,6 +17,5 @@ export interface BingoCardGridProps {
   drawnNumbers: number[];
   isPlayerExists?: boolean;
   isRefreshingCard: boolean;
-  isPlayerCardComplete: boolean;
   isGameFinished: boolean;
 }
