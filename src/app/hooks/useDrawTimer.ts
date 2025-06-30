@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 
 import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
+import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 import {
   getUnixTimestamp,
   secondsToMinutes,
   getRemainingSeconds,
 } from "@/lib/utils/time";
-import { ContractReads } from "@/lib/web3";
 import type {
   UseDrawTimerProps,
   UseDrawTimerReturn,
@@ -16,27 +16,37 @@ import type {
 } from "@/types";
 
 export const useDrawTimer = ({
-  contractData,
   isLoading = false,
   isError = false,
   lottieRef,
   timerAnimation,
   isGameOver = false,
-}: UseDrawTimerProps): UseDrawTimerReturn => {
+}: Omit<UseDrawTimerProps, "contractData">): UseDrawTimerReturn => {
   const dispatch = useAppDispatch();
+  const {
+    data: {
+      drawnNumbersTimestamp,
+      finalizationCooldown,
+      isDrawnNumbersFilled,
+    } = {},
+  } = useContractReads({
+    select: (data) => ({
+      drawnNumbersTimestamp: data.drawnNumbersTimestamp,
+      finalizationCooldown: data.finalizationCooldown,
+      isDrawnNumbersFilled: data.isDrawnNumbersFilled,
+    }),
+  });
   const [currentTimestamp, setCurrentTimestamp] = useState(getUnixTimestamp());
   const [isTimerActive, setIsTimerActive] = useState(false);
 
-  const isDataReady = !isLoading && !isError && contractData;
+  const isDataReady =
+    !isLoading && !isError && drawnNumbersTimestamp && finalizationCooldown;
 
   const calculateEndTime = (timestamp: bigint, cooldown: bigint) =>
     Number(timestamp) + Number(cooldown);
 
   const endTime = isDataReady
-    ? calculateEndTime(
-        contractData.drawnNumbersTimestamp,
-        contractData.finalizationCooldown
-      )
+    ? calculateEndTime(drawnNumbersTimestamp, finalizationCooldown)
     : 0;
 
   const remainingTime = Math.max(0, endTime - currentTimestamp);
@@ -44,12 +54,12 @@ export const useDrawTimer = ({
   const secondsRemaining = getRemainingSeconds(remainingTime);
 
   useEffect(() => {
-    if (contractData?.isDrawnNumbersFilled && !isGameOver) {
+    if (isDrawnNumbersFilled && !isGameOver) {
       setIsTimerActive(true);
     } else {
       setIsTimerActive(false);
     }
-  }, [contractData?.isDrawnNumbersFilled, isGameOver]);
+  }, [isDrawnNumbersFilled, isGameOver]);
 
   useEffect(() => {
     if (!isTimerActive) return;
@@ -62,11 +72,16 @@ export const useDrawTimer = ({
   }, [isTimerActive]);
 
   useEffect(() => {
-    if (contractData?.isDrawnNumbersFilled && !isGameOver) {
+    if (
+      isDrawnNumbersFilled &&
+      !isGameOver &&
+      drawnNumbersTimestamp &&
+      finalizationCooldown
+    ) {
       const currentTime = getUnixTimestamp();
       const cooldownEndTimestamp = calculateEndTime(
-        contractData.drawnNumbersTimestamp,
-        contractData.finalizationCooldown
+        drawnNumbersTimestamp,
+        finalizationCooldown
       );
 
       if (currentTime >= cooldownEndTimestamp) {
@@ -81,17 +96,17 @@ export const useDrawTimer = ({
       }
     }
   }, [
-    contractData?.isDrawnNumbersFilled,
-    contractData?.drawnNumbersTimestamp,
-    contractData?.finalizationCooldown,
+    isDrawnNumbersFilled,
+    drawnNumbersTimestamp,
+    finalizationCooldown,
     dispatch,
     isGameOver,
   ]);
 
   useEffect(() => {
     if (
-      !contractData?.isDrawnNumbersFilled ||
-      !contractData?.finalizationCooldown ||
+      !isDrawnNumbersFilled ||
+      !finalizationCooldown ||
       remainingTime <= 0 ||
       !lottieRef?.current ||
       !timerAnimation
@@ -104,7 +119,7 @@ export const useDrawTimer = ({
     const totalAnimationFrames = timerAnimation.op - timerAnimation.ip;
     const animationFrameRate = timerAnimation.fr || 30;
     const animationNaturalDuration = totalAnimationFrames / animationFrameRate;
-    const totalDuration = Number(contractData.finalizationCooldown);
+    const totalDuration = Number(finalizationCooldown);
 
     const speedRatio = animationNaturalDuration / totalDuration;
     lottieAnimation.setSpeed(speedRatio);
@@ -118,8 +133,8 @@ export const useDrawTimer = ({
       lottieAnimation.stop();
     };
   }, [
-    contractData?.isDrawnNumbersFilled,
-    contractData?.finalizationCooldown,
+    isDrawnNumbersFilled,
+    finalizationCooldown,
     remainingTime,
     lottieRef,
     timerAnimation,
