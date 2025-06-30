@@ -22,7 +22,7 @@ export interface UseColorProviderProps {
 }
 
 export interface UseColorProviderReturn {
-  color: string;
+  processedColor: string;
   lightColor: string;
   darkColor: string;
   cycleColor: () => void;

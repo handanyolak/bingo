@@ -114,7 +114,7 @@ export const useColorProvider = ({
   }, [color, lightColor, darkColor, theme]);
 
   return {
-    color,
+    processedColor: color,
     lightColor,
     darkColor,
     cycleColor,

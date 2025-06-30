@@ -12,18 +12,13 @@ export const ColorThemeProvider: React.FC<ColorThemeProviderProps> = ({
   setCurrentIndex,
   children,
 }) => {
-  const {
-    color: processedColor,
-    lightColor,
-    darkColor,
-    cycleColor,
-    containerStyle,
-  } = useColorProvider({
-    color,
-    colors,
-    currentIndex,
-    setCurrentIndex,
-  });
+  const { processedColor, lightColor, darkColor, cycleColor, containerStyle } =
+    useColorProvider({
+      color,
+      colors,
+      currentIndex,
+      setCurrentIndex,
+    });
 
   return (
     <ColorProvider
