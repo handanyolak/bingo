@@ -23,9 +23,12 @@ export const useContractReads = <T = ContractReads>(
 
   const urlId = search.get("id");
   const selectedParam = search.get("selectedAddress");
+
   const addressToCheck = isAddress(selectedParam ?? "")
     ? (selectedParam as Address)
-    : (address as Address);
+    : address && isAddress(address)
+    ? address
+    : ("0x0" as Address);
 
   const fetchContractData = async (): Promise<ContractReads> => {
     const contract = getContract({
