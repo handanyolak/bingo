@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 
 type UseConfettiProps = {
   isGameFinished: boolean;
@@ -9,8 +8,7 @@ type UseConfettiProps = {
 
 export const useConfetti = ({ isGameFinished, isWinner }: UseConfettiProps) => {
   const [showConfetti, setShowConfetti] = useState(true);
-  const { address: connectedAddress } = useAccount();
-  const { selectedAddress } = useSelectedAddress();
+  const { isViewingOwnCard } = useIsViewingOwnCard();
 
   useEffect(() => {
     if (isGameFinished && isWinner) {
@@ -21,11 +19,6 @@ export const useConfetti = ({ isGameFinished, isWinner }: UseConfettiProps) => {
   const handleConfettiComplete = () => {
     setShowConfetti(false);
   };
-
-  const isViewingOwnCard =
-    connectedAddress && selectedAddress
-      ? connectedAddress.toLowerCase() === selectedAddress.toLowerCase()
-      : false;
 
   return {
     showConfetti:
