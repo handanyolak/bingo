@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 import { useContractReads, useContractWrite } from "@/lib/web3";
 import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { useWinnerStatus } from "@/app/hooks/useWinnerStatus";
-import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 
@@ -20,7 +20,7 @@ export const useWinnersClaimLogic = ({
   const { address } = useAccount();
   const { data: contractData, refetch } = useContractReads();
   const { isWinner } = useWinnerStatus();
-  const { selectedAddress } = useSelectedAddress();
+  const { isViewingOwnCard } = useIsViewingOwnCard();
   const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
 
   const {
@@ -39,11 +39,6 @@ export const useWinnersClaimLogic = ({
 
   const userRewardAmount = contractData?.rewardByWinner || BigInt(0);
   const hasClaimableReward = userRewardAmount > BigInt(0);
-
-  const isViewingOwnCard =
-    address && selectedAddress
-      ? address.toLowerCase() === selectedAddress.toLowerCase()
-      : false;
 
   const handleClaimReward = async () => {
     const toastId = "claimRewardToast";
