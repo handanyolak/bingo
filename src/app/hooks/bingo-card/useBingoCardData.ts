@@ -67,7 +67,7 @@ export const useBingoCardData = () => {
   }, [BINGO_MIN_NUMBER, BINGO_MAX_NUMBER, BINGO_CARD_NUMBERS_COUNT]);
 
   useEffect(() => {
-    const areCardsEmpty = cardNumbers.every((num) => num === 0);
+    const areCardsEmpty = cardNumbers.length === 0;
 
     if (
       !isContractDataLoading &&

@@ -33,7 +33,7 @@ const generateRandomNumbers = (cardConfig: CardGenerationConfig): number[] => {
 const initialState: BingoState = {
   isDrawing: false,
   drawnNumbers: [],
-  cardNumbers: new Array(BINGO_CARD_SIZE).fill(0) as BingoCardNumbers,
+  cardNumbers: [] as unknown as BingoCardNumbers,
   isGameFinishedInUi: false,
   drawnNumbersWithTimestamp: [],
 };
@@ -78,9 +78,7 @@ export const bingoSlice = createSlice({
       state.drawnNumbers = [];
       state.isGameFinishedInUi = false;
       state.drawnNumbersWithTimestamp = [];
-      state.cardNumbers = new Array(BINGO_CARD_SIZE).fill(
-        0
-      ) as BingoCardNumbers;
+      state.cardNumbers = [] as unknown as BingoCardNumbers;
     },
   },
 });
