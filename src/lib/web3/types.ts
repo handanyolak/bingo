@@ -33,4 +33,5 @@ export interface ContractReads {
   requestRandomNumbersRefund: bigint;
   winningDrawnNumberIndex: number;
   vrfRequested: boolean;
+  rewardByWinner?: bigint;
 }
