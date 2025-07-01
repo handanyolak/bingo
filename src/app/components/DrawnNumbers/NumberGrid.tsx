@@ -6,7 +6,7 @@ import type { NumberGridProps } from "@/types/drawn-numbers";
 
 const LoadingState = () => (
   <div key="loading-indicator" className={styles.drawnNumbers__centered}>
-    <Loader2 className="animate-spin" size={100} />
+    <Loader2 className={styles.drawnNumbers__spinLoader} size={100} />
   </div>
 );
 
