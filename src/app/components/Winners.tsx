@@ -95,7 +95,7 @@ export const Winners = ({
     if (!shouldShowClaimSection) return null;
 
     return (
-      <div className="w-full">
+      <div className={styles.winners__fullWidth}>
         {hasClaimableReward ? (
           <button
             className={styles.winners__claim_button}

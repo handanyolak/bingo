@@ -132,6 +132,10 @@
     color: var(--button-text);
     font-size: 0.875rem;
   }
+
+  &__fullWidth {
+    width: 100%;
+  }
 }
 
 @keyframes spin {
