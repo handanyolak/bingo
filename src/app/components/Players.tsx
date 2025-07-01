@@ -9,6 +9,25 @@ import { usePlayersData } from "@/app/hooks/usePlayersData";
 import styles from "@/styles/Players.module.scss";
 import type { PlayersProps } from "@/types/participants";
 
+// Player item render function
+const renderPlayerItem = (
+  address: Address,
+  index: number,
+  onAddressClick: (address: Address) => void
+) => {
+  if (!address) return null;
+
+  return (
+    <button
+      type="button"
+      className={styles.players__item}
+      onClick={() => onAddressClick(address)}
+    >
+      {index + 1}. {address}
+    </button>
+  );
+};
+
 export const Players = ({
   onAddressClick,
   renderMode = "virtualized",
@@ -48,18 +67,8 @@ export const Players = ({
   }
 
   // Player item render function
-  const renderPlayerItem = (address: Address, index: number) => {
-    if (!address) return null;
-
-    return (
-      <button
-        type="button"
-        className={styles.players__item}
-        onClick={() => onAddressClick(address)}
-      >
-        {index + 1}. {address}
-      </button>
-    );
+  const renderPlayer = (address: Address, index: number) => {
+    return renderPlayerItem(address, index, onAddressClick);
   };
 
   // Virtualized render mode
@@ -70,7 +79,7 @@ export const Players = ({
         className={styles.players__list}
         estimateSize={50}
         overscan={20}
-        renderItem={renderPlayerItem}
+        renderItem={renderPlayer}
         getItemKey={(index) => `player-${playerAddresses[index]}`}
         horizontal={horizontal}
         debug={debug}
