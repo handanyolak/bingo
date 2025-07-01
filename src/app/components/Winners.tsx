@@ -7,15 +7,12 @@ import { useAccount } from "wagmi";
 
 import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
 import { useWinners } from "@/app/hooks/useWinners";
-import { useClaimReward } from "@/app/hooks/useClaimReward";
-import { useTransactionToast } from "@/app/hooks/useTransactionToast";
-import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
-import { useAppSelector } from "@/lib/store/hooks";
-import { useContractReads, useContractWrite } from "@/lib/web3";
-import { useWinnerStatus } from "@/app/hooks/useWinnerStatus";
+import { useWinnersClaimLogic } from "@/app/hooks/useWinnersClaimLogic";
+import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/Winners.module.scss";
 import type { WinnersProps } from "@/types/participants";
 
+// Winner item render function
 const renderWinnerItem = (
   address: Address,
   index: number,
@@ -24,11 +21,13 @@ const renderWinnerItem = (
   if (!address) return null;
 
   return (
-    <div className={styles.winners__item}>
-      <span onClick={() => onAddressClick(address)}>
-        {index + 1}. {address}
-      </span>
-    </div>
+    <button
+      type="button"
+      className={styles.winners__item}
+      onClick={() => onAddressClick(address)}
+    >
+      {index + 1}. {address}
+    </button>
   );
 };
 
@@ -41,25 +40,20 @@ export const Winners = ({
   horizontal = false,
 }: WinnersProps) => {
   const t = useTranslations();
-
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const { data: contractData, isLoading } = useContractReads();
-  const { isWinner } = useWinnerStatus();
-  const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
 
   const {
-    claimReward,
-    isClaimRewardPending,
-    isClaimRewardConfirming,
-    isClaimRewardSuccess,
-  } = useContractWrite();
-
-  const {
-    showInitiatingTransactionToast,
-    showSuccessToast,
-    showErrorToast,
-    dismissToast,
-  } = useTransactionToast();
+    handleClaimReward,
+    isClaimButtonDisabled,
+    hasClaimableReward,
+    isGameFinishedInUi,
+    isWinner,
+    address,
+    isViewingOwnCard,
+  } = useWinnersClaimLogic({
+    isLoading,
+  });
 
   const { winnerAddresses, isVisible } = useWinners({
     contractData,
@@ -67,36 +61,11 @@ export const Winners = ({
     isLoading,
   });
 
-  const {
-    handleClaimReward,
-    hasUserClaimedGame,
-    isClaimButtonDisabled,
-    isLoadingClaimStatus,
-  } = useClaimReward({
-    address,
-    contractData,
-    isWinner,
-    claimReward,
-    isClaimRewardPending,
-    isClaimRewardConfirming,
-    isClaimRewardSuccess,
-    showInitiatingTransactionToast,
-    showSuccessToast,
-    showErrorToast,
-    dismissToast,
-    rewardClaimedMessage: t("controls.rewardClaimedMessage"),
-  });
-
-  const shouldShowClaimInfo =
-    !isLoading &&
-    isWinner &&
-    isGameFinishedInUi &&
-    !hasUserClaimedGame(contractData?.targetGameId || BigInt(0));
-
-  const shouldShowClaimControls =
+  const shouldShowClaimSection =
     isWinner &&
     isGameFinishedInUi &&
     address &&
+    isViewingOwnCard &&
     winnerAddresses.findIndex((addr) => addr === address) !== -1;
 
   if (isLoading && isConnected) {
@@ -117,20 +86,17 @@ export const Winners = ({
     );
   }
 
+  // Winner item render function
   const renderWinner = (winnerAddress: Address, index: number) => {
     return renderWinnerItem(winnerAddress, index, onAddressClick);
   };
 
   const renderClaimControls = () => {
-    if (!shouldShowClaimControls) return null;
+    if (!shouldShowClaimSection) return null;
 
     return (
       <div className="w-full">
-        {isLoadingClaimStatus ? (
-          <div className={styles.winners__claim_loading}>
-            <Loader2 className="global-loader" size={18} />
-          </div>
-        ) : !hasUserClaimedGame(contractData?.targetGameId || BigInt(0)) ? (
+        {hasClaimableReward ? (
           <button
             className={styles.winners__claim_button}
             onClick={handleClaimReward}
@@ -156,7 +122,7 @@ export const Winners = ({
 
   const claimSection = (
     <>
-      {shouldShowClaimInfo && (
+      {shouldShowClaimSection && !isLoading && hasClaimableReward && (
         <div className={styles.winners__info_box}>
           {t("controls.claimInfo")}
         </div>
@@ -188,7 +154,7 @@ export const Winners = ({
           estimateSize={60}
           overscan={20}
           renderItem={renderWinner}
-          getItemKey={(index) => `winner-${index}`}
+          getItemKey={(index) => `winner-${winnerAddresses[index]}`}
           horizontal={horizontal}
           debug={debug}
           enableDynamicMeasurement={enableDynamicMeasurement}
@@ -201,24 +167,16 @@ export const Winners = ({
   return (
     <>
       {claimSection}
-      <div
-        className={styles.winners__list}
-        style={{
-          maxHeight: "500px",
-          overflowY: "auto",
-          border: "1px solid #ddd",
-          borderRadius: "4px",
-        }}
-      >
+      <div className={styles.winners__list}>
         {winnerAddresses.map((winnerAddress, index) => (
-          <div
+          <button
             key={`winner-${winnerAddress}-${index}`}
+            type="button"
             className={styles.winners__item}
+            onClick={() => onAddressClick(winnerAddress)}
           >
-            <span onClick={() => onAddressClick(winnerAddress)}>
-              {index + 1}. {winnerAddress}
-            </span>
-          </div>
+            {index + 1}. {winnerAddress}
+          </button>
         ))}
       </div>
     </>
