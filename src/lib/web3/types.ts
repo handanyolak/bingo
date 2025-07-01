@@ -1,6 +1,9 @@
 import { Address } from "viem";
+import { BINGO_CARD_SIZE } from "@/constants/bingo";
 
-export type BingoCardNumbers = readonly number[] & { length: 25 };
+export type BingoCardNumbers = readonly number[] & {
+  length: typeof BINGO_CARD_SIZE;
+};
 
 export interface ContractReads {
   gameId: bigint;

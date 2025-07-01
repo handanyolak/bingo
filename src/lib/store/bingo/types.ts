@@ -1,3 +1,5 @@
+import { BINGO_CARD_SIZE } from "@/constants/bingo";
+
 export interface BingoState {
   isDrawing: boolean;
   drawnNumbers: number[];
@@ -6,7 +8,7 @@ export interface BingoState {
   drawnNumbersWithTimestamp: DrawnNumberWithTimestamp[];
 }
 
-export type BingoCardNumbers = number[] & { length: 25 };
+export type BingoCardNumbers = number[] & { length: typeof BINGO_CARD_SIZE };
 export type DrawnNumberPayload = number;
 export type BingoNumbersPayload = number[];
 

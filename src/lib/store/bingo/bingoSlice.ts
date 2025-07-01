@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { BINGO_CARD_SIZE } from "@/constants/bingo";
 
 import {
   DrawnNumberWithTimestamp,
@@ -32,7 +33,7 @@ const generateRandomNumbers = (cardConfig: CardGenerationConfig): number[] => {
 const initialState: BingoState = {
   isDrawing: false,
   drawnNumbers: [],
-  cardNumbers: new Array(25).fill(0) as BingoCardNumbers,
+  cardNumbers: new Array(BINGO_CARD_SIZE).fill(0) as BingoCardNumbers,
   isGameFinishedInUi: false,
   drawnNumbersWithTimestamp: [],
 };
@@ -77,7 +78,9 @@ export const bingoSlice = createSlice({
       state.drawnNumbers = [];
       state.isGameFinishedInUi = false;
       state.drawnNumbersWithTimestamp = [];
-      state.cardNumbers = new Array(25).fill(0) as BingoCardNumbers;
+      state.cardNumbers = new Array(BINGO_CARD_SIZE).fill(
+        0
+      ) as BingoCardNumbers;
     },
   },
 });
