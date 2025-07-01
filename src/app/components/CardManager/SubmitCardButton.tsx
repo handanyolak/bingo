@@ -3,14 +3,16 @@ import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { useCardSubmission } from "@/app/hooks/card-manager";
+import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 import type { SubmitCardButtonProps } from "@/types/card-manager";
 
 export const SubmitCardButton = ({ shouldShow }: SubmitCardButtonProps) => {
   const t = useTranslations();
+  const { isViewingOwnCard } = useIsViewingOwnCard();
   const { handleCardSubmit, isSubmitCardLoading, isSubmitCardSuccess } =
     useCardSubmission();
 
-  if (!shouldShow || isSubmitCardSuccess) return null;
+  if (!shouldShow || isSubmitCardSuccess || !isViewingOwnCard) return null;
 
   return (
     <AppButton
