@@ -11,21 +11,30 @@ import {
 } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
-
-const DEFAULT_CARD_CONFIG = {
-  BINGO_MIN_NUMBER: 1,
-  BINGO_MAX_NUMBER: 75,
-  BINGO_CARD_NUMBERS_COUNT: 25,
-};
+import { DEFAULT_BINGO_CONFIG } from "@/constants/bingo";
 
 type PlayerParticipationStatus = "active" | "notPlayed";
 
 export const useBingoCardData = () => {
   const {
-    data: contractData,
+    data: {
+      isPlayerExists,
+      BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT,
+      playerDetails,
+    } = {},
     isLoading: isContractDataLoading,
     refetch,
-  } = useContractReads();
+  } = useContractReads({
+    select: (data) => ({
+      isPlayerExists: data.isPlayerExists,
+      BINGO_MIN_NUMBER: data.BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER: data.BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
+      playerDetails: data.playerDetails,
+    }),
+  });
 
   const { selectedGameId, maxGameId } = useSelectedGameId();
   const cardNumbers = useAppSelector(selectCardNumbers);
@@ -40,43 +49,46 @@ export const useBingoCardData = () => {
   }, [selectedGameId, maxGameId]);
 
   const playerParticipationStatus: PlayerParticipationStatus = useMemo(() => {
-    if (isCurrentGame || contractData?.isPlayerExists) {
+    if (isCurrentGame || isPlayerExists) {
       return "active";
     }
     return "notPlayed";
-  }, [isCurrentGame, contractData?.isPlayerExists]);
+  }, [isCurrentGame, isPlayerExists]);
 
   const cardConfig = useMemo(() => {
-    if (contractData) {
+    if (BINGO_MIN_NUMBER && BINGO_MAX_NUMBER && BINGO_CARD_NUMBERS_COUNT) {
       return {
-        BINGO_MIN_NUMBER: contractData.BINGO_MIN_NUMBER,
-        BINGO_MAX_NUMBER: contractData.BINGO_MAX_NUMBER,
-        BINGO_CARD_NUMBERS_COUNT: contractData.BINGO_CARD_NUMBERS_COUNT,
+        BINGO_MIN_NUMBER,
+        BINGO_MAX_NUMBER,
+        BINGO_CARD_NUMBERS_COUNT,
       };
     }
-    return DEFAULT_CARD_CONFIG;
-  }, [contractData]);
+    return DEFAULT_BINGO_CONFIG;
+  }, [BINGO_MIN_NUMBER, BINGO_MAX_NUMBER, BINGO_CARD_NUMBERS_COUNT]);
 
   useEffect(() => {
     const areCardsEmpty = cardNumbers.every((num) => num === 0);
 
     if (
       !isContractDataLoading &&
-      contractData?.isPlayerExists &&
-      contractData?.playerDetails &&
-      contractData?.playerDetails.cardNumbers &&
-      Array.isArray(contractData.playerDetails.cardNumbers) &&
-      contractData.playerDetails.cardNumbers.some((n) => n > 0)
+      isPlayerExists &&
+      playerDetails &&
+      playerDetails.cardNumbers &&
+      Array.isArray(playerDetails.cardNumbers) &&
+      playerDetails.cardNumbers.some((n) => n > 0)
     ) {
-      dispatch(
-        setCardNumbers(
-          contractData.playerDetails!.cardNumbers as BingoCardNumbers
-        )
-      );
+      dispatch(setCardNumbers(playerDetails!.cardNumbers as BingoCardNumbers));
     } else if (cardConfig && areCardsEmpty) {
       dispatch(generateCardNumbers(cardConfig));
     }
-  }, [isContractDataLoading, contractData, dispatch, cardConfig, cardNumbers]);
+  }, [
+    isContractDataLoading,
+    isPlayerExists,
+    playerDetails,
+    dispatch,
+    cardConfig,
+    cardNumbers,
+  ]);
 
   useEffect(() => {
     if (!isContractDataLoading) {
@@ -87,7 +99,13 @@ export const useBingoCardData = () => {
   return {
     cardNumbers,
     drawnNumbers,
-    contractData,
+    contractData: {
+      isPlayerExists,
+      BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT,
+      playerDetails,
+    },
     isContractDataLoading,
     isCurrentGame,
     playerParticipationStatus,

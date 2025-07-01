@@ -1,18 +1,10 @@
 import { useBingoCardData, useBingoCardRefresh } from "@/app/hooks/bingo-card";
-import { RefreshButton } from "./RefreshButton";
-import { BingoCardGrid } from "./BingoCardGrid";
+import { RefreshButton } from "@/app/components/BingoCard/RefreshButton";
+import { BingoCardGrid } from "@/app/components/BingoCard/BingoCardGrid";
 import styles from "@/styles/bingo-card/BingoCard.module.scss";
 
 export const BingoCard = () => {
-  const {
-    cardNumbers,
-    drawnNumbers,
-    contractData,
-    isCurrentGame,
-    playerParticipationStatus,
-    cardConfig,
-    isGameFinishedInUi,
-  } = useBingoCardData();
+  const { contractData, isCurrentGame, cardConfig } = useBingoCardData();
 
   const { isRefreshingCard, handleCardRefresh } =
     useBingoCardRefresh(cardConfig);
@@ -32,14 +24,7 @@ export const BingoCard = () => {
       <div className={styles.bingoCard__container}>
         <h1 className={styles.bingoCard__title}>BINGO</h1>
 
-        <BingoCardGrid
-          playerParticipationStatus={playerParticipationStatus}
-          cardNumbers={cardNumbers}
-          drawnNumbers={drawnNumbers}
-          isPlayerExists={contractData?.isPlayerExists}
-          isRefreshingCard={isRefreshingCard}
-          isGameFinished={isGameFinishedInUi}
-        />
+        <BingoCardGrid isRefreshingCard={isRefreshingCard} />
       </div>
     </div>
   );

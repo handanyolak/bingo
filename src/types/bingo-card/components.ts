@@ -10,12 +10,3 @@ export interface BingoCardCellProps {
   isRefreshingCard: boolean;
   isGameFinished: boolean;
 }
-
-export interface BingoCardGridProps {
-  playerParticipationStatus: "active" | "notPlayed";
-  cardNumbers: number[];
-  drawnNumbers: number[];
-  isPlayerExists?: boolean;
-  isRefreshingCard: boolean;
-  isGameFinished: boolean;
-}

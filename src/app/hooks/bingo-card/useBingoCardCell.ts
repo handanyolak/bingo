@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
-import type { UseBingoCardCellProps } from "@/types/bingo-card";
 
 export const useBingoCardCell = ({
   isRefreshingCard,
   isGameFinished,
-}: UseBingoCardCellProps) => {
+}: {
+  isRefreshingCard: boolean;
+  isGameFinished: boolean;
+}) => {
   const cellClassName = useMemo(() => {
     return `${styles.bingoCardCell__grid} 
       ${isRefreshingCard ? styles["bingoCardCell__grid--changed"] : ""} 

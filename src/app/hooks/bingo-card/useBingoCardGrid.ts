@@ -1,11 +1,15 @@
 import { useMemo } from "react";
-import { BingoCardGridProps } from "@/types";
+import { BINGO_CARD_SIZE } from "@/constants/bingo";
 
-export const useBingoCardGrid = (props: BingoCardGridProps) => {
-  const { cardNumbers, drawnNumbers } = props;
-
+export const useBingoCardGrid = ({
+  cardNumbers,
+  drawnNumbers,
+}: {
+  cardNumbers: number[];
+  drawnNumbers: number[];
+}) => {
   const emptyGridCells = useMemo(() => {
-    return Array.from({ length: 25 }, (_, i) => i);
+    return Array.from({ length: BINGO_CARD_SIZE }, (_, i) => i);
   }, []);
 
   const cardNumbersWithDrawnStatus = useMemo(() => {
