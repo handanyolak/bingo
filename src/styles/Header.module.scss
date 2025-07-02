@@ -1,39 +1,34 @@
+@use "@/styles/mixins" as *;
+
 .header {
   padding: 1rem;
   width: 100%;
 
   &__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include flex-between;
   }
 
   &__title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--card-color);
+    @include heading-large;
+    color: var(--theme-color);
     z-index: 100;
 
-    @media (max-width: 768px) {
+    @include mobile {
       font-size: 1.5rem;
     }
   }
 
   &__settings {
-    display: flex;
-    align-items: center;
+    @include flex-align-center;
     gap: 1rem;
   }
 
   &__bottom {
-    display: flex;
-    justify-content: center;
+    @include flex-justify-center;
   }
 
   &__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-column-center;
     gap: 1rem;
   }
 
@@ -44,7 +39,7 @@
 }
 
 .desktopView {
-  @media (max-width: 768px) {
+  @include mobile {
     display: none;
   }
 }
@@ -52,7 +47,7 @@
 .mobileView {
   display: none;
 
-  @media (max-width: 768px) {
+  @include mobile {
     display: block;
   }
 }
