@@ -1,0 +1,113 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin flex-column-full-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+@mixin mobile {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin hover-lift($scale: 1.05, $translateY: -2px) {
+  &:hover {
+    transform: translateY($translateY) scale($scale);
+  }
+}
+
+@mixin heading-large {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+@mixin bold-text {
+  font-weight: 700;
+}
+
+@mixin fade-in-animation($duration: var(--animation-duration-fast)) {
+  animation: dropdownFade $duration ease;
+}
+
+@mixin spin-animation($duration: 1s) {
+  animation: spin $duration linear infinite;
+}
+
+@mixin pulse-animation($duration: 1.5s) {
+  animation: pulseColor $duration ease-in-out forwards;
+}
+
+@mixin rotate-animation(
+  $degree: 180deg,
+  $duration: var(--animation-duration-fast)
+) {
+  transition: transform $duration ease;
+  transform: rotate($degree);
+}
+
+@mixin button-reset {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+@mixin scrollbar-styling {
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--background-container);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--interactive-border);
+    border-radius: 2px;
+  }
+}
+
+@mixin loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+
+  .global-loader {
+    animation: var(--animation-spin);
+  }
+}
