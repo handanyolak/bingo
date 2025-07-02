@@ -1,100 +1,13 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/animations" as *;
+
 .drawnNumbers {
   position: relative;
 
   &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-column-center;
     margin-top: 20px;
     width: 100%;
-  }
-
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(15, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-gap: 10px;
-    margin-top: 10px;
-    background-color: var(--surface-bg);
-    opacity: 0.9;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-  }
-
-  &__cell {
-    border-radius: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 50px;
-    font-weight: 700;
-    background-color: var(--card-color);
-    color: #fff;
-    will-change: transform, background-color;
-    transition: all 0.3s ease;
-    box-shadow: inset 0px 2px 3px rgba(255, 255, 255, 0.3),
-      inset 0px -2px 3px rgba(0, 0, 0, 0.3), 0px 3px 5px rgba(0, 0, 0, 0.2);
-    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(
-        circle at 30% 30%,
-        transparent 0%,
-        rgba(0, 0, 0, 0.2) 100%
-      );
-      border-radius: 50%;
-      z-index: 1;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 40%;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.2),
-        transparent
-      );
-      border-radius: 50% 50% 0 0;
-      z-index: 2;
-    }
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: inset 0px 2px 3px rgba(255, 255, 255, 0.3),
-        inset 0px -2px 3px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  &__cell_latest {
-    animation-name: pulseColor;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-    animation-iteration-count: 1;
-    animation-delay: 0s;
-    animation-play-state: running;
-  }
-
-  &__placeholder {
-    border-radius: 100%;
-    height: 50px;
-    width: 50px;
-    background-color: transparent;
-    border: 1px dashed var(--card-dark-color);
   }
 
   &__centerNumber {
@@ -105,11 +18,9 @@
     border-radius: 100%;
     width: 150px;
     height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--card-color);
-    color: #fff;
+    @include flex-center;
+    background-color: var(--theme-color);
+    color: var(--text-light);
     font-size: 4rem;
     font-weight: bold;
     z-index: 1000;
@@ -154,85 +65,12 @@
       z-index: 2;
     }
   }
-
-  &__centered {
-    position: absolute;
-    z-index: 30;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  &__spinLoader {
-    animation: spin 1s linear infinite;
-  }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes appearCenter {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-  }
-  20% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  70% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
-  }
-}
-
-@keyframes pulseColor {
-  0% {
-    background-color: var(--card-color);
-    transform: scale(1);
-  }
-  50% {
-    background-color: var(--primary-color, #ffcc00);
-    transform: scale(1.1);
-  }
-  100% {
-    background-color: var(--card-color);
-    transform: scale(1);
-  }
-}
-
-@media screen and (max-width: 767px) {
+@include mobile {
   .drawnNumbers {
     &__container {
       margin: 10px 0;
-    }
-
-    &__grid {
-      grid-template-columns: repeat(15, 1fr);
-      grid-template-rows: repeat(5, 1fr);
-      grid-gap: 5px;
-      padding: 10px;
-    }
-
-    &__cell,
-    &__placeholder {
-      height: 18px;
-      width: 18px;
-      font-size: 10px;
-
-      &::after {
-        height: 30%;
-      }
     }
 
     &__centerNumber {
