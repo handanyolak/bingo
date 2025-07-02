@@ -53,9 +53,9 @@ export const useColorProvider = ({
   const containerStyle = useMemo(
     () =>
       ({
-        "--card-color": color,
-        "--card-light-color": lightColor,
-        "--card-dark-color": darkColor,
+        "--theme-color": color,
+        "--theme-color-light": lightColor,
+        "--theme-color-dark": darkColor,
       } as React.CSSProperties),
     [color, lightColor, darkColor]
   );
@@ -72,6 +72,7 @@ export const useColorProvider = ({
     const letterOpacity = theme === "dark" ? 0.45 : 0.4;
 
     const setCSSVariables = () => {
+      // Background blob colors
       root.style.setProperty(
         "--blob-color-1",
         `rgba(${r}, ${g}, ${b}, ${blobOpacity})`
@@ -85,10 +86,13 @@ export const useColorProvider = ({
         `rgba(${r}, ${g}, ${b}, ${blobOpacity * 0.7})`
       );
 
-      root.style.setProperty("--card-color", color);
-      root.style.setProperty("--card-light-color", lightColor);
-      root.style.setProperty("--card-dark-color", darkColor);
+      // Theme colors
+      root.style.setProperty("--theme-color", color);
+      root.style.setProperty("--theme-color-light", lightColor);
+      root.style.setProperty("--theme-color-dark", darkColor);
+      root.style.setProperty("--theme-color-rgb", `${r}, ${g}, ${b}`);
 
+      // Letter colors
       root.style.setProperty(
         "--letter-color-1",
         `rgba(${r}, ${g}, ${b}, ${letterOpacity})`
