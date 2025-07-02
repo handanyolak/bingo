@@ -1,0 +1,116 @@
+"use client";
+
+import { Loader2 } from "lucide-react";
+import { Address } from "viem";
+import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
+import { AddressListProps } from "@/types/common/components";
+import styles from "@/styles/AddressList.module.scss";
+
+// Default address item render function
+const renderAddressItem = (
+  address: Address,
+  index: number,
+  onAddressClick: (address: Address) => void,
+  itemClassName: string,
+  keyPrefix: string
+) => {
+  if (!address) return null;
+
+  return (
+    <button
+      type="button"
+      className={itemClassName}
+      onClick={() => onAddressClick(address)}
+    >
+      {index + 1}. {address}
+    </button>
+  );
+};
+
+export const AddressList = ({
+  addresses,
+  onAddressClick,
+  renderMode = "virtualized",
+  isLoading,
+  isVisible,
+  className = styles.addressList__list,
+  itemClassName = styles.addressList__item,
+  emptyText,
+  keyPrefix,
+  estimateSize = 50,
+  additionalContent,
+}: AddressListProps) => {
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className={className}>
+        <div className={styles.addressList__loading}>
+          <Loader2 className="global-loader" />
+        </div>
+      </div>
+    );
+  }
+
+  // Empty/not visible state
+  if (!isVisible) {
+    return (
+      <div className={className}>
+        <div className={styles.addressList__empty}>{emptyText}</div>
+      </div>
+    );
+  }
+
+  // Address item render function
+  const renderAddress = (address: Address, index: number) => {
+    return renderAddressItem(
+      address,
+      index,
+      onAddressClick,
+      itemClassName,
+      keyPrefix
+    );
+  };
+
+  const mainContent = (() => {
+    // Virtualized render mode
+    if (renderMode === "virtualized") {
+      return (
+        <VirtualizedContent
+          data={addresses}
+          className={className}
+          estimateSize={estimateSize}
+          overscan={20}
+          renderItem={renderAddress}
+          getItemKey={(index) => `${keyPrefix}-${addresses[index]}`}
+          horizontal={false}
+          debug={false}
+          enableDynamicMeasurement={false}
+        />
+      );
+    }
+
+    // Default render mode
+    return (
+      <div className={className}>
+        {addresses.map((address, index) => (
+          <button
+            key={`${keyPrefix}-${address}-${index}`}
+            type="button"
+            className={itemClassName}
+            onClick={() => onAddressClick(address)}
+          >
+            {index + 1}. {address}
+          </button>
+        ))}
+      </div>
+    );
+  })();
+
+  // Return with optional additional content
+  return (
+    <>
+      {additionalContent}
+      {mainContent}
+    </>
+  );
+};

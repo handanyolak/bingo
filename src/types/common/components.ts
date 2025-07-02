@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
+import { Address } from "viem";
 
 export type RoundedSize = "full" | "lg" | "md" | "sm";
 
@@ -93,4 +94,18 @@ export interface VirtualizedContentHookReturn {
   getItemStyle: (virtualItem: VirtualItem) => React.CSSProperties;
   enableDynamicMeasurement: boolean;
   data: readonly any[];
+}
+
+export interface AddressListProps {
+  addresses: readonly Address[];
+  onAddressClick: (address: Address) => void;
+  renderMode?: "virtualized" | "normal";
+  isLoading: boolean;
+  isVisible: boolean;
+  className?: string;
+  itemClassName?: string;
+  emptyText: string;
+  keyPrefix: string;
+  estimateSize?: number;
+  additionalContent?: React.ReactNode;
 }
