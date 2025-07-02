@@ -1,12 +1,12 @@
 import { Loader2 } from "lucide-react";
 import { useNumberGrid } from "@/app/hooks/drawn-numbers";
 import { NumberCell } from "./NumberCell";
-import styles from "@/styles/DrawnNumbers.module.scss";
+import styles from "@/styles/NumberGrid.module.scss";
 import type { NumberGridProps } from "@/types/drawn-numbers";
 
 const LoadingState = () => (
-  <div key="loading-indicator" className={styles.drawnNumbers__centered}>
-    <Loader2 className={styles.drawnNumbers__spinLoader} size={100} />
+  <div key="loading-indicator" className={styles.numberGrid__centered}>
+    <Loader2 className={styles.numberGrid__spinLoader} size={100} />
   </div>
 );
 
@@ -22,7 +22,7 @@ export const NumberGrid = (props: NumberGridProps) => {
   const { placeholderArray, shouldShowLoading } = useNumberGrid(props);
 
   return (
-    <div className={styles.drawnNumbers__grid}>
+    <div className={styles.numberGrid}>
       {drawnNumbers.map((drawnNumber, index) => {
         const isLatestNumber =
           pulseOnce && drawnNumber === latestDrawnNumber && !isGameFinishedInUi;
@@ -42,7 +42,7 @@ export const NumberGrid = (props: NumberGridProps) => {
       {placeholderArray.map((_, index) => (
         <div
           key={`placeholder-${index}`}
-          className={styles.drawnNumbers__placeholder}
+          className={styles.numberGrid__placeholder}
         />
       ))}
     </div>
