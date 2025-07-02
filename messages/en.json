@@ -19,7 +19,8 @@
     "notParticipated": "You did not participate in this game",
     "rewardClaimedMessage": "Reward claimed successfully!",
     "timeRemaining": "Time Remaining:",
-    "totalPoolBalance": "Total Pool Balance: {amount} ETH"
+    "totalPoolBalance": "Total Pool Balance: {amount} ETH",
+    "loading": "Loading..."
   },
   "toast": {
     "gameWon": "Congratulations! You won!",

@@ -19,7 +19,8 @@
     "notParticipated": "Bu oyuna katılmadınız",
     "rewardClaimedMessage": "Ödül başarıyla talep edildi!",
     "timeRemaining": "Kalan Süre:",
-    "totalPoolBalance": "Toplam Pool Bakiyesi: {amount} ETH"
+    "totalPoolBalance": "Toplam Pool Bakiyesi: {amount} ETH",
+    "loading": "Yükleniyor..."
   },
   "toast": {
     "gameWon": "Tebrikler! Kazandınız!",
