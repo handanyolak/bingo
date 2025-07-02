@@ -14,9 +14,9 @@ export const AppButton = ({
   onClick,
 }: AppButtonProps) => {
   const buttonClass = `${styles.button} ${
-    disabled ? styles.button__disabled : ""
+    disabled ? styles.buttonDisabled : ""
   } ${rounded ? styles[`rounded__${rounded}`] : ""} ${
-    animated ? styles.button__animated : ""
+    animated ? styles.buttonAnimated : ""
   } ${className}`;
 
   return (
