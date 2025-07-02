@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { AddressList } from "@/app/components/common/AddressList";
-import { usePlayersData } from "@/app/hooks/usePlayersData";
+import { usePlayersData } from "@/app/hooks/usePlayers";
 import type { PlayersProps } from "@/types/participants";
 
 export const Players = ({
