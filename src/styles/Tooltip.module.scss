@@ -1,3 +1,5 @@
+@use "@/styles/mixins" as *;
+
 .tooltip {
   &__wrapper {
     position: relative;
@@ -8,13 +10,13 @@
     position: absolute;
     z-index: 10;
     padding: 8px 12px;
-    background-color: var(--card-light-color);
+    background-color: var(--theme-color-light);
     color: white;
     border-radius: 5px;
     white-space: nowrap;
     visibility: hidden;
     opacity: 0;
-    font-weight: 700;
+    @include bold-text;
     transition: all 0.3s ease;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 
@@ -32,7 +34,7 @@
       margin-bottom: 4px;
       padding-bottom: 4px;
       text-align: center;
-      font-weight: 700;
+      @include bold-text;
     }
   }
 
@@ -47,7 +49,7 @@
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        border-top-color: var(--card-light-color);
+        border-top-color: var(--theme-color-light);
       }
     }
   }
@@ -63,7 +65,7 @@
         bottom: 100%;
         left: 50%;
         transform: translateX(-50%);
-        border-bottom-color: var(--card-dark-color);
+        border-bottom-color: var(--theme-color-dark);
       }
     }
   }
