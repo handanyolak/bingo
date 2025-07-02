@@ -1,33 +1,21 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/animations" as *;
+
 .winners {
-  &__claim_loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-
-    .global-loader {
-      animation: spin 1s linear infinite;
-    }
-  }
-
-  &__claim_button {
-    background-color: var(--card-color);
+  &__claimButton {
+    background-color: var(--theme-color);
     width: 100%;
-    color: white;
+    color: var(--text-light);
     border: none;
     border-radius: 0.25rem;
     padding: 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: all var(--animation-duration-fast) ease-in-out;
     text-transform: uppercase;
-    margin-top: 0.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin: 0.5rem 0 2rem 0;
+    @include flex-center;
 
     &:hover:not(:disabled) {
       opacity: 0.9;
@@ -40,7 +28,7 @@
     }
   }
 
-  &__claimed_status {
+  &__claimedStatus {
     text-align: center;
     margin: 0 0 2rem 0;
     padding: 1rem;
@@ -52,22 +40,20 @@
     font-weight: 600;
   }
 
-  &__info_box {
+  &__infoBox {
     padding: 0.75rem;
-    background-color: rgba(var(--card-color-rgb), 0.1);
-    border: 1px solid var(--card-color);
+    background-color: rgba(var(--theme-color-rgb), 0.1);
+    border: 1px solid var(--theme-color);
     border-radius: 0.5rem;
     font-size: 0.875rem;
     text-align: center;
-    color: var(--card-color);
+    color: var(--theme-color);
   }
 
   &__empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     height: 100px;
-    color: var(--button-text);
+    color: var(--interactive-text);
     font-size: 0.875rem;
   }
 
@@ -76,16 +62,7 @@
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media screen and (max-width: 768px) {
+@include mobile {
   .winners {
     &__item {
       font-size: 0.7rem;
