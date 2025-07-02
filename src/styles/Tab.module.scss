@@ -1,3 +1,5 @@
+@use "@/styles/mixins" as *;
+
 .tab {
   width: 100%;
   height: 100%;
@@ -5,9 +7,8 @@
   padding: 1rem;
 
   &__header {
-    display: flex;
-    justify-content: center;
-    border-bottom: 1px solid var(--button-border);
+    @include flex-justify-center;
+    border-bottom: 1px solid var(--interactive-border);
   }
 
   &__button {
@@ -15,7 +16,7 @@
     width: 50%;
     font-weight: 500;
     font-size: 0.875rem;
-    color: var(--button-text);
+    color: var(--interactive-text);
     transition: all 0.2s ease;
 
     &:focus {
@@ -23,38 +24,33 @@
     }
 
     &:hover {
-      color: var(--card-color);
+      color: var(--theme-color);
     }
 
-    &_active {
-      color: var(--card-color);
-      border-bottom: 1px solid var(--card-dark-color);
+    &Active {
+      color: var(--theme-color);
+      border-bottom: 1px solid var(--theme-color-dark);
     }
+  }
 
-    &_content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
+  &__buttonContent {
+    @include flex-center;
+    gap: 0.5rem;
+  }
 
-    &_icon {
-      display: flex;
-      align-items: center;
-    }
+  &__buttonIcon {
+    @include flex-align-center;
   }
 
   &__panel {
     padding: 0.6rem 0;
-    background-color: var(--surface-bg);
+    background-color: var(--background-container);
     border-radius: 0.5rem;
     height: 90%;
   }
 
   &__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-column-center;
     height: 100%;
   }
 }
