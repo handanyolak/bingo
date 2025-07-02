@@ -1,59 +1,46 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/animations" as *;
+
 .addressList {
   &__list {
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     gap: 0.375rem;
     width: 100%;
     max-height: 700px;
     overflow-y: auto;
     padding-right: 0.5rem;
-
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: var(--surface-bg);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--button-border);
-      border-radius: 2px;
-    }
+    @include scrollbar-styling;
   }
 
   &__loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include loading-spinner;
     height: 100px;
   }
 
   &__item {
-    all: unset;
-    box-sizing: border-box;
+    @include button-reset;
     display: block;
     width: 100%;
     padding: 0.4rem;
     word-wrap: break-word;
     word-break: break-all;
-    background-color: var(--button-bg);
-    border: 1px solid var(--button-border);
+    background-color: var(--interactive-background);
+    border: 1px solid var(--interactive-border);
     border-radius: 0.5rem;
     font-size: 0.875rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: all var(--animation-duration-normal) ease;
 
     &:focus {
-      outline: 2px solid var(--card-color);
+      outline: 2px solid var(--theme-color);
       outline-offset: 2px;
     }
 
     &:hover {
-      background-color: var(--button-hover-bg);
+      background-color: var(--interactive-background-hover);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      color: var(--card-color);
+      color: var(--theme-color);
     }
 
     &:active {
@@ -68,25 +55,14 @@
   }
 
   &__empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     height: 100px;
-    color: var(--button-text);
+    color: var(--interactive-text);
     font-size: 0.875rem;
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media screen and (max-width: 768px) {
+@include mobile {
   .addressList {
     &__item {
       font-size: 0.7rem;
