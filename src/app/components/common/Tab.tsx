@@ -25,19 +25,15 @@ export const Tab = ({ children, defaultTab = 0, onTabChange }: TabProps) => {
           <button
             key={index}
             className={`${styles.tab__button} ${
-              activeTab === index ? styles.tab__button_active : ""
+              activeTab === index ? styles.tab__buttonActive : ""
             }`}
             onClick={() => handleTabChange(index)}
           >
-            <span className={styles.tab__button_content}>
+            <span className={styles.tab__buttonContent}>
               {tab.props.icon && (
-                <span className={styles.tab__button_icon}>
-                  {tab.props.icon}
-                </span>
+                <span className={styles.tab__buttonIcon}>{tab.props.icon}</span>
               )}
-              <span className={styles.tab__button_title}>
-                {tab.props.title}
-              </span>
+              <span className={styles.tab__buttonTitle}>{tab.props.title}</span>
             </span>
           </button>
         ))}
