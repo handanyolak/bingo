@@ -1,7 +1,7 @@
+@use "@/styles/mixins" as *;
+
 .controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-between;
   width: 100%;
 
   &__button {
@@ -9,7 +9,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@include mobile {
   .controls {
     gap: 0.75rem;
 
