@@ -51,7 +51,7 @@ export const Winners = ({
       <div className={styles.winners__fullWidth}>
         {hasClaimableReward ? (
           <button
-            className={styles.winners__claim_button}
+            className={styles.winners__claimButton}
             onClick={handleClaimReward}
             disabled={isClaimButtonDisabled}
           >
@@ -65,7 +65,7 @@ export const Winners = ({
             )}
           </button>
         ) : (
-          <div className={styles.winners__claimed_status}>
+          <div className={styles.winners__claimedStatus}>
             {t("controls.rewardClaimed")}
           </div>
         )}
@@ -76,9 +76,7 @@ export const Winners = ({
   const claimSection = (
     <>
       {shouldShowClaimSection && !isLoading && hasClaimableReward && (
-        <div className={styles.winners__info_box}>
-          {t("controls.claimInfo")}
-        </div>
+        <div className={styles.winners__infoBox}>{t("controls.claimInfo")}</div>
       )}
       {renderClaimControls()}
     </>
