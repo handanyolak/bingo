@@ -43,11 +43,11 @@
     margin-top: -0.5em;
     animation: spinner 900ms infinite linear;
     border-radius: 50%;
-    box-shadow: var(--card-color) 1.5em 0 0 0,
-      var(--card-light-color) 1.1em 1.1em 0 0, var(--card-color) 0 1.5em 0 0,
-      var(--card-dark-color) -1.1em 1.1em 0 0, var(--card-color) -1.5em 0 0 0,
-      var(--card-light-color) -1.1em -1.1em 0 0, var(--card-color) 0 -1.5em 0 0,
-      var(--card-dark-color) 1.1em -1.1em 0 0;
+    box-shadow: var(--theme-color) 1.5em 0 0 0,
+      var(--theme-color-light) 1.1em 1.1em 0 0, var(--theme-color) 0 1.5em 0 0,
+      var(--theme-color-dark) -1.1em 1.1em 0 0, var(--theme-color) -1.5em 0 0 0,
+      var(--theme-color-light) -1.1em -1.1em 0 0,
+      var(--theme-color) 0 -1.5em 0 0, var(--theme-color-dark) 1.1em -1.1em 0 0;
   }
 
   &::before {
