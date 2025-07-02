@@ -1,23 +1,24 @@
+@use "@/styles/mixins" as *;
+
 .languageSwitcher {
   position: relative;
   display: inline-block;
-  @media (max-width: 768px) {
+  @include mobile {
     width: 100%;
   }
 
   &__button {
-    @media (max-width: 768px) {
+    @include mobile {
       width: 100%;
     }
   }
 
   &__icon {
-    transition: transform 0.2s ease;
-    transform: rotate(0deg);
-    color: var(--card-color);
+    @include rotate-animation(0deg, 0.2s);
+    color: var(--theme-color);
 
     &--rotated {
-      transform: rotate(-180deg);
+      @include rotate-animation(-180deg, 0.2s);
     }
   }
 
@@ -26,19 +27,18 @@
     right: 0;
     top: calc(100% + 4px);
     border-radius: 12px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--shadow-medium);
     width: 100%;
     z-index: 50;
     overflow: hidden;
-    animation: dropdownFade 0.2s ease;
+    @include fade-in-animation;
   }
 
   &__dropdownContent {
     padding: 6px;
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     gap: 2px;
-    background: var(--card-color);
+    background: var(--theme-color);
   }
 
   &__option {
@@ -55,11 +55,11 @@
     font-size: 15px;
 
     &:hover {
-      background-color: var(--button-hover-bg);
+      background-color: var(--interactive-background-hover);
     }
 
     &:active {
-      background-color: var(--button-bg);
+      background-color: var(--interactive-background);
     }
   }
 }
