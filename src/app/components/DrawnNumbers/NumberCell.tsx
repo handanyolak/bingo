@@ -1,4 +1,4 @@
-import styles from "@/styles/DrawnNumbers.module.scss";
+import styles from "@/styles/NumberCell.module.scss";
 import type { NumberCellProps } from "@/types/drawn-numbers";
 
 export const NumberCell = ({
@@ -8,16 +8,11 @@ export const NumberCell = ({
   index,
 }: NumberCellProps) => (
   <div
-    key={`container-${number}-${index}`}
-    className={styles.drawnNumbers__cellContainer}
+    className={`${styles.numberCell} ${
+      isLatest ? styles.numberCell_latest : ""
+    }`}
+    key={`cell-${number}-${isLatest ? animationKey : index}`}
   >
-    <div
-      className={`${styles.drawnNumbers__cell} ${
-        isLatest ? styles.drawnNumbers__cell_latest : ""
-      }`}
-      key={`cell-${number}-${isLatest ? animationKey : index}`}
-    >
-      {number}
-    </div>
+    {number}
   </div>
 );
