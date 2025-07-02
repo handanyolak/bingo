@@ -1,3 +1,5 @@
+@use "@/styles/mixins" as *;
+
 $rounded-sizes: (
   "full": 999px,
   "lg": 8px,
@@ -7,43 +9,55 @@ $rounded-sizes: (
 
 @keyframes borderPulse {
   0% {
-    border-color: var(--button-border);
+    border-color: var(--interactive-border);
   }
   50% {
-    border-color: var(--card-color);
+    border-color: var(--theme-color);
   }
   100% {
-    border-color: var(--button-border);
+    border-color: var(--interactive-border);
   }
 }
 
 .button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  @include flex-center;
   padding: 8px 16px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
   border-radius: 999px;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  border: 1px solid var(--button-border);
-  transition: all 0.2s ease;
+  border: 1px solid var(--interactive-border);
+  background-color: var(--interactive-background);
+  color: var(--interactive-text);
   font-weight: 600;
+  cursor: pointer;
+  transition: all var(--animation-duration-normal) ease;
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:hover {
+    background-color: var(--interactive-background-hover);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  gap: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   font-size: 16px;
 
   &:hover {
-    background-color: var(--button-hover-bg);
+    background-color: var(--interactive-background-hover);
   }
 
-  &__disabled {
-    color: var(--button-disabled);
-    border-color: var(--button-border);
+  &Disabled {
+    color: var(--interactive-disabled);
+    border-color: var(--interactive-border);
     cursor: not-allowed;
     pointer-events: none;
   }
 
-  &__animated {
+  &Animated {
     animation: borderPulse 2s infinite;
   }
 }
@@ -54,7 +68,7 @@ $rounded-sizes: (
   }
 }
 
-@media screen and (max-width: 768px) {
+@include mobile {
   .button {
     padding: 4px 10px;
     font-size: 13px;
