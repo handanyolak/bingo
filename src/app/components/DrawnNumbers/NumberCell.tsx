@@ -9,7 +9,7 @@ export const NumberCell = ({
 }: NumberCellProps) => (
   <div
     className={`${styles.numberCell} ${
-      isLatest ? styles.numberCell_latest : ""
+      isLatest ? styles.numberCellLatest : ""
     }`}
     key={`cell-${number}-${isLatest ? animationKey : index}`}
   >
