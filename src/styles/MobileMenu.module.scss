@@ -1,13 +1,12 @@
+@use "@/styles/mixins" as *;
+
 .mobileMenu {
   &__menu {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include flex-column-full-center;
     gap: 0.5rem;
     padding: 20px 95px;
     border-radius: 0.5rem;
@@ -24,18 +23,16 @@
     display: none;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    background: var(--button-bg);
+    background: var(--interactive-background);
     z-index: 150;
     position: relative;
 
-    @media (max-width: 768px) {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    @include mobile {
+      @include flex-center;
     }
 
     &:hover {
-      background: var(--button-hover-bg);
+      background: var(--interactive-background-hover);
     }
   }
 }
