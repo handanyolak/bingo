@@ -1,10 +1,13 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/animations" as *;
+
 .numberGrid {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
   grid-template-rows: repeat(5, 1fr);
   grid-gap: 10px;
   margin-top: 10px;
-  background-color: var(--surface-bg);
+  background-color: var(--background-container);
   opacity: 0.9;
   padding: 20px;
   border-radius: 8px;
@@ -19,28 +22,19 @@
   }
 
   &__spinLoader {
-    animation: spin 1s linear infinite;
+    @include spin-animation(1s);
   }
 
   &__placeholder {
     border-radius: 100%;
-    height: 50px;
-    width: 50px;
+    height: var(--size-icon-lg);
+    width: var(--size-icon-lg);
     background-color: transparent;
-    border: 1px dashed var(--card-dark-color);
+    border: 1px dashed var(--theme-color-dark);
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media screen and (max-width: 767px) {
+@include mobile {
   .numberGrid {
     grid-template-columns: repeat(15, 1fr);
     grid-template-rows: repeat(5, 1fr);
@@ -48,9 +42,8 @@
     padding: 10px;
 
     &__placeholder {
-      height: 18px;
-      width: 18px;
-      font-size: 10px;
+      height: var(--size-icon-sm);
+      width: var(--size-icon-sm);
     }
   }
 }
