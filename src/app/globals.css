@@ -2,59 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-accent: #ffcc00;
+
+  --theme-color: #9e66ab;
+  --theme-color-light: #b380c0;
+  --theme-color-dark: #8a4c96;
+  --theme-color-rgb: 158, 102, 171;
+
+  --animation-spin: spin 1s linear infinite;
+  --animation-duration-fast: 0.2s;
+  --animation-duration-normal: 0.3s;
+  --animation-duration-slow: 0.5s;
+
+  --size-spinner: 24px;
+  --size-icon-sm: 20px;
+  --size-icon-md: 24px;
+  --size-icon-lg: 50px;
+}
+
 :root,
 .light {
-  --background: #fff0d9;
-  --text: #27272a;
-  --button-bg: rgba(0, 0, 0, 0.02);
-  --button-text: #374151;
-  --button-border: rgba(0, 0, 0, 0.05);
-  --button-hover-bg: rgba(0, 0, 0, 0.05);
-  --button-disabled: #999;
-  --modal-bg: rgba(255, 255, 255, 0.9);
-  --modal-text: #27272a;
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --input-bg: rgba(255, 255, 255, 0.9);
-  --input-text: #27272a;
-  --input-border: rgba(0, 0, 0, 0.1);
-  --drawer-bg: rgba(255, 255, 255, 0.9);
-  --surface-bg: white;
-  --surface-bg-rgb: 255, 255, 255;
-  --loader-animation: spin 1s linear infinite;
-  --loader-color: var(--text);
-  --blob-color-1: rgba(235, 197, 154, 0.25);
-  --blob-color-2: rgba(229, 181, 131, 0.2);
-  --blob-color-3: rgba(222, 165, 108, 0.15);
+  --background-page: #fff0d9;
+  --background-container: white;
+  --background-container-rgb: 255, 255, 255;
+
+  --text-primary: #27272a;
+  --text-light: var(--color-white);
+
+  --interactive-background: rgba(0, 0, 0, 0.02);
+  --interactive-background-hover: rgba(0, 0, 0, 0.05);
+  --interactive-border: rgba(0, 0, 0, 0.05);
+  --interactive-text: #374151;
+  --interactive-disabled: #999;
+
+  --shadow-low: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-high: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .dark {
-  --background: #1a1b26;
-  --text: #fafafa;
-  --button-bg: rgba(255, 255, 255, 0.1);
-  --button-text: #e5e7eb;
-  --button-border: rgba(255, 255, 255, 0.1);
-  --button-hover-bg: rgba(255, 255, 255, 0.15);
-  --button-disabled: #666;
-  --modal-bg: rgba(24, 24, 27, 0.9);
-  --modal-text: #fafafa;
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --input-bg: rgba(24, 24, 27, 0.9);
-  --input-text: #fafafa;
-  --input-border: rgba(255, 255, 255, 0.1);
-  --drawer-bg: rgba(26, 27, 38, 0.9);
-  --surface-bg: #20212e;
-  --surface-bg-rgb: 32, 33, 46;
-  --loader-color: var(--text);
-  --blob-color-1: rgba(70, 73, 102, 0.25);
-  --blob-color-2: rgba(80, 83, 112, 0.2);
-  --blob-color-3: rgba(90, 93, 122, 0.15);
+  --background-page: #1a1b26;
+  --background-container: #20212e;
+  --background-container-rgb: 32, 33, 46;
+
+  --text-primary: #fafafa;
+
+  --interactive-background: rgba(255, 255, 255, 0.1);
+  --interactive-background-hover: rgba(255, 255, 255, 0.15);
+  --interactive-border: rgba(255, 255, 255, 0.1);
+  --interactive-text: #e5e7eb;
+  --interactive-disabled: #666;
+
+  --shadow-low: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-high: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 .global-loader {
-  width: var(--loader-size);
-  height: var(--loader-size);
-  animation: var(--loader-animation);
-  color: var(--loader-color);
+  width: var(--size-spinner);
+  height: var(--size-spinner);
+  animation: var(--animation-spin);
+  color: var(--text-primary);
 }
 
 @keyframes spin {
@@ -72,10 +83,11 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  color: var(--text);
+  color: var(--text-primary);
   background-color: transparent !important;
   font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color var(--animation-duration-fast) ease,
+    color var(--animation-duration-fast) ease;
   position: relative;
 }
 
@@ -86,7 +98,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--background);
+  background-color: var(--background-page);
   background-image: radial-gradient(
       circle at 10% 15%,
       var(--blob-color-1) 0%,
@@ -100,7 +112,12 @@ body::before {
   z-index: -1;
   opacity: 0.5;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  transition: opacity var(--animation-duration-slow) ease;
+  will-change: transform;
+}
+
+.dark body::before {
+  opacity: 0.4;
 }
 
 * {
@@ -108,19 +125,19 @@ body::before {
 }
 
 ::selection {
-  background: var(--text);
-  color: var(--background);
+  background: var(--text-primary);
+  color: var(--background-page);
 }
 
 .Toastify__toast {
   font-family: inherit;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(var(--surface-bg-rgb, 255, 255, 255), 0.6) !important;
+  background-color: rgba(var(--background-container-rgb), 0.6) !important;
 }
 
 .Toastify__close-button {
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .Toastify__close-button:hover {
