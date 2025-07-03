@@ -1,34 +1,33 @@
-
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig, globalIgnores } from "eslint/config";
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import globals from "globals";
 import importPlugin from "eslint-plugin-import";
-import jestPlugin from "eslint-plugin-jest";            
+import jestPlugin from "eslint-plugin-jest";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+export default defineConfig([
+  // Global ignores
+  globalIgnores(["dist/", "node_modules/", "build/", "coverage/"]),
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+  // Base ESLint recommended rules
+  js.configs.recommended,
 
-export default [
+  // Base configuration for all files
   {
     files: ["**/*.{js,mjs,ts,tsx}"],
     plugins: {
       import: importPlugin,
-      jest: jestPlugin,                             
+      "react-hooks": reactHooksPlugin,
     },
     languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
-      },
-      env: {
-        node: true,
-        es2021: true,
-        browser: true,
-        jest: true,                                
       },
     },
     rules: {
@@ -54,12 +53,37 @@ export default [
           alphabetize: { order: "asc", caseInsensitive: true },
         },
       ],
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
 
-  ...compat.extends(
-    "next/core-web-vitals",
-    "next/typescript",
-    "plugin:jest/recommended"                      
-  ),
-];
+  // TypeScript specific configuration
+  ...tseslint.configs.recommended,
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: "./tsconfig.json",
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+
+  // Test files configuration
+  {
+    files: ["**/__tests__/**/*.{js,ts,tsx}", "**/*.{test,spec}.{js,ts,tsx}"],
+    plugins: {
+      jest: jestPlugin,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+    rules: {
+      ...jestPlugin.configs.recommended.rules,
+    },
+  },
+]);
