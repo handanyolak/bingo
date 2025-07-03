@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { BINGO_CARD_SIZE } from "@/constants/bingo";
-
 import {
   DrawnNumberWithTimestamp,
   type BingoCardNumbers,

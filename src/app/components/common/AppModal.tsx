@@ -1,7 +1,6 @@
 "use client";
 
 import { X } from "lucide-react";
-import { ReactNode } from "react";
 
 import { useClickOutside } from "@/app/hooks/useClickOutside";
 import styles from "@/styles/AppModal.module.scss";
