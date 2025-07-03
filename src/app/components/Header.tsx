@@ -7,6 +7,7 @@ import { useAccount } from "wagmi";
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
 import { ConnectButton } from "@/app/components/ConnectButton";
+import { BingoLogo } from "@/app/components/BingoLogo";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
 import { Players } from "@/app/components/Players";
@@ -33,7 +34,7 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.header__top}>
-        <h1 className={styles.header__title}>Bingo</h1>
+        <BingoLogo />
 
         <div className={styles.header__settings}>
           <div className={styles.desktopView}>
