@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+
 import { ColorThemeProvider } from "@/app/components/ColorThemeProvider";
 import { useThemeColorProvider } from "@/app/hooks/useThemeColorProvider";
 

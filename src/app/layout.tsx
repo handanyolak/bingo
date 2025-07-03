@@ -2,8 +2,8 @@ import "./globals.css";
 import { Comfortaa } from "next/font/google";
 import { Suspense } from "react";
 
-import { Header } from "@/app/components/Header";
 import { AppProviders } from "@/app/components/AppProviders";
+import { Header } from "@/app/components/Header";
 import { Loader } from "@/app/components/Loader";
 import { getStaticMessages } from "@/i18n/config";
 

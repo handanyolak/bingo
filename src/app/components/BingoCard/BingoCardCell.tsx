@@ -1,6 +1,6 @@
 import { useBingoCardCell } from "@/app/hooks/bingo-card";
-import { BingoCardCellProps } from "@/types";
 import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
+import { BingoCardCellProps } from "@/types";
 
 export const BingoCardCell = ({
   number,

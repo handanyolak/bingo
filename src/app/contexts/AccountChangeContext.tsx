@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import React, {
   createContext,
   useContext,
@@ -9,10 +10,10 @@ import React, {
 } from "react";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
+
 import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
-import { useAppDispatch } from "@/lib/store/hooks";
 import { resetStateForNewGame } from "@/lib/store/bingo";
-import { useQueryClient } from "@tanstack/react-query";
+import { useAppDispatch } from "@/lib/store/hooks";
 
 interface AccountChangeContextType {
   key: string;

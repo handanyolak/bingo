@@ -7,10 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
 import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
-import ContextProvider from "@/app/contexts/ReownContext";
 import { LocaleProvider } from "@/app/contexts/LocaleContext";
-import StoreProvider from "@/app/StoreProvider";
+import ContextProvider from "@/app/contexts/ReownContext";
 import { useLocaleProvider } from "@/app/hooks/useLocaleProvider";
+import StoreProvider from "@/app/StoreProvider";
 import { queryClient } from "@/lib/queryClient";
 import type { AppProvidersProps } from "@/types/contexts";
 

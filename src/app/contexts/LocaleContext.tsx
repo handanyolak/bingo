@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
+
 import type { LocaleContextType, LocaleProviderProps } from "@/types/contexts";
 
 const LocaleContext = createContext<LocaleContextType>({} as LocaleContextType);

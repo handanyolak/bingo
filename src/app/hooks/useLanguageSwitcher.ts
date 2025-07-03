@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { useClickOutside } from "@/app/hooks/useClickOutside";
 import { useLocale } from "@/app/contexts/LocaleContext";
+import { useClickOutside } from "@/app/hooks/useClickOutside";
 import { LanguageCode } from "@/i18n/config";
 
 export const useLanguageSwitcher = () => {

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import { BINGO_CARD_SIZE } from "@/constants/bingo";
 
 export const useBingoCardGrid = ({

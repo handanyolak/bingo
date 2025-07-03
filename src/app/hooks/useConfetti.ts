@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 
 type UseConfettiProps = {

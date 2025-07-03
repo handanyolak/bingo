@@ -4,8 +4,8 @@ import { useCardManagerStep } from "@/app/hooks/card-manager";
 import styles from "@/styles/CardManager.module.scss";
 
 import { BuyCardButton } from "./BuyCardButton";
-import { RequestRandomButton } from "./RequestRandomButton";
 import { GameTimer } from "./GameTimer";
+import { RequestRandomButton } from "./RequestRandomButton";
 import { SubmitCardButton } from "./SubmitCardButton";
 
 export const CardManager = () => {

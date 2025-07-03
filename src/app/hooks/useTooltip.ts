@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+
 import styles from "@/styles/Tooltip.module.scss";
 import type { UseTooltipProps } from "@/types/common";
 

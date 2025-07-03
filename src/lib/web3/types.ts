@@ -1,4 +1,5 @@
 import { Address } from "viem";
+
 import { BINGO_CARD_SIZE } from "@/constants/bingo";
 
 export type BingoCardNumbers = readonly number[] & {

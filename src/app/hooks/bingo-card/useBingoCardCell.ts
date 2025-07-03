@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
 
 export const useBingoCardCell = ({

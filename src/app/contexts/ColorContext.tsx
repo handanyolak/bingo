@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
+
 import type { ColorContextType, ColorProviderProps } from "@/types/contexts";
 
 export const ColorContext = createContext<ColorContextType | undefined>(

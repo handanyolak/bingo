@@ -1,8 +1,10 @@
 import { Loader2 } from "lucide-react";
+
 import { useNumberGrid } from "@/app/hooks/drawn-numbers";
-import { NumberCell } from "./NumberCell";
 import styles from "@/styles/NumberGrid.module.scss";
 import type { NumberGridProps } from "@/types/drawn-numbers";
+
+import { NumberCell } from "./NumberCell";
 
 const LoadingState = () => (
   <div key="loading-indicator" className={styles.numberGrid__centered}>

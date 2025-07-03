@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from "react";
+
 import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
 import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
+import { DEFAULT_BINGO_CONFIG } from "@/constants/bingo";
 import {
   BingoCardNumbers,
   generateCardNumbers,
@@ -11,7 +13,6 @@ import {
 } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";
-import { DEFAULT_BINGO_CONFIG } from "@/constants/bingo";
 
 type PlayerParticipationStatus = "active" | "notPlayed";
 

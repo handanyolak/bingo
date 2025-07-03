@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import { ColorProvider } from "@/app/contexts/ColorContext";
 import { useColorProvider } from "@/app/hooks/useColorProvider";
 import type { ColorThemeProviderProps } from "@/types/contexts";

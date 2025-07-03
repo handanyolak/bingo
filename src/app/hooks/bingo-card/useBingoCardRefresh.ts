@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { generateCardNumbers } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { CardConfig } from "@/types";

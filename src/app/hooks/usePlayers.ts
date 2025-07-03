@@ -1,4 +1,5 @@
 import { useAccount } from "wagmi";
+
 import { useContractReads } from "@/lib/web3";
 
 export const usePlayersData = () => {

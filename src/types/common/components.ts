@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
+import { ReactNode } from "react";
 import { Address } from "viem";
 
 export type RoundedSize = "full" | "lg" | "md" | "sm";

@@ -1,13 +1,13 @@
 "use client";
 
 import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
-import { useContractReads } from "@/lib/web3";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { dismissAllToasts } from "@/app/hooks/toast/useGameToasts";
 import {
   resetStateForNewGame,
   selectIsGameFinishedInUi,
 } from "@/lib/store/bingo";
-import { dismissAllToasts } from "@/app/hooks/toast/useGameToasts";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useContractReads } from "@/lib/web3";
 
 export const useGameSwitching = () => {
   const { selectedGameId, maxGameId, updateSelectedGameId } =

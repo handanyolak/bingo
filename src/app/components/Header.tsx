@@ -4,10 +4,10 @@ import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
+import { BingoLogo } from "@/app/components/BingoLogo";
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
 import { ConnectButton } from "@/app/components/ConnectButton";
-import { BingoLogo } from "@/app/components/BingoLogo";
 import { MenuContent } from "@/app/components/MenuContent";
 import { MobileMenu } from "@/app/components/MobileMenu";
 import { Players } from "@/app/components/Players";
