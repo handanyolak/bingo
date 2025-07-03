@@ -13,9 +13,7 @@ interface UseWinnersClaimLogicProps {
   isLoading: boolean;
 }
 
-export const useWinnersClaimLogic = ({
-  isLoading,
-}: UseWinnersClaimLogicProps) => {
+export const useWinnersClaimLogic = ({}: UseWinnersClaimLogicProps) => {
   const t = useTranslations();
   const { address } = useAccount();
   const { data: contractData, refetch } = useContractReads();
