@@ -1,17 +1,17 @@
+@use "@/styles/mixins" as *;
+
 .refreshButton {
   &__wrapper {
     position: absolute;
     z-index: 50;
     right: 0;
     top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-column-center;
   }
 
   &__icon {
     cursor: pointer;
-    color: #fff;
+    color: var(--text-light);
     transition: transform 0.3s ease, color 0.3s ease;
     border-radius: 50%;
     padding: 6px;
@@ -20,11 +20,11 @@
 
     &:hover {
       transform: scale(1.1) rotate(15deg);
-      color: var(--card-color);
+      color: var(--theme-color);
     }
 
     &--spinning {
-      animation: var(--loader-animation);
+      animation: var(--animation-spin);
     }
   }
 }
