@@ -33,8 +33,6 @@ export const AddressList = ({
   renderMode = "virtualized",
   isLoading,
   isVisible,
-  className = styles.addressList__list,
-  itemClassName = styles.addressList__item,
   emptyText,
   keyPrefix,
   estimateSize = 50,
@@ -43,7 +41,7 @@ export const AddressList = ({
   // Loading state
   if (isLoading) {
     return (
-      <div className={className}>
+      <div className={styles.addressList__list}>
         <div className={styles.addressList__loading}>
           <Loader2 className="global-loader" />
         </div>
@@ -54,7 +52,7 @@ export const AddressList = ({
   // Empty/not visible state
   if (!isVisible) {
     return (
-      <div className={className}>
+      <div className={styles.addressList__list}>
         <div className={styles.addressList__empty}>{emptyText}</div>
       </div>
     );
@@ -66,7 +64,7 @@ export const AddressList = ({
       address,
       index,
       onAddressClick,
-      itemClassName,
+      styles.addressList__item,
       keyPrefix
     );
   };
@@ -77,7 +75,7 @@ export const AddressList = ({
       return (
         <VirtualizedContent
           data={addresses}
-          className={className}
+          className={styles.addressList__list}
           estimateSize={estimateSize}
           overscan={20}
           renderItem={renderAddress}
@@ -91,12 +89,12 @@ export const AddressList = ({
 
     // Default render mode
     return (
-      <div className={className}>
+      <div className={styles.addressList__list}>
         {addresses.map((address, index) => (
           <button
             key={`${keyPrefix}-${address}-${index}`}
             type="button"
-            className={itemClassName}
+            className={styles.addressList__item}
             onClick={() => onAddressClick(address)}
           >
             {index + 1}. {address}
