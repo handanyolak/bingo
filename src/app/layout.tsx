@@ -1,8 +1,10 @@
 import "./globals.css";
 import { Comfortaa } from "next/font/google";
+import { Suspense } from "react";
 
 import { Header } from "@/app/components/Header";
 import { AppProviders } from "@/app/components/AppProviders";
+import { Loader } from "@/app/components/Loader";
 import { getStaticMessages } from "@/i18n/config";
 
 const comfortaa = Comfortaa({
@@ -26,8 +28,10 @@ export default async function RootLayout({
     <html>
       <body className={`${comfortaa.className}`} lang="en">
         <AppProviders messages={messages}>
-          <Header />
-          {children}
+          <Suspense fallback={<Loader role="status" aria-label="Loading..." />}>
+            <Header />
+            {children}
+          </Suspense>
         </AppProviders>
       </body>
     </html>
