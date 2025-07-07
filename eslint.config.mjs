@@ -1,10 +1,10 @@
-import { defineConfig, globalIgnores } from "eslint/config";
 import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import globals from "globals";
+import { defineConfig, globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
 import jestPlugin from "eslint-plugin-jest";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default defineConfig([
   // Global ignores
