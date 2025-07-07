@@ -11,6 +11,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { config } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { useContractReads } from "@/lib/web3";
+import { BingoCardNumbers } from "@/types";
 
 interface ContractWriteState {
   buyBingoCard: () => Promise<Hash>;
@@ -50,7 +51,7 @@ export const useContractWrite = (): ContractWriteState => {
           address: env.bingoContractAddress,
           abi,
           functionName: "buyCard",
-          args: [cardNumbers as any],
+          args: [cardNumbers as BingoCardNumbers],
           chainId: sepolia.id,
           value: data?.bingoCardPrice,
         });
