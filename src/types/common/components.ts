@@ -85,7 +85,7 @@ export interface UseVirtualizedContentProps<T> {
   ) => void;
 }
 
-export interface VirtualizedContentHookReturn {
+export interface VirtualizedContentHookReturn<T = unknown> {
   parentRef: React.RefObject<HTMLDivElement | null>;
   containerStyle: React.CSSProperties;
   innerStyle: React.CSSProperties;
@@ -93,7 +93,7 @@ export interface VirtualizedContentHookReturn {
   rowVirtualizer: Virtualizer<HTMLDivElement, HTMLElement>;
   getItemStyle: (virtualItem: VirtualItem) => React.CSSProperties;
   enableDynamicMeasurement: boolean;
-  data: readonly any[];
+  data: readonly T[];
 }
 
 export interface AddressListProps {
