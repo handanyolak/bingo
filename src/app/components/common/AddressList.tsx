@@ -12,8 +12,7 @@ const renderAddressItem = (
   address: Address,
   index: number,
   onAddressClick: (address: Address) => void,
-  itemClassName: string,
-  keyPrefix: string
+  itemClassName: string
 ) => {
   if (!address) return null;
 
@@ -65,8 +64,7 @@ export const AddressList = ({
       address,
       index,
       onAddressClick,
-      styles.addressList__item,
-      keyPrefix
+      styles.addressList__item
     );
   };
 
