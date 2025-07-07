@@ -18,8 +18,8 @@ export const Bingo = () => {
     key,
     contractLoading,
     showConfetti,
-    handleConfettiComplete,
     shouldShowLoader,
+    handleConfettiComplete,
   } = useBingoGameState();
 
   if (shouldShowLoader) {
@@ -29,24 +29,22 @@ export const Bingo = () => {
   return (
     <div key={key} className={styles.bingo__page}>
       <div className={styles.bingo__container}>
-        <div className={styles.bingo__wrapper}>
-          <PoolInfo />
-          <CardManager />
-          <div className={styles.bingo__game}>
-            <BingoCard />
-            <GameControls />
-          </div>
-
-          <DrawnNumbers loading={contractLoading} />
-          {showConfetti && (
-            <Lottie
-              animationData={confettiAnimation}
-              loop={false}
-              className={styles.bingo__confetti}
-              onComplete={handleConfettiComplete}
-            />
-          )}
+        <PoolInfo />
+        <CardManager />
+        <div className={styles.bingo__game}>
+          <BingoCard />
+          <GameControls />
         </div>
+
+        <DrawnNumbers loading={contractLoading} />
+        {showConfetti && (
+          <Lottie
+            animationData={confettiAnimation}
+            loop={false}
+            className={styles.bingo__confetti}
+            onComplete={handleConfettiComplete}
+          />
+        )}
       </div>
     </div>
   );
