@@ -9,11 +9,7 @@ import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useContractReads, useContractWrite } from "@/lib/web3";
 
-interface UseWinnersClaimLogicProps {
-  isLoading: boolean;
-}
-
-export const useWinnersClaimLogic = ({}: UseWinnersClaimLogicProps) => {
+export const useWinnersClaimLogic = () => {
   const t = useTranslations();
   const { address } = useAccount();
   const { data: contractData, refetch } = useContractReads();
