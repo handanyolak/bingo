@@ -77,6 +77,7 @@ export const useCardManagerStep = (): string | null => {
     }
 
     return null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isConnected,
     stepData?.isPlayerExists,
