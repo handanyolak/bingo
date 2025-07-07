@@ -12,7 +12,7 @@ import ContextProvider from "@/app/contexts/ReownContext";
 import { useLocaleProvider } from "@/app/hooks/useLocaleProvider";
 import StoreProvider from "@/app/StoreProvider";
 import { queryClient } from "@/lib/queryClient";
-import type { AppProvidersProps } from "@/types/contexts";
+import type { AppProvidersProps } from "@/types";
 
 export const AppProviders = ({ messages, children }: AppProvidersProps) => {
   const { locale, updateLocale, currentMessages } = useLocaleProvider({

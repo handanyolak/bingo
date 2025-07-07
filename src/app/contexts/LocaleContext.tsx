@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 
-import type { LocaleContextType, LocaleProviderProps } from "@/types/contexts";
+import type { LocaleContextType, LocaleProviderProps } from "@/types";
 
 const LocaleContext = createContext<LocaleContextType>({} as LocaleContextType);
 

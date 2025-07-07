@@ -1,7 +1,7 @@
 "use client";
 
 import { useVirtualizedContent } from "@/app/hooks/useVirtualizedContent";
-import type { VirtualizedContentProps } from "@/types/common/components";
+import type { VirtualizedContentProps } from "@/types";
 
 export const VirtualizedContent = <T,>({
   renderItem,
@@ -23,7 +23,7 @@ export const VirtualizedContent = <T,>({
     <div ref={parentRef} className={className} style={containerStyle}>
       <div style={innerStyle}>
         {virtualItems.map((virtualItem) => {
-          const item = data[virtualItem.index];
+          const item = data[virtualItem.index] as T;
 
           if (item === undefined) return null;
 

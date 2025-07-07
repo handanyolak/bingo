@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { UseCardPurchaseReturn } from "@/types/card-manager";
+import type { UseCardPurchaseReturn } from "@/types";
 
 import { useTransactionToast } from "../useTransactionToast";
 

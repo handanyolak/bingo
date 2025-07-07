@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { UseWinnersProps } from "@/types/winners";
+import { UseWinnersProps } from "@/types";
 
 export const useWinners = ({
   contractData,

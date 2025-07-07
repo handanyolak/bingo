@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 
 import { useContractWrite } from "@/lib/web3";
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { UseCardSubmissionReturn } from "@/types/card-manager";
+import type { UseCardSubmissionReturn } from "@/types";
 
 import { useTransactionToast } from "../useTransactionToast";
 

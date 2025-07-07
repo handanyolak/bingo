@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 
 import { useClickOutside } from "@/app/hooks/useClickOutside";
 import styles from "@/styles/AppModal.module.scss";
-import type { AppModalProps } from "@/types/common";
+import type { AppModalProps } from "@/types";
 
 export const AppModal = ({
   children,

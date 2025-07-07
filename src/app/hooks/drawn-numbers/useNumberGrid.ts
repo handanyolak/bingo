@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { NumberGridProps } from "@/types/drawn-numbers";
+import type { NumberGridProps } from "@/types";
 
 export const useNumberGrid = (props: NumberGridProps) => {
   const { drawnNumbers, totalCells, isDrawing } = props;

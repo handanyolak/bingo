@@ -9,7 +9,7 @@ import { useWinners } from "@/app/hooks/useWinners";
 import { useWinnersClaimLogic } from "@/app/hooks/useWinnersClaimLogic";
 import { useContractReads } from "@/lib/web3";
 import styles from "@/styles/Winners.module.scss";
-import type { WinnersProps } from "@/types/participants";
+import type { WinnersProps } from "@/types";
 
 export const Winners = ({
   onAddressClick,

@@ -4,7 +4,7 @@ import React from "react";
 
 import { ColorProvider } from "@/app/contexts/ColorContext";
 import { useColorProvider } from "@/app/hooks/useColorProvider";
-import type { ColorThemeProviderProps } from "@/types/contexts";
+import type { ColorThemeProviderProps } from "@/types";
 
 export const ColorThemeProvider: React.FC<ColorThemeProviderProps> = ({
   color,

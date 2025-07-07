@@ -4,7 +4,7 @@ import React from "react";
 
 import { useTooltip } from "@/app/hooks/useTooltip";
 import styles from "@/styles/Tooltip.module.scss";
-import type { TooltipProps } from "@/types/common";
+import type { TooltipProps } from "@/types";
 
 export const Tooltip = ({
   texts,

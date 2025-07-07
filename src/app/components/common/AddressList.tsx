@@ -5,7 +5,7 @@ import { Address } from "viem";
 
 import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
 import styles from "@/styles/AddressList.module.scss";
-import { AddressListProps } from "@/types/common/components";
+import { AddressListProps } from "@/types";
 
 // Default address item render function
 const renderAddressItem = (

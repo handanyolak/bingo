@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext } from "react";
 
-import type { ColorContextType, ColorProviderProps } from "@/types/contexts";
+import type { ColorContextType, ColorProviderProps } from "@/types";
 
 export const ColorContext = createContext<ColorContextType | undefined>(
   undefined

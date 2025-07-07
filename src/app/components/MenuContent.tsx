@@ -5,7 +5,7 @@ import { AppButton } from "@/app/components/common/AppButton";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import { useMenuContent } from "@/app/hooks/useMenuContent";
 import styles from "@/styles/MenuContent.module.scss";
-import type { MenuContentProps } from "@/types/layout";
+import type { MenuContentProps } from "@/types";
 
 export const MenuContent = ({
   onModalOpen,

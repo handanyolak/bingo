@@ -4,7 +4,7 @@ import { useContractReads } from "@/lib/web3/hooks/useContractReads";
 import type {
   UseCardManagerStateProps,
   UseCardManagerStateReturn,
-} from "@/types/card-manager";
+} from "@/types";
 
 export const useCardManagerState = ({
   isConnected,

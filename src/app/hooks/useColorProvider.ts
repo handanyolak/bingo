@@ -2,10 +2,7 @@ import { useTheme } from "next-themes";
 import { lighten, darken } from "polished";
 import { useEffect, useMemo } from "react";
 
-import type {
-  UseColorProviderProps,
-  UseColorProviderReturn,
-} from "@/types/contexts";
+import type { UseColorProviderProps, UseColorProviderReturn } from "@/types";
 
 export const useColorProvider = ({
   color,

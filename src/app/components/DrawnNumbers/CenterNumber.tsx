@@ -1,5 +1,5 @@
 import styles from "@/styles/DrawnNumbers.module.scss";
-import type { CenterNumberProps } from "@/types/drawn-numbers";
+import type { CenterNumberProps } from "@/types";
 
 export const CenterNumber = ({ number, animationKey }: CenterNumberProps) => (
   <div

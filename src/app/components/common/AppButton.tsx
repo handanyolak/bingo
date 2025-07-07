@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/styles/AppButton.module.scss";
-import type { AppButtonProps } from "@/types/common";
+import type { AppButtonProps } from "@/types";
 
 export const AppButton = ({
   text,

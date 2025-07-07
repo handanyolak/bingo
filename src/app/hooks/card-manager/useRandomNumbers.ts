@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { UseRandomNumbersReturn } from "@/types/card-manager";
+import type { UseRandomNumbersReturn } from "@/types";
 
 import { useTransactionToast } from "../useTransactionToast";
 

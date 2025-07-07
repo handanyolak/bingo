@@ -7,7 +7,7 @@ import {
   selectIsGameFinishedInUi,
 } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
-import { UseDrawnNumbersDisplayReturn } from "@/types/drawn-numbers";
+import { UseDrawnNumbersDisplayReturn } from "@/types";
 
 export const useDrawnNumbersDisplay = (): UseDrawnNumbersDisplayReturn => {
   const drawnNumbers = useAppSelector(selectDrawnNumbers);

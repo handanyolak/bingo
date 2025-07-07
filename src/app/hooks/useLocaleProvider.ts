@@ -2,10 +2,7 @@ import { useState, useMemo } from "react";
 
 import { LanguageCode } from "@/i18n/config";
 import { setLocale, getLocale } from "@/lib/actions";
-import type {
-  UseLocaleProviderProps,
-  UseLocaleProviderReturn,
-} from "@/types/contexts";
+import type { UseLocaleProviderProps, UseLocaleProviderReturn } from "@/types";
 
 export const useLocaleProvider = ({
   messages,

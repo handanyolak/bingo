@@ -4,7 +4,7 @@ import React from "react";
 
 import { useTab } from "@/app/hooks/useTab";
 import styles from "@/styles/Tab.module.scss";
-import type { TabItemProps, TabProps } from "@/types/tab";
+import type { TabItemProps, TabProps } from "@/types";
 
 export const TabItem = ({ children }: TabItemProps) => {
   return <div className={styles.tab__content}>{children}</div>;

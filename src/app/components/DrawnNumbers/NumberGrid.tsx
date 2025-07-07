@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 
 import { useNumberGrid } from "@/app/hooks/drawn-numbers";
 import styles from "@/styles/NumberGrid.module.scss";
-import type { NumberGridProps } from "@/types/drawn-numbers";
+import type { NumberGridProps } from "@/types";
 
 import { NumberCell } from "./NumberCell";
 
