@@ -27,9 +27,7 @@ export const Winners = ({
     isWinner,
     address,
     isViewingOwnCard,
-  } = useWinnersClaimLogic({
-    isLoading,
-  });
+  } = useWinnersClaimLogic();
 
   const { winnerAddresses, isVisible } = useWinners({
     contractData,
