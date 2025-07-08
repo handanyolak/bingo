@@ -7,4 +7,4 @@ export interface CardConfig {
   BINGO_CARD_NUMBERS_COUNT: number;
 }
 
-export type BingoCardNumbers = Fixed<number, typeof BINGO_CARD_SIZE>;
+export type ContractCardNumbers = Fixed<number, typeof BINGO_CARD_SIZE>;
