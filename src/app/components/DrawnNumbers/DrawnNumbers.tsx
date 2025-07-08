@@ -2,12 +2,11 @@ import { Loader2 } from "lucide-react";
 
 import { useDrawnNumbersDisplay } from "@/app/hooks/drawn-numbers";
 import styles from "@/styles/DrawnNumbers.module.scss";
-import type { DrawnNumbersProps } from "@/types";
 
 import { CenterNumber } from "./CenterNumber";
 import { NumberGrid } from "./NumberGrid";
 
-export const DrawnNumbers = ({ loading }: DrawnNumbersProps) => {
+export const DrawnNumbers = ({ loading }: { loading?: boolean }) => {
   const {
     isVisible,
     currentNumber,

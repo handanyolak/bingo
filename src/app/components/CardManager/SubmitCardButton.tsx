@@ -4,9 +4,8 @@ import { useTranslations } from "next-intl";
 import { AppButton } from "@/app/components/common/AppButton";
 import { useCardSubmission } from "@/app/hooks/card-manager";
 import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
-import type { SubmitCardButtonProps } from "@/types";
 
-export const SubmitCardButton = ({ shouldShow }: SubmitCardButtonProps) => {
+export const SubmitCardButton = ({ shouldShow }: { shouldShow: boolean }) => {
   const t = useTranslations();
   const { isViewingOwnCard } = useIsViewingOwnCard();
   const { handleCardSubmit, isSubmitCardLoading, isSubmitCardSuccess } =

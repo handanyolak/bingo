@@ -1,6 +1,9 @@
 import { Address } from "viem";
 
-import { ContractCardNumbers } from "@/types";
+import { BINGO_CARD_SIZE } from "@/constants/bingo";
+import { Fixed } from "@/types";
+
+export type ContractCardNumbers = Fixed<number, typeof BINGO_CARD_SIZE>;
 
 export interface ContractReads {
   gameId: bigint;

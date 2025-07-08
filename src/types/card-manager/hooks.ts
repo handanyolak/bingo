@@ -1,3 +1,4 @@
+import { LottieRefCurrentProps } from "lottie-react";
 export interface UseCardPurchaseReturn {
   handleBuyCard: () => Promise<void>;
   isBuyCardLoading: boolean;
@@ -36,7 +37,23 @@ export interface CardManagerStepData {
   BINGO_CARD_NUMBERS_COUNT?: number;
 }
 
-export interface GameStateData {
-  isDrawnNumbersFilled: boolean;
-  drawnNumbers: readonly number[];
+export interface LottieAnimationData {
+  ip: number;
+  op: number;
+  fr: number;
+  [key: string]: unknown;
+}
+
+export interface UseDrawTimerProps {
+  isLoading?: boolean;
+  isError?: boolean;
+  lottieRef?: React.RefObject<LottieRefCurrentProps | null>;
+  timerAnimation?: LottieAnimationData;
+}
+
+export interface UseDrawTimerReturn {
+  remainingTime: number;
+  minutesRemaining: number;
+  secondsRemaining: number;
+  endTime: number;
 }

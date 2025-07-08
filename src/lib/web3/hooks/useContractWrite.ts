@@ -8,10 +8,9 @@ import { sepolia } from "wagmi/chains";
 import { env } from "@/config/env";
 import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
-import { config } from "@/lib/web3";
+import { config, ContractCardNumbers } from "@/lib/web3";
 import { abi } from "@/lib/web3";
 import { useContractReads } from "@/lib/web3";
-import { ContractCardNumbers } from "@/types";
 
 interface ContractWriteState {
   buyBingoCard: () => Promise<Hash>;
