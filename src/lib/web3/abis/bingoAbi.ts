@@ -261,6 +261,19 @@ export const abi = [
   },
   {
     inputs: [],
+    name: "BASEFEE_MULTIPLIER",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "BINGO_CARD_NUMBERS_COUNT",
     outputs: [
       {
@@ -855,7 +868,7 @@ export const abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "_shouldSubmitCard",
+        name: "shouldSubmitCard_",
         type: "bool",
       },
     ],
