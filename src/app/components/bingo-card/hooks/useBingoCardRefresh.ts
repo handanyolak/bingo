@@ -1,8 +1,8 @@
 import { useState } from "react";
 
+import { CardConfig } from "@/app/components/bingo-card";
 import { generateCardNumbers } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { CardConfig } from "@/types";
 
 export const useBingoCardRefresh = (cardConfig?: CardConfig) => {
   const [isRefreshingCard, setIsRefreshingCard] = useState(false);

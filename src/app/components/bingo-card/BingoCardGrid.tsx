@@ -1,10 +1,13 @@
 import { useTranslations } from "next-intl";
 
-import { BingoCardCell } from "@/app/components/BingoCard/BingoCardCell";
-import { useBingoCardGrid, useBingoCardData } from "@/app/hooks/bingo-card";
+import {
+  useBingoCardGrid,
+  useBingoCardData,
+} from "@/app/components/bingo-card";
+import { BingoCardCell } from "@/app/components/bingo-card";
+import styles from "@/app/components/bingo-card/BingoCardGrid.module.scss";
 import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
-import styles from "@/styles/bingo-card/BingoCardGrid.module.scss";
 
 export const BingoCardGrid = ({
   isRefreshingCard,

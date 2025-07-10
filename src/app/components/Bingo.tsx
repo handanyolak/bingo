@@ -2,7 +2,7 @@
 
 import Lottie from "lottie-react";
 
-import { BingoCard } from "@/app/components/BingoCard";
+import { BingoCard } from "@/app/components/bingo-card";
 import { CardManager } from "@/app/components/CardManager";
 import { DrawnNumbers } from "@/app/components/DrawnNumbers";
 import { GameControls } from "@/app/components/GameControls";

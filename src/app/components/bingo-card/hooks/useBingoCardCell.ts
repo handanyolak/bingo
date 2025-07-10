@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import styles from "@/styles/bingo-card/BingoCardCell.module.scss";
+import styles from "@/app/components/bingo-card/BingoCardCell.module.scss";
 
 export const useBingoCardCell = ({
   isRefreshingCard,
