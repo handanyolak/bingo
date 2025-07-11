@@ -1,4 +1,5 @@
 import { LottieRefCurrentProps } from "lottie-react";
+
 export interface UseCardPurchaseReturn {
   handleBuyCard: () => Promise<void>;
   isBuyCardLoading: boolean;

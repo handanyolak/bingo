@@ -1,12 +1,13 @@
 "use client";
 
-import { useCardManagerStep } from "@/app/hooks/card-manager";
-import styles from "@/styles/CardManager.module.scss";
-
-import { BuyCardButton } from "./BuyCardButton";
-import { GameTimer } from "./GameTimer";
-import { RequestRandomButton } from "./RequestRandomButton";
-import { SubmitCardButton } from "./SubmitCardButton";
+import { useCardManagerStep } from "@/app/components/card-manager";
+import {
+  BuyCardButton,
+  GameTimer,
+  RequestRandomButton,
+  SubmitCardButton,
+} from "@/app/components/card-manager";
+import styles from "@/app/components/card-manager/CardManager.module.scss";
 
 export const CardManager = () => {
   const renderComponent = useCardManagerStep();

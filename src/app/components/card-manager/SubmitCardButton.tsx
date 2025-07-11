@@ -1,8 +1,8 @@
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { useCardSubmission } from "@/app/components/card-manager";
 import { AppButton } from "@/app/components/common/AppButton";
-import { useCardSubmission } from "@/app/hooks/card-manager";
 import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 
 export const SubmitCardButton = ({ shouldShow }: { shouldShow: boolean }) => {

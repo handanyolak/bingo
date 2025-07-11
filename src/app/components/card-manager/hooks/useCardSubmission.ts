@@ -1,17 +1,13 @@
 import { useTranslations } from "next-intl";
 import { useState, useCallback, useEffect } from "react";
 
+import type { UseCardSubmissionReturn } from "@/app/components/card-manager";
+import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
-import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { UseCardSubmissionReturn } from "@/types";
-
-import { useTransactionToast } from "../useTransactionToast";
 
 export const useCardSubmission = (): UseCardSubmissionReturn => {
   const t = useTranslations();
   const [waitingSubmitEvent, setWaitingSubmitEvent] = useState(false);
-
-  const { refetch } = useContractReads();
 
   const {
     showInitiatingTransactionToast,
@@ -50,9 +46,8 @@ export const useCardSubmission = (): UseCardSubmissionReturn => {
     if (waitingSubmitEvent) {
       setWaitingSubmitEvent(false);
       showSuccessToast("waitingSubmitEvent", t("toast.cardSubmitted"));
-      refetch();
     }
-  }, [waitingSubmitEvent, showSuccessToast, refetch, t]);
+  }, [waitingSubmitEvent, showSuccessToast, t]);
 
   useEffect(() => {
     if (waitingSubmitEvent && isSubmitCardConfirming) {

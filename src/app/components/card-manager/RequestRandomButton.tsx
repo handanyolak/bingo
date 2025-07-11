@@ -1,8 +1,8 @@
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { useRandomNumbers } from "@/app/components/card-manager";
 import { AppButton } from "@/app/components/common/AppButton";
-import { useRandomNumbers } from "@/app/hooks/card-manager";
 
 export const RequestRandomButton = () => {
   const t = useTranslations();

@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
+
 import type {
   UseCardManagerStateProps,
   UseCardManagerStateReturn,
-} from "@/types";
+} from "../CardManager.types";
 
 export const useCardManagerState = ({
   isConnected,

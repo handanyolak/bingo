@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 
+import type {
+  UseDrawTimerProps,
+  UseDrawTimerReturn,
+} from "@/app/components/card-manager/CardManager.types";
 import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
@@ -8,8 +12,7 @@ import {
   secondsToMinutes,
   getRemainingSeconds,
 } from "@/lib/utils/time";
-import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { UseDrawTimerProps, UseDrawTimerReturn } from "@/types";
+import { useContractReads } from "@/lib/web3";
 
 export const useDrawTimer = ({
   isLoading = false,

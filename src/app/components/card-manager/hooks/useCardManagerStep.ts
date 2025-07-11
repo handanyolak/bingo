@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
+import type { CardManagerStepData } from "@/app/components/card-manager";
 import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { CardManagerStepData } from "@/types";
 
 export const useCardManagerStep = (): string | null => {
   const { isConnected } = useAccount();

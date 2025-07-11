@@ -1,12 +1,11 @@
 import { useTranslations } from "next-intl";
 import { useState, useCallback, useEffect } from "react";
 
+import type { UseRandomNumbersReturn } from "@/app/components/card-manager";
+import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { useContractWrite } from "@/lib/web3";
 import { useContractEvents } from "@/lib/web3";
-import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-import type { UseRandomNumbersReturn } from "@/types";
-
-import { useTransactionToast } from "../useTransactionToast";
+import { useContractReads } from "@/lib/web3";
 
 export const useRandomNumbers = (): UseRandomNumbersReturn => {
   const t = useTranslations();
