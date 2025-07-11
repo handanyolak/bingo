@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 
-import { useDrawnNumbersDisplay } from "@/app/hooks/drawn-numbers";
-import styles from "@/styles/DrawnNumbers.module.scss";
+import { useDrawnNumbersDisplay } from "@/app/components/drawn-numbers";
+import styles from "@/app/components/drawn-numbers/DrawnNumbers.module.scss";
 
 import { CenterNumber } from "./CenterNumber";
 import { NumberGrid } from "./NumberGrid";

@@ -1,5 +1,5 @@
-import styles from "@/styles/NumberCell.module.scss";
-import type { NumberCellProps } from "@/types";
+import type { NumberCellProps } from "@/app/components/drawn-numbers";
+import styles from "@/app/components/drawn-numbers/NumberCell.module.scss";
 
 export const NumberCell = ({
   number,

@@ -1,8 +1,8 @@
 import { Loader2 } from "lucide-react";
 
-import { useNumberGrid } from "@/app/hooks/drawn-numbers";
-import styles from "@/styles/NumberGrid.module.scss";
-import type { NumberGridProps } from "@/types";
+import type { NumberGridProps } from "@/app/components/drawn-numbers";
+import { useNumberGrid } from "@/app/components/drawn-numbers/hooks";
+import styles from "@/app/components/drawn-numbers/NumberGrid.module.scss";
 
 import { NumberCell } from "./NumberCell";
 
