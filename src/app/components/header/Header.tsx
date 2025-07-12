@@ -8,13 +8,10 @@ import { BingoLogo } from "@/app/components/BingoLogo";
 import { AppModal } from "@/app/components/common/AppModal";
 import { Tab, TabItem } from "@/app/components/common/Tab";
 import { ConnectButton } from "@/app/components/ConnectButton";
-import { MenuContent } from "@/app/components/MenuContent";
-import { MobileMenu } from "@/app/components/MobileMenu";
-import { Players } from "@/app/components/participants/Players";
-import { Winners } from "@/app/components/participants/Winners";
-import { useHeader } from "@/app/hooks/useHeader";
-import { useContractReads } from "@/lib/web3/";
-import styles from "@/styles/Header.module.scss";
+import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
+import styles from "@/app/components/header/Header.module.scss";
+import { Players, Winners } from "@/app/components/participants";
+import { useContractReads } from "@/lib/web3";
 
 export const Header = () => {
   const t = useTranslations();

@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 
-import styles from "@/styles/MobileMenu.module.scss";
-import type { MobileMenuProps } from "@/types";
+import type { MobileMenuProps } from "@/app/components/header";
+import styles from "@/app/components/header/MobileMenu.module.scss";
 
 export const MobileMenu = ({ isOpen, children, onToggle }: MobileMenuProps) => (
   <>

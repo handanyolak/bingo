@@ -2,10 +2,10 @@ import { Palette, UsersRound, Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { AppButton } from "@/app/components/common/AppButton";
+import type { MenuContentProps } from "@/app/components/header";
+import { useMenuContent } from "@/app/components/header";
+import styles from "@/app/components/header/MenuContent.module.scss";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
-import { useMenuContent } from "@/app/hooks/useMenuContent";
-import styles from "@/styles/MenuContent.module.scss";
-import type { MenuContentProps } from "@/types";
 
 export const MenuContent = ({
   onModalOpen,
