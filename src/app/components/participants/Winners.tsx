@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
 import { AddressList } from "@/app/components/common/AddressList";
-import { useWinners } from "@/app/hooks/useWinners";
-import { useWinnersClaimLogic } from "@/app/hooks/useWinnersClaimLogic";
+import type { WinnersProps } from "@/app/components/participants";
+import { useWinners } from "@/app/components/participants";
+import { useWinnersClaimLogic } from "@/app/components/participants";
+import styles from "@/app/components/participants/Winners.module.scss";
 import { useContractReads } from "@/lib/web3";
-import styles from "@/styles/Winners.module.scss";
-import type { WinnersProps } from "@/types";
 
 export const Winners = ({
   onAddressClick,

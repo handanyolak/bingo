@@ -2,9 +2,9 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
+import { useWinnerStatus } from "@/app/components/participants";
 import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 import { useTransactionToast } from "@/app/hooks/useTransactionToast";
-import { useWinnerStatus } from "@/app/hooks/useWinnerStatus";
 import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useContractReads, useContractWrite } from "@/lib/web3";
