@@ -4,8 +4,7 @@ import { useAccount } from "wagmi";
 
 import { AppButton } from "@/app/components/common/AppButton";
 import { Tooltip } from "@/app/components/common/Tooltip";
-import { useBingoPayments } from "@/app/hooks/useBingoPayments";
-import { usePoolTooltips } from "@/app/hooks/usePoolTooltips";
+import { useBingoPayments, usePoolTooltips } from "@/app/components/pool-info";
 
 export const PoolInfo = () => {
   const { isConnected } = useAccount();

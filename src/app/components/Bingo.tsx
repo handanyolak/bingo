@@ -7,7 +7,7 @@ import { CardManager } from "@/app/components/card-manager";
 import { DrawnNumbers } from "@/app/components/drawn-numbers";
 import { GameControls } from "@/app/components/GameControls";
 import { Loader } from "@/app/components/Loader";
-import { PoolInfo } from "@/app/components/PoolInfo";
+import { PoolInfo } from "@/app/components/pool-info";
 import { useBingoGameState } from "@/app/hooks/useBingoGameState";
 import styles from "@/styles/Bingo.module.scss";
 

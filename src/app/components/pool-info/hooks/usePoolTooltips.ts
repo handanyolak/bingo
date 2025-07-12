@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useBingoPayments } from "./useBingoPayments";
+import { useBingoPayments } from "@/app/components/pool-info";
 
 export const usePoolTooltips = () => {
   const { formattedRandomnessPayment, formattedRandomNumbersRefund } =
