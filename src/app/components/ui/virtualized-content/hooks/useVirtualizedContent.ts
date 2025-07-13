@@ -4,7 +4,7 @@ import { useRef, useCallback, useMemo } from "react";
 import type {
   UseVirtualizedContentProps,
   VirtualizedContentHookReturn,
-} from "@/types";
+} from "@/app/components/ui/virtualized-content";
 
 export const useVirtualizedContent = <T>({
   data,
