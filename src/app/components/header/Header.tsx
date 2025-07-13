@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
 import { BingoLogo } from "@/app/components/BingoLogo";
-import { AppModal } from "@/app/components/common/AppModal";
+import { AppModal } from "@/app/components/common/Modal";
 import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
 import styles from "@/app/components/header/Header.module.scss";
