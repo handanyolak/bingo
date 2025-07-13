@@ -2,9 +2,9 @@
 
 import { X } from "lucide-react";
 
+import type { ModalProps } from "@/app/components/ui/modal";
+import styles from "@/app/components/ui/modal/Modal.module.scss";
 import { useClickOutside } from "@/app/hooks/useClickOutside";
-import styles from "@/styles/Modal.module.scss";
-import type { ModalProps } from "@/types";
 
 export const Modal = ({ children, title, isOpen, onClose }: ModalProps) => {
   const containerRef = useClickOutside<HTMLDivElement>(onClose);
