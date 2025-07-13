@@ -6,11 +6,11 @@ import { useAccount } from "wagmi";
 
 import { BingoLogo } from "@/app/components/BingoLogo";
 import { AppModal } from "@/app/components/common/AppModal";
-import { Tab, TabItem } from "@/app/components/common/Tab";
 import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
 import styles from "@/app/components/header/Header.module.scss";
 import { Players, Winners } from "@/app/components/participants";
+import { Tab, TabItem } from "@/app/components/ui/tab";
 import { useContractReads } from "@/lib/web3";
 
 export const Header = () => {
