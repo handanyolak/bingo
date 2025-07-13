@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 
-import { AppButton } from "@/app/components/common/AppButton";
+import { AppButton } from "@/app/components/common/Button";
 import { useLanguageSwitcher } from "@/app/hooks/useLanguageSwitcher";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
 import styles from "@/styles/LanguageSwitcher.module.scss";

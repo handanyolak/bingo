@@ -2,7 +2,7 @@ import { Info } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
-import { AppButton } from "@/app/components/common/AppButton";
+import { AppButton } from "@/app/components/common/Button";
 import { useBingoPayments, usePoolTooltips } from "@/app/components/pool-info";
 import { Tooltip } from "@/app/components/ui/tooltip";
 

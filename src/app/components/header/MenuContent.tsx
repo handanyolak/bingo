@@ -1,7 +1,7 @@
 import { Palette, UsersRound, Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { AppButton } from "@/app/components/common/AppButton";
+import { AppButton } from "@/app/components/common/Button";
 import type { MenuContentProps } from "@/app/components/header";
 import { useMenuContent } from "@/app/components/header";
 import styles from "@/app/components/header/MenuContent.module.scss";
