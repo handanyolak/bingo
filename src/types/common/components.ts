@@ -1,10 +1,7 @@
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { ReactNode } from "react";
-import { Address } from "viem";
 
 export type RoundedSize = "full" | "lg" | "md" | "sm";
-
-export type TooltipPosition = "top" | "bottom";
 
 export interface AppButtonProps {
   text: string;
@@ -28,17 +25,6 @@ export interface AppModalProps {
 export interface LoaderProps {
   role?: string;
   "aria-label"?: string;
-}
-
-export interface TooltipProps {
-  texts: string[];
-  position?: TooltipPosition;
-  children: React.ReactNode;
-}
-
-export interface UseTooltipProps {
-  texts: string[];
-  position?: TooltipPosition;
 }
 
 export interface VirtualizedContentProps<T> {
@@ -95,31 +81,3 @@ export interface VirtualizedContentHookReturn<T = unknown> {
   enableDynamicMeasurement: boolean;
   data: readonly T[];
 }
-
-export interface AddressListProps {
-  addresses: readonly Address[];
-  onAddressClick: (address: Address) => void;
-  renderMode?: "virtualized" | "normal";
-  isLoading: boolean;
-  isVisible: boolean;
-  className?: string;
-  itemClassName?: string;
-  emptyText: string;
-  keyPrefix: string;
-  estimateSize?: number;
-  additionalContent?: React.ReactNode;
-}
-
-export type TabItemProps = {
-  title: string;
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-};
-
-export type TabProps = {
-  children:
-    | React.ReactElement<TabItemProps>
-    | React.ReactElement<TabItemProps>[];
-  defaultTab?: number;
-  onTabChange?: (index: number) => void;
-};
