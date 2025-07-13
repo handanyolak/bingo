@@ -1,8 +1,8 @@
 import { useAccount } from "wagmi";
 
+import { useConfetti } from "@/app/components/bingo";
 import { useWinnerStatus } from "@/app/components/participants";
 import { useAccountChange } from "@/app/contexts/AccountChangeContext";
-import { useConfetti } from "@/app/hooks/useConfetti";
 import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";

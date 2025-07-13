@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { Bingo } from "@/app/components/Bingo";
+import { Bingo } from "@/app/components/bingo/Bingo";
 import { Loader } from "@/app/components/ui/loader";
 
 // Force dynamic rendering to avoid SSR issues with useSearchParams

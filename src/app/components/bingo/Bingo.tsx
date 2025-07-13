@@ -2,16 +2,16 @@
 
 import Lottie from "lottie-react";
 
+import { useBingoGameState } from "@/app/components/bingo";
+import styles from "@/app/components/bingo/Bingo.module.scss";
 import { BingoCard } from "@/app/components/bingo-card";
 import { CardManager } from "@/app/components/card-manager";
 import { DrawnNumbers } from "@/app/components/drawn-numbers";
 import { GameControls } from "@/app/components/game-controls";
 import { PoolInfo } from "@/app/components/pool-info";
 import { Loader } from "@/app/components/ui/loader";
-import { useBingoGameState } from "@/app/hooks/useBingoGameState";
-import styles from "@/styles/Bingo.module.scss";
 
-import confettiAnimation from "../../../public/animations/confetti.json";
+import confettiAnimation from "../../../../public/animations/confetti.json";
 
 export const Bingo = () => {
   const {
