@@ -4,11 +4,11 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
-import { AddressList } from "@/app/components/common/AddressList";
 import type { WinnersProps } from "@/app/components/participants";
 import { useWinners } from "@/app/components/participants";
 import { useWinnersClaimLogic } from "@/app/components/participants";
 import styles from "@/app/components/participants/Winners.module.scss";
+import { AddressList } from "@/app/components/ui/address-list";
 import { useContractReads } from "@/lib/web3";
 
 export const Winners = ({

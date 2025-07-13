@@ -2,9 +2,9 @@
 
 import { useTranslations } from "next-intl";
 
-import { AddressList } from "@/app/components/common/AddressList";
 import type { PlayersProps } from "@/app/components/participants";
 import { usePlayersData } from "@/app/components/participants";
+import { AddressList } from "@/app/components/ui/address-list";
 
 export const Players = ({
   onAddressClick,

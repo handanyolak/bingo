@@ -4,8 +4,8 @@ import { Loader2 } from "lucide-react";
 import { Address } from "viem";
 
 import { VirtualizedContent } from "@/app/components/common/VirtualizedContent";
-import styles from "@/styles/AddressList.module.scss";
-import { AddressListProps } from "@/types";
+import type { AddressListProps } from "@/app/components/ui/address-list";
+import styles from "@/app/components/ui/address-list/AddressList.module.scss";
 
 // Default address item render function
 const renderAddressItem = (
