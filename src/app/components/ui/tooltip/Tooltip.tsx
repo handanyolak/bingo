@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import { useTooltip } from "@/app/hooks/useTooltip";
-import styles from "@/styles/Tooltip.module.scss";
-import type { TooltipProps } from "@/types";
+import type { TooltipProps } from "@/app/components/ui/tooltip";
+import { useTooltip } from "@/app/components/ui/tooltip";
+import styles from "@/app/components/ui/tooltip/Tooltip.module.scss";
 
 export const Tooltip = ({
   texts,

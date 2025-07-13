@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 
-import styles from "@/styles/Tooltip.module.scss";
-import type { UseTooltipProps } from "@/types";
+import type { UseTooltipProps } from "@/app/components/ui/tooltip";
+import styles from "@/app/components/ui/tooltip/Tooltip.module.scss";
 
 export const useTooltip = ({ texts, position = "top" }: UseTooltipProps) => {
   const [isVisible, setIsVisible] = useState(false);
