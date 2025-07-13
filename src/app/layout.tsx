@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import { AppProviders } from "@/app/components/AppProviders";
 import { Header } from "@/app/components/header/Header";
-import { Loader } from "@/app/components/Loader";
+import { Loader } from "@/app/components/ui/loader";
 import { getStaticMessages } from "@/i18n/config";
 
 const comfortaa = Comfortaa({

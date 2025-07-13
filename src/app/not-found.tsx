@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { Loader } from "@/app/components/Loader";
+import { Loader } from "@/app/components/ui/loader";
 
 // Force dynamic rendering to avoid SSR issues with useSearchParams
 export const dynamic = "force-dynamic";

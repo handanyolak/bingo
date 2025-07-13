@@ -1,5 +1,5 @@
-import styles from "@/styles/Loader.module.scss";
-import { LoaderProps } from "@/types";
+import type { LoaderProps } from "@/app/components/ui/loader";
+import styles from "@/app/components/ui/loader/Loader.module.scss";
 
 export const Loader = ({
   role = "status",
