@@ -3,8 +3,8 @@ import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
 import { AppButton } from "@/app/components/common/AppButton";
-import { Tooltip } from "@/app/components/common/Tooltip";
 import { useBingoPayments, usePoolTooltips } from "@/app/components/pool-info";
+import { Tooltip } from "@/app/components/ui/tooltip";
 
 export const PoolInfo = () => {
   const { isConnected } = useAccount();
