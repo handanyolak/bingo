@@ -1,6 +1,6 @@
 @use "@/styles/mixins" as *;
 
-.appModal {
+.modal {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
@@ -47,7 +47,7 @@
 }
 
 @include mobile {
-  .appModal {
+  .modal {
     &__container {
       width: 90%;
       height: 80%;

@@ -1,2 +1,2 @@
-export { AppModal } from "./Modal";
+export { Modal } from "./Modal";
 export { VirtualizedContent } from "./VirtualizedContent";

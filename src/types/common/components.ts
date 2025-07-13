@@ -1,7 +1,7 @@
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { ReactNode } from "react";
 
-export interface AppModalProps {
+export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;

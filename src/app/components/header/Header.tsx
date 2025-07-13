@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
 import { BingoLogo } from "@/app/components/BingoLogo";
-import { AppModal } from "@/app/components/common/Modal";
+import { Modal } from "@/app/components/common/Modal";
 import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
 import styles from "@/app/components/header/Header.module.scss";
@@ -65,7 +65,7 @@ export const Header = () => {
         </div>
       </div>
 
-      <AppModal title="Bingo" isOpen={isModalOpen} onClose={handleModalClose}>
+      <Modal title="Bingo" isOpen={isModalOpen} onClose={handleModalClose}>
         <Tab>
           <TabItem
             title={t("controls.players")}
@@ -80,7 +80,7 @@ export const Header = () => {
             <Winners onAddressClick={handleAddressClick} />
           </TabItem>
         </Tab>
-      </AppModal>
+      </Modal>
     </header>
   );
 };
