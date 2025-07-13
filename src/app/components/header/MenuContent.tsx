@@ -1,11 +1,11 @@
 import { Palette, UsersRound, Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { AppButton } from "@/app/components/common/Button";
 import type { MenuContentProps } from "@/app/components/header";
 import { useMenuContent } from "@/app/components/header";
 import styles from "@/app/components/header/MenuContent.module.scss";
 import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
+import { Button } from "@/app/components/ui/button";
 
 export const MenuContent = ({
   onModalOpen,
@@ -19,7 +19,7 @@ export const MenuContent = ({
       <button onClick={toggleTheme}>
         {getThemeIcon() === "sun" ? <Sun /> : <Moon />}
       </button>
-      <AppButton
+      <Button
         text={t("participants")}
         onClick={onModalOpen}
         contentPosition="left"
@@ -33,7 +33,7 @@ export const MenuContent = ({
         }
       />
       <LanguageSwitcher />
-      <AppButton
+      <Button
         text={t("changeCardColor")}
         onClick={onColorChange}
         contentPosition="left"

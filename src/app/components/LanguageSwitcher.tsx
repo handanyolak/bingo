@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 
-import { AppButton } from "@/app/components/common/Button";
+import { Button } from "@/app/components/ui/button";
 import { useLanguageSwitcher } from "@/app/hooks/useLanguageSwitcher";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
 import styles from "@/styles/LanguageSwitcher.module.scss";
@@ -13,7 +13,7 @@ export const LanguageSwitcher = () => {
 
   return (
     <div className={styles.languageSwitcher} ref={dropdownRef}>
-      <AppButton
+      <Button
         text={LANGUAGES[locale]}
         contentPosition="right"
         className={styles.languageSwitcher__button}

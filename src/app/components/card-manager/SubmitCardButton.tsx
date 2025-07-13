@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { useCardSubmission } from "@/app/components/card-manager";
-import { AppButton } from "@/app/components/common/Button";
+import { Button } from "@/app/components/ui/button";
 import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
 
 export const SubmitCardButton = ({ shouldShow }: { shouldShow: boolean }) => {
@@ -14,7 +14,7 @@ export const SubmitCardButton = ({ shouldShow }: { shouldShow: boolean }) => {
   if (!shouldShow || isSubmitCardSuccess || !isViewingOwnCard) return null;
 
   return (
-    <AppButton
+    <Button
       text={t("controls.submitCard")}
       animated={!isSubmitCardLoading}
       onClick={handleCardSubmit}

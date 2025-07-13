@@ -1,19 +1,6 @@
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { ReactNode } from "react";
 
-export type RoundedSize = "full" | "lg" | "md" | "sm";
-
-export interface AppButtonProps {
-  text: string;
-  content?: React.ReactNode;
-  contentPosition?: "left" | "right";
-  disabled?: boolean;
-  className?: string;
-  rounded?: RoundedSize;
-  animated?: boolean;
-  onClick?: () => void;
-}
-
 export interface AppModalProps {
   isOpen: boolean;
   onClose: () => void;

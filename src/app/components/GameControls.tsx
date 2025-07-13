@@ -1,7 +1,7 @@
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { AppButton } from "@/app/components/common/Button";
+import { Button } from "@/app/components/ui/button";
 import { useGameSwitching } from "@/app/hooks/useGameSwitching";
 import styles from "@/styles/GameControls.module.scss";
 
@@ -12,7 +12,7 @@ export const GameControls = () => {
 
   return (
     <div className={styles.controls}>
-      <AppButton
+      <Button
         text={t("previousGame")}
         contentPosition="left"
         content={<ChevronsLeft />}
@@ -20,7 +20,7 @@ export const GameControls = () => {
         onClick={() => switchGame(-1)}
         disabled={isDisabledPrevious || isLoading}
       />
-      <AppButton
+      <Button
         text={t("nextGame")}
         contentPosition="right"
         content={<ChevronsRight />}

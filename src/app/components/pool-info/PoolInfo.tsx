@@ -2,8 +2,8 @@ import { Info } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
-import { AppButton } from "@/app/components/common/Button";
 import { useBingoPayments, usePoolTooltips } from "@/app/components/pool-info";
+import { Button } from "@/app/components/ui/button";
 import { Tooltip } from "@/app/components/ui/tooltip";
 
 export const PoolInfo = () => {
@@ -15,7 +15,7 @@ export const PoolInfo = () => {
   return (
     <Tooltip texts={tooltipTexts} position="top">
       {isConnected && (
-        <AppButton
+        <Button
           text={t("totalPoolBalance", { amount: formattedPrizePoolBalance })}
           rounded="lg"
           contentPosition="left"

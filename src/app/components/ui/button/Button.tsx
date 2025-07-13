@@ -1,9 +1,9 @@
 "use client";
 
-import styles from "@/styles/AppButton.module.scss";
-import type { AppButtonProps } from "@/types";
+import type { ButtonProps } from "@/app/components/ui/button";
+import styles from "@/app/components/ui/button/Button.module.scss";
 
-export const AppButton = ({
+export const Button = ({
   text,
   content,
   contentPosition = "right",
@@ -12,7 +12,7 @@ export const AppButton = ({
   rounded,
   animated = false,
   onClick,
-}: AppButtonProps) => {
+}: ButtonProps) => {
   const buttonClass = `${styles.button} ${
     disabled ? styles.buttonDisabled : ""
   } ${rounded ? styles[`rounded__${rounded}`] : ""} ${

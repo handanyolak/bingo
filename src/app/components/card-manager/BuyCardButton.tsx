@@ -2,14 +2,14 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { useCardPurchase } from "@/app/components/card-manager";
-import { AppButton } from "@/app/components/common/Button";
+import { Button } from "@/app/components/ui/button";
 
 export const BuyCardButton = () => {
   const t = useTranslations();
   const { handleBuyCard, isBuyCardLoading } = useCardPurchase();
 
   return (
-    <AppButton
+    <Button
       text={t("controls.buyTheCard")}
       animated={!isBuyCardLoading}
       onClick={handleBuyCard}
