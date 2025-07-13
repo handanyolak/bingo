@@ -1,6 +1,7 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,30 +16,37 @@ export const AppProviders = ({ messages, children }: AppProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <ThemeColorProvider>
-          <LocaleProvider messages={messages}>
-            <ContextProvider
-              cookies={typeof window !== "undefined" ? document.cookie : null}
-            >
-              <AccountChangeProvider>
-                <ToastContainer
-                  autoClose={5000}
-                  hideProgressBar={true}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  pauseOnHover
-                  theme="dark"
-                  toastStyle={{
-                    backgroundColor: "transparent",
-                    color: "var(--text)",
-                  }}
-                />
-                {children}
-              </AccountChangeProvider>
-            </ContextProvider>
-          </LocaleProvider>
-        </ThemeColorProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <ThemeColorProvider>
+            <LocaleProvider messages={messages}>
+              <ContextProvider
+                cookies={typeof window !== "undefined" ? document.cookie : null}
+              >
+                <AccountChangeProvider>
+                  <ToastContainer
+                    autoClose={5000}
+                    hideProgressBar={true}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    pauseOnHover
+                    theme="dark"
+                    toastStyle={{
+                      backgroundColor: "transparent",
+                      color: "var(--text)",
+                    }}
+                  />
+                  {children}
+                </AccountChangeProvider>
+              </ContextProvider>
+            </LocaleProvider>
+          </ThemeColorProvider>
+        </ThemeProvider>
       </StoreProvider>
     </QueryClientProvider>
   );
