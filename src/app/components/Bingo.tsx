@@ -5,7 +5,7 @@ import Lottie from "lottie-react";
 import { BingoCard } from "@/app/components/bingo-card";
 import { CardManager } from "@/app/components/card-manager";
 import { DrawnNumbers } from "@/app/components/drawn-numbers";
-import { GameControls } from "@/app/components/GameControls";
+import { GameControls } from "@/app/components/game-controls";
 import { Loader } from "@/app/components/Loader";
 import { PoolInfo } from "@/app/components/pool-info";
 import { useBingoGameState } from "@/app/hooks/useBingoGameState";

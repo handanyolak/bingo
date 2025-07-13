@@ -1,9 +1,9 @@
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { useGameSwitching } from "@/app/components/game-controls";
+import styles from "@/app/components/game-controls/GameControls.module.scss";
 import { Button } from "@/app/components/ui/button";
-import { useGameSwitching } from "@/app/hooks/useGameSwitching";
-import styles from "@/styles/GameControls.module.scss";
 
 export const GameControls = () => {
   const t = useTranslations("controls");
