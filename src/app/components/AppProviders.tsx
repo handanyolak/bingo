@@ -1,11 +1,11 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ThemeColorProvider } from "@/app/components/ThemeColorProvider";
+import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
 import ContextProvider from "@/app/contexts/ReownContext";
 import StoreProvider from "@/app/StoreProvider";
@@ -16,13 +16,13 @@ export const AppProviders = ({ messages, children }: AppProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <ThemeProvider
+        <NextThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ThemeColorProvider>
+          <ThemeProvider>
             <LocaleProvider messages={messages}>
               <ContextProvider
                 cookies={typeof window !== "undefined" ? document.cookie : null}
@@ -45,8 +45,8 @@ export const AppProviders = ({ messages, children }: AppProvidersProps) => {
                 </AccountChangeProvider>
               </ContextProvider>
             </LocaleProvider>
-          </ThemeColorProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </NextThemeProvider>
       </StoreProvider>
     </QueryClientProvider>
   );
