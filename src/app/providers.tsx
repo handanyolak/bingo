@@ -5,7 +5,6 @@ import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
 import ContextProvider from "@/app/contexts/ReownContext";
 import StoreProvider from "@/app/StoreProvider";
 import { LocaleProvider, type AppProvidersProps } from "@/contexts";
@@ -27,22 +26,20 @@ export const Providers = ({ messages, children }: AppProvidersProps) => {
               <ContextProvider
                 cookies={typeof window !== "undefined" ? document.cookie : null}
               >
-                <AccountChangeProvider>
-                  <ToastContainer
-                    autoClose={5000}
-                    hideProgressBar={true}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    pauseOnHover
-                    theme="dark"
-                    toastStyle={{
-                      backgroundColor: "transparent",
-                      color: "var(--text)",
-                    }}
-                  />
-                  {children}
-                </AccountChangeProvider>
+                <ToastContainer
+                  autoClose={5000}
+                  hideProgressBar={true}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  pauseOnHover
+                  theme="dark"
+                  toastStyle={{
+                    backgroundColor: "transparent",
+                    color: "var(--text)",
+                  }}
+                />
+                {children}
               </ContextProvider>
             </LocaleProvider>
           </ThemeProvider>

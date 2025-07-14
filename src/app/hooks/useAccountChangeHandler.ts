@@ -1,31 +1,13 @@
-"use client";
-
 import { useQueryClient } from "@tanstack/react-query";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  ReactNode,
-} from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 
-import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useSelectedAddress } from "@/app/hooks";
 import { resetStateForNewGame } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
 
-interface AccountChangeContextType {
-  key: string;
-}
-
-const AccountChangeContext = createContext<AccountChangeContextType>({
-  key: "",
-});
-
-export const useAccountChange = () => useContext(AccountChangeContext);
-
-export function AccountChangeProvider({ children }: { children: ReactNode }) {
+export function useAccountChangeHandler() {
   const { address } = useAccount();
   const { updateURL } = useSelectedAddress();
   const dispatch = useAppDispatch();
@@ -33,7 +15,9 @@ export function AccountChangeProvider({ children }: { children: ReactNode }) {
   const previousAddressRef = useRef<string | undefined>(address);
 
   useEffect(() => {
-    if (address !== previousAddressRef.current) {
+    if (address === previousAddressRef.current) return;
+
+    const handleAccountChange = async () => {
       toast.dismiss();
 
       dispatch(resetStateForNewGame());
@@ -51,14 +35,11 @@ export function AccountChangeProvider({ children }: { children: ReactNode }) {
           });
         }, 100);
       }
+    };
 
-      previousAddressRef.current = address;
-    }
+    handleAccountChange();
+    previousAddressRef.current = address;
   }, [address, updateURL, dispatch, queryClient]);
 
-  return (
-    <AccountChangeContext.Provider value={{ key: address || "" }}>
-      {children}
-    </AccountChangeContext.Provider>
-  );
+  return { currentAddress: address };
 }

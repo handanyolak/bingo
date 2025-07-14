@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 
+import { useBingoDrawing } from "@/app/hooks";
 import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
-import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { DEFAULT_BINGO_CONFIG } from "@/constants/bingo";
 import {
   BingoCardNumbers,
