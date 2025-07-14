@@ -26,13 +26,13 @@ export const modal = createAppKit({
   themeMode: "light",
 });
 
-function ContextProvider({
+export const ReownProvider = ({
   children,
   cookies,
 }: {
   children: ReactNode;
   cookies: string | null;
-}) {
+}) => {
   const { theme } = useTheme();
   const initialState = cookieToInitialState(
     wagmiAdapter.wagmiConfig as Config,
@@ -59,6 +59,4 @@ function ContextProvider({
       {children}
     </WagmiProvider>
   );
-}
-
-export default ContextProvider;
+};

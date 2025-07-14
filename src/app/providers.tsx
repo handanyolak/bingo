@@ -5,11 +5,11 @@ import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import ContextProvider from "@/app/contexts/ReownContext";
 import StoreProvider from "@/app/StoreProvider";
 import { LocaleProvider, type AppProvidersProps } from "@/contexts";
 import { ThemeProvider } from "@/contexts";
 import { queryClient } from "@/lib/queryClient";
+import { ReownProvider } from "@/lib/web3";
 
 export const Providers = ({ messages, children }: AppProvidersProps) => {
   return (
@@ -23,7 +23,7 @@ export const Providers = ({ messages, children }: AppProvidersProps) => {
         >
           <ThemeProvider>
             <LocaleProvider messages={messages}>
-              <ContextProvider
+              <ReownProvider
                 cookies={typeof window !== "undefined" ? document.cookie : null}
               >
                 <ToastContainer
@@ -40,7 +40,7 @@ export const Providers = ({ messages, children }: AppProvidersProps) => {
                   }}
                 />
                 {children}
-              </ContextProvider>
+              </ReownProvider>
             </LocaleProvider>
           </ThemeProvider>
         </NextThemeProvider>
