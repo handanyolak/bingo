@@ -5,11 +5,11 @@ import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ThemeProvider } from "@/app/components/ThemeProvider";
 import { AccountChangeProvider } from "@/app/contexts/AccountChangeContext";
 import ContextProvider from "@/app/contexts/ReownContext";
 import StoreProvider from "@/app/StoreProvider";
 import { LocaleProvider, type AppProvidersProps } from "@/contexts";
+import { ThemeProvider } from "@/contexts";
 import { queryClient } from "@/lib/queryClient";
 
 export const AppProviders = ({ messages, children }: AppProvidersProps) => {

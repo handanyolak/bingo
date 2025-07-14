@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { zeroAddress } from "viem";
 
 import { DEFAULT_COLOR } from "@/constants";
-import type { UseThemeLogicReturn } from "@/types";
+import type { UseThemeLogicReturn } from "@/contexts";
 import {
   generateColorsFromAddress,
   isValidColor,

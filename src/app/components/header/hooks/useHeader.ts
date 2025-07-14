@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Address } from "viem";
 
-import { useColorTheme } from "@/app/contexts/ThemeContext";
 import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useColorTheme } from "@/contexts";
 
 export const useHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

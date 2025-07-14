@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 
-import type { ThemeContextType } from "@/types";
+import type { ThemeContextType } from "@/contexts";
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

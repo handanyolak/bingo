@@ -2,9 +2,11 @@
 
 import { memo } from "react";
 
-import { ThemeContext } from "@/app/contexts/ThemeContext";
-import { useThemeLogic } from "@/app/hooks/useThemeLogic";
-import type { ThemeProviderProps } from "@/types";
+import {
+  ThemeContext,
+  useThemeLogic,
+  type ThemeProviderProps,
+} from "@/contexts";
 
 export const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
   const {

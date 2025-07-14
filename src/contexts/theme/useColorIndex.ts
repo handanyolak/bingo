@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import type { UseColorIndexReturn } from "@/types";
+import type { UseColorIndexReturn } from "@/contexts";
 import { STORAGE_KEYS } from "@/utils/theme";
 
 export const useColorIndex = (
