@@ -12,7 +12,7 @@ import { LocaleProvider, type AppProvidersProps } from "@/contexts";
 import { ThemeProvider } from "@/contexts";
 import { queryClient } from "@/lib/queryClient";
 
-export const AppProviders = ({ messages, children }: AppProvidersProps) => {
+export const Providers = ({ messages, children }: AppProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>

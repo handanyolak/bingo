@@ -2,9 +2,9 @@ import "./globals.css";
 import { Comfortaa } from "next/font/google";
 import { Suspense } from "react";
 
-import { AppProviders } from "@/app/components/AppProviders";
 import { Header } from "@/app/components/header/Header";
 import { Loader } from "@/app/components/ui/loader";
+import { Providers } from "@/app/providers";
 import { getStaticMessages } from "@/i18n/config";
 
 const comfortaa = Comfortaa({
@@ -27,12 +27,12 @@ export default async function RootLayout({
   return (
     <html>
       <body className={`${comfortaa.className}`} lang="en">
-        <AppProviders messages={messages}>
+        <Providers messages={messages}>
           <Suspense fallback={<Loader role="status" aria-label="Loading..." />}>
             <Header />
             {children}
           </Suspense>
-        </AppProviders>
+        </Providers>
       </body>
     </html>
   );
