@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import type { UseColorIndexReturn } from "@/contexts";
-import { STORAGE_KEYS } from "@/utils/theme";
+import { STORAGE_KEYS } from "@/utils";
 
 export const useColorIndex = (
   isViewingOtherPlayer: boolean,

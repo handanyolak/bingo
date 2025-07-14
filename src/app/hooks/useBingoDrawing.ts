@@ -20,9 +20,9 @@ import {
   resetStateForNewGame,
 } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { getUnixTimestamp } from "@/lib/utils/time";
 import { useContractReads } from "@/lib/web3";
 import { ContractReads } from "@/lib/web3";
+import { getUnixTimestamp } from "@/utils";
 
 const DRAWN_NUMBER_TOTAL_INTERVAL_MS = 2000;
 const DRAWN_NUMBER_INTERVAL_SEC = DRAWN_NUMBER_TOTAL_INTERVAL_MS / 1000;

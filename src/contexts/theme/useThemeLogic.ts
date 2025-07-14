@@ -11,7 +11,7 @@ import {
   isValidColor,
   ThemeStyleManager,
   calculateColorVariants,
-} from "@/utils/theme";
+} from "@/utils";
 
 import { useColorIndex } from "./useColorIndex";
 

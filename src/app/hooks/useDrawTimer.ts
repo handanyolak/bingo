@@ -7,12 +7,12 @@ import type {
 import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
 import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
+import { useContractReads } from "@/lib/web3";
 import {
   getUnixTimestamp,
   secondsToMinutes,
   getRemainingSeconds,
-} from "@/lib/utils/time";
-import { useContractReads } from "@/lib/web3";
+} from "@/utils";
 
 export const useDrawTimer = ({
   isLoading = false,
