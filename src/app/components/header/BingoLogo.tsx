@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/styles/BingoLogo.module.scss";
+import styles from "@/app/components/header/BingoLogo.module.scss";
 
 export const BingoLogo = () => {
   return (

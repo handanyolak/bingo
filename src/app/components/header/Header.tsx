@@ -4,9 +4,9 @@ import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAccount } from "wagmi";
 
-import { BingoLogo } from "@/app/components/BingoLogo";
-import { ConnectButton } from "@/app/components/ConnectButton";
 import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
+import { BingoLogo } from "@/app/components/header/BingoLogo";
+import { ConnectButton } from "@/app/components/header/ConnectButton";
 import styles from "@/app/components/header/Header.module.scss";
 import { Players, Winners } from "@/app/components/participants";
 import { Modal } from "@/app/components/ui/modal/Modal";

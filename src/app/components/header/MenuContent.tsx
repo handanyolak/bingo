@@ -3,8 +3,8 @@ import { useTranslations } from "next-intl";
 
 import type { MenuContentProps } from "@/app/components/header";
 import { useMenuContent } from "@/app/components/header";
+import { LanguageSwitcher } from "@/app/components/header";
 import styles from "@/app/components/header/MenuContent.module.scss";
-import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import { Button } from "@/app/components/ui/button";
 
 export const MenuContent = ({

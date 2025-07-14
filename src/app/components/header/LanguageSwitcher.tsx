@@ -2,10 +2,10 @@
 
 import { ChevronDown } from "lucide-react";
 
+import { useLanguageSwitcher } from "@/app/components/header";
+import styles from "@/app/components/header/LanguageSwitcher.module.scss";
 import { Button } from "@/app/components/ui/button";
-import { useLanguageSwitcher } from "@/app/hooks/useLanguageSwitcher";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
-import styles from "@/styles/LanguageSwitcher.module.scss";
 
 export const LanguageSwitcher = () => {
   const { locale, isOpen, handleOptionClick, toggleDropdown, dropdownRef } =
