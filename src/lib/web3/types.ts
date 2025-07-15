@@ -1,7 +1,12 @@
 import { Address } from "viem";
 
 import { BINGO_CARD_SIZE } from "@/constants/bingo";
-import { Fixed } from "@/types";
+
+export type Fixed<
+  T,
+  L extends number,
+  A extends T[] = []
+> = A["length"] extends L ? A : Fixed<T, L, [...A, T]>;
 
 export type ContractCardNumbers = Fixed<number, typeof BINGO_CARD_SIZE>;
 
