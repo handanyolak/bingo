@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import type {
   UseDrawTimerProps,
   UseDrawTimerReturn,
-} from "@/app/components/card-manager/CardManager.types";
-import { useBingoDrawing } from "@/app/hooks/useBingoDrawing";
+} from "@/app/components/card-manager";
+import { useBingoDrawing } from "@/app/hooks";
 import { startDrawing } from "@/lib/store/bingo";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { useContractReads } from "@/lib/web3";

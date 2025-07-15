@@ -2,8 +2,8 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
+import { useDrawTimer } from "@/app/components/card-manager";
 import styles from "@/app/components/card-manager/GameTimer.module.scss";
-import { useDrawTimer } from "@/app/hooks/useDrawTimer";
 
 import timerAnimation from "../../../../public/animations/timer.json";
 

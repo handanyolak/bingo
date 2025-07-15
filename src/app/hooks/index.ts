@@ -1,7 +1,6 @@
 export * from "./useAccountChangeHandler";
 export * from "./useBingoDrawing";
 export * from "./useClickOutside";
-export * from "./useDrawTimer";
 export * from "./useIsViewingOwnCard";
 export * from "./toast/useTransactionToast";
 
