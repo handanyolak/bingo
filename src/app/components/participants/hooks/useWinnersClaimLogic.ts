@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
 import { useWinnerStatus } from "@/app/components/participants";
+import { useTransactionToast } from "@/app/hooks";
 import { useIsViewingOwnCard } from "@/app/hooks/useIsViewingOwnCard";
-import { useTransactionToast } from "@/app/hooks/useTransactionToast";
 import { selectIsGameFinishedInUi } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useContractReads, useContractWrite } from "@/lib/web3";

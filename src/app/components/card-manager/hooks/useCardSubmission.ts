@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useState, useCallback, useEffect } from "react";
 
 import type { UseCardSubmissionReturn } from "@/app/components/card-manager";
-import { useTransactionToast } from "@/app/hooks/useTransactionToast";
+import { useTransactionToast } from "@/app/hooks";
 import { useContractWrite } from "@/lib/web3";
 
 export const useCardSubmission = (): UseCardSubmissionReturn => {
