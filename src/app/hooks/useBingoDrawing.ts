@@ -30,9 +30,7 @@ const DRAWN_NUMBER_DISPLAY_DURATION_MS = 1500;
 const DRAWN_NUMBER_TRANSITION_MS = 500;
 const NUMBER_DRAWING_INITIAL_DELAY_SEC = 5;
 
-/**
- * Schedules timestamps for drawn numbers based on contract data
- */
+// Schedules timestamps for drawn numbers based on contract data
 const useDrawnNumbersTimestampScheduler = (
   contractData: ContractReads | undefined,
   contractLoading: boolean = false
@@ -114,9 +112,7 @@ const useDrawnNumbersTimestampScheduler = (
   ]);
 };
 
-/**
- * Updates and adds drawn numbers to the Redux store
- */
+// Updates and adds drawn numbers to the Redux store
 const useDrawnNumbersUpdater = () => {
   const dispatch = useAppDispatch();
   const displayedDrawnNumbers = useAppSelector(selectDrawnNumbers);
@@ -234,9 +230,7 @@ const useDrawnNumbersUpdater = () => {
   };
 };
 
-/**
- * Displays drawn numbers in the UI with animations
- */
+// Displays drawn numbers in the UI with animations
 const useDrawnNumberDisplayer = (
   drawnNumbersAnimationQueue: React.RefObject<number[]>
 ) => {
@@ -290,9 +284,7 @@ const useDrawnNumberDisplayer = (
   return { currentDrawnNumber, setCurrentDrawnNumber };
 };
 
-/**
- * Initiates the drawing process at the correct time
- */
+// Initiates the drawing process at the correct time
 const useDrawingStarter = (contractData: ContractReads | undefined) => {
   const dispatch = useAppDispatch();
   const drawnNumbersWithTimestamp = useAppSelector(
@@ -333,9 +325,8 @@ const useDrawingStarter = (contractData: ContractReads | undefined) => {
   ]);
 };
 
-/**
- * Main bingo drawing functionality that combines all other specialized functions
- */
+// Main bingo drawing functionality that combines all other specialized functions
+
 export const useBingoDrawing = () => {
   const searchParams = useSearchParams();
   const currentGameId = searchParams.get("id");
