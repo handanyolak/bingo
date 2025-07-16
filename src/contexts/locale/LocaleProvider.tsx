@@ -19,7 +19,11 @@ export const LocaleProvider = ({ messages, children }: LocaleProviderProps) => {
 
   return (
     <LocaleContext.Provider value={{ locale, updateLocale }}>
-      <NextIntlClientProvider messages={currentMessages} locale={locale}>
+      <NextIntlClientProvider
+        messages={currentMessages}
+        locale={locale}
+        timeZone="UTC"
+      >
         {children}
       </NextIntlClientProvider>
     </LocaleContext.Provider>
