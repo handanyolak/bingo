@@ -1,6 +1,7 @@
 "use client";
 
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 import { useBingoGameState } from "@/app/components/bingo";
 import styles from "@/app/components/bingo/Bingo.module.scss";
@@ -13,7 +14,12 @@ import { Loader } from "@/app/components/ui";
 
 import confettiAnimation from "../../../../public/animations/confetti.json";
 
+const Lottie = dynamic(() => import("lottie-react"), {
+  ssr: false,
+});
+
 export const Bingo = () => {
+  const [mounted, setMounted] = useState(false);
   const {
     key,
     contractLoading,
@@ -22,7 +28,11 @@ export const Bingo = () => {
     handleConfettiComplete,
   } = useBingoGameState();
 
-  if (shouldShowLoader) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || shouldShowLoader) {
     return <Loader role="status" aria-label="Loading game data" />;
   }
 
