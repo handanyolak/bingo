@@ -2,8 +2,7 @@
 
 import React from "react";
 
-import type { TooltipProps } from "@/app/components/ui/tooltip";
-import { useTooltip } from "@/app/components/ui/tooltip";
+import { type TooltipProps, useTooltip } from "@/app/components/ui";
 import styles from "@/app/components/ui/tooltip/Tooltip.module.scss";
 
 export const Tooltip = ({

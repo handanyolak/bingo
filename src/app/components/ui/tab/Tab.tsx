@@ -2,8 +2,7 @@
 
 import React from "react";
 
-import type { TabItemProps, TabProps } from "@/app/components/ui/tab";
-import { useTab } from "@/app/components/ui/tab";
+import { type TabItemProps, type TabProps, useTab } from "@/app/components/ui";
 import styles from "@/app/components/ui/tab/Tab.module.scss";
 
 export const TabItem = ({ children }: TabItemProps) => {

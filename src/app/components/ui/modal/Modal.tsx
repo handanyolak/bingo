@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react";
 
-import type { ModalProps } from "@/app/components/ui/modal";
+import { type ModalProps } from "@/app/components/ui";
 import styles from "@/app/components/ui/modal/Modal.module.scss";
 import { useClickOutside } from "@/app/hooks/useClickOutside";
 

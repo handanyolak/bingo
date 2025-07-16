@@ -1,10 +1,10 @@
 import { useVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
 import { useRef, useCallback, useMemo } from "react";
 
-import type {
-  UseVirtualizedContentProps,
-  VirtualizedContentHookReturn,
-} from "@/app/components/ui/virtualized-content";
+import {
+  type UseVirtualizedContentProps,
+  type VirtualizedContentHookReturn,
+} from "@/app/components/ui";
 
 export const useVirtualizedContent = <T>({
   data,

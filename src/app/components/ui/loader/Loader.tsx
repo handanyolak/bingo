@@ -1,4 +1,4 @@
-import type { LoaderProps } from "@/app/components/ui/loader";
+import { type LoaderProps } from "@/app/components/ui";
 import styles from "@/app/components/ui/loader/Loader.module.scss";
 
 export const Loader = ({

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ButtonProps } from "@/app/components/ui/button";
+import { type ButtonProps } from "@/app/components/ui";
 import styles from "@/app/components/ui/button/Button.module.scss";
 
 export const Button = ({

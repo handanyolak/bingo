@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { useGameSwitching } from "@/app/components/game-controls";
 import styles from "@/app/components/game-controls/GameControls.module.scss";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/app/components/ui";
 
 export const GameControls = () => {
   const t = useTranslations("controls");

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 
-import type { UseTooltipProps } from "@/app/components/ui/tooltip";
+import { type UseTooltipProps } from "@/app/components/ui";
 import styles from "@/app/components/ui/tooltip/Tooltip.module.scss";
 
 export const useTooltip = ({ texts, position = "top" }: UseTooltipProps) => {

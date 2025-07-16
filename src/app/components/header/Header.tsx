@@ -9,8 +9,7 @@ import { BingoLogo } from "@/app/components/header/BingoLogo";
 import { ConnectButton } from "@/app/components/header/ConnectButton";
 import styles from "@/app/components/header/Header.module.scss";
 import { Players, Winners } from "@/app/components/participants";
-import { Modal } from "@/app/components/ui/modal/Modal";
-import { Tab, TabItem } from "@/app/components/ui/tab";
+import { Modal, Tab, TabItem } from "@/app/components/ui";
 import { useContractReads } from "@/lib/web3";
 
 export const Header = () => {

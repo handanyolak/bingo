@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { useRandomNumbers } from "@/app/components/card-manager";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/app/components/ui";
 
 export const RequestRandomButton = () => {
   const t = useTranslations();

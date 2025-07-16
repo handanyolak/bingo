@@ -1,11 +1,13 @@
 import { Palette, UsersRound, Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import type { MenuContentProps } from "@/app/components/header";
-import { useMenuContent } from "@/app/components/header";
-import { LanguageSwitcher } from "@/app/components/header";
+import {
+  useMenuContent,
+  LanguageSwitcher,
+  type MenuContentProps,
+} from "@/app/components/header";
 import styles from "@/app/components/header/MenuContent.module.scss";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/app/components/ui";
 
 export const MenuContent = ({
   onModalOpen,

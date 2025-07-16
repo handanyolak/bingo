@@ -1,7 +1,9 @@
 "use client";
 
-import type { VirtualizedContentProps } from "@/app/components/ui/virtualized-content";
-import { useVirtualizedContent } from "@/app/components/ui/virtualized-content";
+import {
+  type VirtualizedContentProps,
+  useVirtualizedContent,
+} from "@/app/components/ui";
 
 export const VirtualizedContent = <T,>({
   renderItem,

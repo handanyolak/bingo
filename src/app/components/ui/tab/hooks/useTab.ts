@@ -1,6 +1,6 @@
 import React, { useState, Children, ReactElement } from "react";
 
-import type { TabItemProps } from "@/app/components/ui/tab";
+import { type TabItemProps } from "@/app/components/ui";
 
 export const useTab = (
   children: ReactElement<TabItemProps> | ReactElement<TabItemProps>[],

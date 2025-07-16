@@ -9,7 +9,7 @@ import { CardManager } from "@/app/components/card-manager";
 import { DrawnNumbers } from "@/app/components/drawn-numbers";
 import { GameControls } from "@/app/components/game-controls";
 import { PoolInfo } from "@/app/components/pool-info";
-import { Loader } from "@/app/components/ui/loader";
+import { Loader } from "@/app/components/ui";
 
 import confettiAnimation from "../../../../public/animations/confetti.json";
 

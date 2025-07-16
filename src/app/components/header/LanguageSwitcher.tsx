@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 
 import { useLanguageSwitcher } from "@/app/components/header";
 import styles from "@/app/components/header/LanguageSwitcher.module.scss";
-import { Button } from "@/app/components/ui/button";
+import { Button } from "@/app/components/ui";
 import { LANGUAGES, LanguageCode } from "@/i18n/config";
 
 export const LanguageSwitcher = () => {
