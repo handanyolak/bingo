@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Address } from "viem";
 
-import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useSelectedAddress } from "@/app/hooks";
 import { useColorTheme } from "@/contexts";
 
 export const useHeader = () => {

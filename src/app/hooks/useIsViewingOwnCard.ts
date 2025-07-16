@@ -1,6 +1,6 @@
 import { useAccount } from "wagmi";
 
-import { useSelectedAddress } from "@/app/hooks/routing/useRouteParams";
+import { useSelectedAddress } from "@/app/hooks";
 
 export const useIsViewingOwnCard = () => {
   const { address: connectedAddress } = useAccount();

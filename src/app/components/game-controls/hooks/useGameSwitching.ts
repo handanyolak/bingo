@@ -1,7 +1,6 @@
 "use client";
 
-import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
-import { dismissAllToasts } from "@/app/hooks/toast/useGameToasts";
+import { dismissAllToasts, useSelectedGameId } from "@/app/hooks";
 import {
   resetStateForNewGame,
   selectIsGameFinishedInUi,

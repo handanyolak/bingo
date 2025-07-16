@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
+import { useSelectedGameId } from "@/app/hooks";
 import {
   stopDrawing,
   selectIsDrawing,

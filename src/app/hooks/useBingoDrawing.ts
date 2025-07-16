@@ -1,7 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { useSelectedGameId } from "@/app/hooks/routing/useRouteParams";
+import { useSelectedGameId } from "@/app/hooks";
 import {
   useGameToasts,
   dismissAllToasts,
