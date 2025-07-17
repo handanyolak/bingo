@@ -209,6 +209,25 @@ export const abi = [
       {
         indexed: false,
         internalType: "uint256",
+        name: "submittedTimestamp",
+        type: "uint256",
+      },
+    ],
+    name: "PlayersSubmitted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "gameId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
         name: "requestId",
         type: "uint256",
       },
@@ -717,6 +736,25 @@ export const abi = [
         name: "",
         type: "address[]",
       },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "playersSubmittedTimestamp",
+    outputs: [
       {
         internalType: "uint256",
         name: "",
