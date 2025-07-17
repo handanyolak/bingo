@@ -36,6 +36,7 @@
     "waitingRandomNumbers": "İşlem onaylandı. Rastgele sayıların oluşturulması bekleniyor...",
     "cardSubmitted": "Kart başarıyla gönderildi!",
     "invalidGameId": "Geçersiz oyun ID'si",
-    "invalidGameIdFormat": "Geçersiz oyun ID formatı"
+    "invalidGameIdFormat": "Geçersiz oyun ID formatı",
+    "allPlayersSubmitted": "Tüm oyuncular kartlarını gönderdi! Çekiliş erkenden başlıyor!"
   }
 }

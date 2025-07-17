@@ -36,6 +36,7 @@
     "waitingRandomNumbers": "Transaction confirmée. En attente de génération des numéros aléatoires...",
     "cardSubmitted": "Carte soumise avec succès!",
     "invalidGameId": "ID de jeu invalide",
-    "invalidGameIdFormat": "Format d'ID de jeu invalide"
+    "invalidGameIdFormat": "Format d'ID de jeu invalide",
+    "allPlayersSubmitted": "Tous les joueurs ont soumis leurs cartes! Le tirage commence plus tôt!"
   }
 }

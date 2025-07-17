@@ -36,6 +36,7 @@
     "waitingRandomNumbers": "Transaction confirmed. Waiting for random numbers to be generated...",
     "cardSubmitted": "Card successfully submitted!",
     "invalidGameId": "Invalid game ID",
-    "invalidGameIdFormat": "Invalid game ID format"
+    "invalidGameIdFormat": "Invalid game ID format",
+    "allPlayersSubmitted": "All players have submitted their cards! Drawing starts early!"
   }
 }

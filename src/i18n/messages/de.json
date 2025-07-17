@@ -36,6 +36,7 @@
     "waitingRandomNumbers": "Transaktion bestätigt. Warten auf Generierung von Zufallszahlen...",
     "cardSubmitted": "Karte erfolgreich eingereicht!",
     "invalidGameId": "Ungültige Spiel-ID",
-    "invalidGameIdFormat": "Ungültiges Spiel-ID-Format"
+    "invalidGameIdFormat": "Ungültiges Spiel-ID-Format",
+    "allPlayersSubmitted": "Alle Spieler haben ihre Karten eingereicht! Die Ziehung beginnt früher!"
   }
 }
