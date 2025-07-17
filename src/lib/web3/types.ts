@@ -28,6 +28,7 @@ export interface ContractReads {
   drawnNumbers: readonly number[];
   finalizationCooldown: bigint;
   drawnNumbersTimestamp: bigint;
+  playersSubmittedTimestamp: bigint;
   players: {
     playerAddresses: readonly Address[];
     playerNextCursor: bigint;
