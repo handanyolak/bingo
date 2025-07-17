@@ -2,6 +2,7 @@
 
 import { Loader2, Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
@@ -14,6 +15,7 @@ import { useContractReads } from "@/lib/web3";
 
 export const Header = () => {
   const t = useTranslations();
+  const [mounted, setMounted] = useState(false);
   const {
     isModalOpen,
     isMobileMenuOpen,
@@ -26,6 +28,10 @@ export const Header = () => {
 
   const { isConnected } = useAccount();
   const { data: contractData, isLoading: gameLoading } = useContractReads();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -53,7 +59,9 @@ export const Header = () => {
       <div className={styles.header__bottom}>
         <div className={styles.header__content}>
           <ConnectButton />
-          {gameLoading && isConnected && <Loader2 className="global-loader" />}
+          {mounted && gameLoading && isConnected && (
+            <Loader2 className="global-loader" />
+          )}
           <div className={styles.header__gameIdContainer}>
             {contractData?.targetGameId && (
               <div className={styles.header__gameId}>
