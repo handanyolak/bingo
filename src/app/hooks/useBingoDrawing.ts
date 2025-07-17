@@ -27,7 +27,7 @@ const DRAWN_NUMBER_TOTAL_INTERVAL_MS = 2000;
 const DRAWN_NUMBER_INTERVAL_SEC = DRAWN_NUMBER_TOTAL_INTERVAL_MS / 1000;
 const DRAWN_NUMBER_DISPLAY_DURATION_MS = 1500;
 const DRAWN_NUMBER_TRANSITION_MS = 500;
-const NUMBER_DRAWING_INITIAL_DELAY_SEC = 5;
+const NUMBER_DRAWING_INITIAL_DELAY_SEC = 10;
 
 // Schedules timestamps for drawn numbers based on contract data
 const useDrawnNumbersTimestampScheduler = (
