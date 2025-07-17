@@ -1,4 +1,5 @@
 import { Address } from "viem";
+import { Hash, Log } from "viem";
 
 import { BINGO_CARD_SIZE } from "@/constants/bingo";
 
@@ -43,4 +44,45 @@ export interface ContractReads {
   winningDrawnNumberIndex: number;
   vrfRequested: boolean;
   rewardByWinner?: bigint;
+}
+
+export interface ContractWriteState {
+  buyBingoCard: () => Promise<Hash>;
+  requestRandomNumbers: () => Promise<Hash>;
+  submitCard: () => Promise<Hash>;
+  claimReward: (gameId: bigint) => Promise<Hash>;
+  isBuyCardPending: boolean;
+  isBuyCardConfirming: boolean;
+  isBuyCardSuccess: boolean;
+  isRequestRandomPending: boolean;
+  isRequestRandomConfirming: boolean;
+  isRequestRandomSuccess: boolean;
+  isSubmitCardPending: boolean;
+  isSubmitCardConfirming: boolean;
+  isSubmitCardSuccess: boolean;
+  isClaimRewardPending: boolean;
+  isClaimRewardConfirming: boolean;
+  isClaimRewardSuccess: boolean;
+  buyCardHash: Hash | undefined;
+  requestRandomHash: Hash | undefined;
+  submitCardHash: Hash | undefined;
+  claimRewardHash: Hash | undefined;
+}
+
+export interface UseContractReadsOptions<T = ContractReads> {
+  select?: (data: ContractReads) => T;
+}
+
+export type ContractEventName =
+  | "CardPurchased"
+  | "DrawnNumbersFilled"
+  | "RequestRandomness"
+  | "RewardClaimed"
+  | "PlayersSubmitted";
+
+export interface ContractEventsParams {
+  onCardPurchased?: (logs: Log[]) => void;
+  onDrawnNumbersFilled?: (logs: Log[]) => void;
+  onPlayersSubmitted?: (logs: Log[]) => void;
+  refetchData: () => void;
 }

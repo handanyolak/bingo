@@ -8,32 +8,13 @@ import { sepolia } from "wagmi/chains";
 import { env } from "@/config/env";
 import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
-import { config, ContractCardNumbers } from "@/lib/web3";
-import { abi } from "@/lib/web3";
-import { useContractReads } from "@/lib/web3";
-
-interface ContractWriteState {
-  buyBingoCard: () => Promise<Hash>;
-  requestRandomNumbers: () => Promise<Hash>;
-  submitCard: () => Promise<Hash>;
-  claimReward: (gameId: bigint) => Promise<Hash>;
-  isBuyCardPending: boolean;
-  isBuyCardConfirming: boolean;
-  isBuyCardSuccess: boolean;
-  isRequestRandomPending: boolean;
-  isRequestRandomConfirming: boolean;
-  isRequestRandomSuccess: boolean;
-  isSubmitCardPending: boolean;
-  isSubmitCardConfirming: boolean;
-  isSubmitCardSuccess: boolean;
-  isClaimRewardPending: boolean;
-  isClaimRewardConfirming: boolean;
-  isClaimRewardSuccess: boolean;
-  buyCardHash: Hash | undefined;
-  requestRandomHash: Hash | undefined;
-  submitCardHash: Hash | undefined;
-  claimRewardHash: Hash | undefined;
-}
+import {
+  abi,
+  config,
+  ContractCardNumbers,
+  ContractWriteState,
+  useContractReads,
+} from "@/lib/web3";
 
 export const useContractWrite = (): ContractWriteState => {
   const [buyCardHash, setBuyCardHash] = useState<Hash>();

@@ -2,25 +2,22 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { getContract, isAddress } from "viem";
-import { Address } from "viem";
+import { getContract, isAddress, Address } from "viem";
 import { useAccount } from "wagmi";
 
 import { env } from "@/config/env";
-import { publicClient } from "@/lib/web3";
-import { abi } from "@/lib/web3";
-import { ContractReads } from "@/lib/web3";
-
-interface UseContractReadsOptions<T = ContractReads> {
-  select?: (data: ContractReads) => T;
-}
+import {
+  abi,
+  publicClient,
+  ContractReads,
+  UseContractReadsOptions,
+} from "@/lib/web3";
 
 export const useContractReads = <T = ContractReads>(
   options?: UseContractReadsOptions<T>
 ) => {
   const { address, isConnected } = useAccount();
   const search = useSearchParams();
-
   const urlId = search.get("id");
   const selectedParam = search.get("selectedAddress");
 
