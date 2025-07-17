@@ -1,7 +1,9 @@
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { toast } from "react-toastify";
 
-import { useSelectedGameId } from "@/app/hooks";
+import { useSelectedGameId, useTransactionToast } from "@/app/hooks";
 import {
   useGameToasts,
   dismissAllToasts,
@@ -11,8 +13,6 @@ import {
   selectIsDrawing,
   selectIsGameFinishedInUi,
   selectDrawnNumbersWithTimestamp,
-} from "@/lib/store/bingo";
-import {
   addDrawnNumber,
   setGameFinishedInUi,
   setDrawnNumbersWithTimestamp,
@@ -20,8 +20,7 @@ import {
   resetStateForNewGame,
 } from "@/lib/store/bingo";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { useContractReads } from "@/lib/web3";
-import { ContractReads } from "@/lib/web3";
+import { useContractReads, useContractEvents, ContractReads } from "@/lib/web3";
 import { getUnixTimestamp } from "@/utils";
 
 const DRAWN_NUMBER_TOTAL_INTERVAL_MS = 2000;
@@ -57,8 +56,10 @@ const useDrawnNumbersTimestampScheduler = (
     ) {
       if (contractData.isDrawnNumbersFilled) {
         const drawingStartTime =
-          Number(contractData.drawnNumbersTimestamp) +
-          Number(contractData.finalizationCooldown);
+          contractData.playersSubmittedTimestamp > 0
+            ? Number(contractData.playersSubmittedTimestamp)
+            : Number(contractData.drawnNumbersTimestamp) +
+              Number(contractData.finalizationCooldown);
 
         const scheduledDrawnNumbers = contractData.drawnNumbers.map(
           (number, index) => ({
@@ -105,7 +106,25 @@ const useDrawnNumbersTimestampScheduler = (
     contractData?.winningDrawnNumberIndex,
     contractData?.gameId,
     contractData?.targetGameId,
+    contractData?.playersSubmittedTimestamp,
     drawnNumbersWithTimestamp.length,
+    dispatch,
+    contractData,
+    contractLoading,
+  ]);
+
+  useEffect(() => {
+    if (!contractData || contractLoading) return;
+
+    if (
+      contractData.playersSubmittedTimestamp > 0 &&
+      drawnNumbersWithTimestamp.length > 0
+    ) {
+      dispatch(setDrawnNumbersWithTimestamp([]));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    contractData?.playersSubmittedTimestamp,
     dispatch,
     contractData,
     contractLoading,
@@ -330,11 +349,29 @@ const useDrawingStarter = (contractData: ContractReads | undefined) => {
 export const useBingoDrawing = () => {
   const searchParams = useSearchParams();
   const currentGameId = searchParams.get("id");
-  const { data: contractData, isLoading: contractLoading } = useContractReads();
+  const {
+    data: contractData,
+    isLoading: contractLoading,
+    refetch: refetchContractData,
+  } = useContractReads();
   const dispatch = useAppDispatch();
   const { selectedGameId, isInitialized } = useSelectedGameId();
 
   const { isPlayerCardComplete } = useGameToasts();
+  const t = useTranslations();
+  const { dismissToast } = useTransactionToast();
+
+  const handlePlayersSubmitted = useCallback(() => {
+    dismissToast("waitingSubmitEvent");
+    toast.success(t("toast.allPlayersSubmitted"), {
+      toastId: `all-players-submitted-${selectedGameId?.toString()}`,
+    });
+  }, [dismissToast, t, selectedGameId]);
+
+  useContractEvents({
+    onPlayersSubmitted: handlePlayersSubmitted,
+    refetchData: refetchContractData,
+  });
 
   useEffect(() => {
     if (isInitialized) {
