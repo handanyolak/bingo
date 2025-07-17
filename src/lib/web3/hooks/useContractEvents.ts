@@ -8,6 +8,7 @@ import { abi } from "@/lib/web3";
 interface ContractEventsParams {
   onCardPurchased?: (logs: Log[]) => void;
   onDrawnNumbersFilled?: (logs: Log[]) => void;
+  onPlayersSubmitted?: (logs: Log[]) => void;
   refetchData: () => void;
 }
 
@@ -15,7 +16,8 @@ type ContractEventName =
   | "CardPurchased"
   | "DrawnNumbersFilled"
   | "RequestRandomness"
-  | "RewardClaimed";
+  | "RewardClaimed"
+  | "PlayersSubmitted";
 
 const CONTRACT_EVENT_CONFIG = {
   address: env.bingoContractAddress as Address,
@@ -55,6 +57,7 @@ const decodeEventData = ({
 export const useContractEvents = ({
   onCardPurchased,
   onDrawnNumbersFilled,
+  onPlayersSubmitted,
   refetchData,
 }: ContractEventsParams) => {
   const processEventLogs = useCallback(
@@ -102,6 +105,13 @@ export const useContractEvents = ({
     [processEventLogs]
   );
 
+  const handlePlayersSubmitted = useCallback(
+    (logs: Log[]) => {
+      processEventLogs(logs, "PlayersSubmitted", onPlayersSubmitted);
+    },
+    [processEventLogs, onPlayersSubmitted]
+  );
+
   useEffect(() => {
     if (!env.bingoContractAddress) {
       console.error("Bingo contract address is not defined");
@@ -131,6 +141,13 @@ export const useContractEvents = ({
         onLogs: handleRequestRandomness,
       });
       cleanupFunctions.push(unsubscribeRequestRandomness);
+
+      const unsubscribePlayersSubmitted = publicClient.watchContractEvent({
+        ...CONTRACT_EVENT_CONFIG,
+        eventName: "PlayersSubmitted",
+        onLogs: handlePlayersSubmitted,
+      });
+      cleanupFunctions.push(unsubscribePlayersSubmitted);
     } catch (error) {
       console.error("Failed to setup contract event listeners:", error);
     }
@@ -144,5 +161,10 @@ export const useContractEvents = ({
         }
       });
     };
-  }, [handleCardPurchase, handleDrawnNumbers, handleRequestRandomness]);
+  }, [
+    handleCardPurchase,
+    handleDrawnNumbers,
+    handleRequestRandomness,
+    handlePlayersSubmitted,
+  ]);
 };
