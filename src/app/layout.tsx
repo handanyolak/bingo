@@ -25,8 +25,8 @@ export default async function RootLayout({
   const messages = await getStaticMessages();
 
   return (
-    <html>
-      <body className={`${comfortaa.className}`} lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${comfortaa.className}`}>
         <Providers messages={messages}>
           <Suspense fallback={<Loader role="status" aria-label="Loading..." />}>
             <Header />
