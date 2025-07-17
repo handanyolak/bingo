@@ -9,6 +9,12 @@ import {
   dismissAllToasts,
 } from "@/app/hooks/toast/useGameToasts";
 import {
+  DRAWN_NUMBER_INTERVAL_SEC,
+  DRAWN_NUMBER_DISPLAY_DURATION_MS,
+  DRAWN_NUMBER_TRANSITION_MS,
+  NUMBER_DRAWING_INITIAL_DELAY_SEC,
+} from "@/constants/bingo";
+import {
   selectDrawnNumbers,
   selectIsDrawing,
   selectIsGameFinishedInUi,
@@ -22,12 +28,6 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useContractReads, useContractEvents, ContractReads } from "@/lib/web3";
 import { getUnixTimestamp } from "@/utils";
-
-const DRAWN_NUMBER_TOTAL_INTERVAL_MS = 2000;
-const DRAWN_NUMBER_INTERVAL_SEC = DRAWN_NUMBER_TOTAL_INTERVAL_MS / 1000;
-const DRAWN_NUMBER_DISPLAY_DURATION_MS = 1500;
-const DRAWN_NUMBER_TRANSITION_MS = 500;
-const NUMBER_DRAWING_INITIAL_DELAY_SEC = 10;
 
 // Schedules timestamps for drawn numbers based on contract data
 const useDrawnNumbersTimestampScheduler = (
