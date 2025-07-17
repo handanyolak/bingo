@@ -17,6 +17,7 @@ export const useCardManagerStep = (): string | null => {
       isDrawnNumbersFilled,
       playerDetails,
       BINGO_CARD_NUMBERS_COUNT,
+      playersSubmittedTimestamp,
     } = {},
   } = useContractReads({
     select: (data) => ({
@@ -25,6 +26,7 @@ export const useCardManagerStep = (): string | null => {
       isDrawnNumbersFilled: data.isDrawnNumbersFilled,
       playerDetails: data.playerDetails,
       BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
+      playersSubmittedTimestamp: data.playersSubmittedTimestamp,
     }),
   });
 
@@ -54,6 +56,10 @@ export const useCardManagerStep = (): string | null => {
     }
 
     if (!stepData) {
+      return null;
+    }
+
+    if (playersSubmittedTimestamp && playersSubmittedTimestamp > BigInt(0)) {
       return null;
     }
 
@@ -88,6 +94,7 @@ export const useCardManagerStep = (): string | null => {
     stepData?.playerDetails?.remainingNumbersCount,
     stepData?.BINGO_CARD_NUMBERS_COUNT,
     remainingTime,
+    playersSubmittedTimestamp,
   ]);
 
   return renderComponent;
