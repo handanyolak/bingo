@@ -23,10 +23,10 @@ export const useDrawnNumbersDisplay = (): UseDrawnNumbersDisplayReturn => {
   const animationKey = useRef<number>(0);
 
   useEffect(() => {
-    if (drawnNumbers.length > 0 || isDrawing) {
+    if (drawnNumbers.length > 0) {
       setIsVisible(true);
     }
-  }, [drawnNumbers.length, isDrawing]);
+  }, [drawnNumbers.length]);
 
   useEffect(() => {
     if (drawnNumbers.length === 0 && !isDrawing) {
