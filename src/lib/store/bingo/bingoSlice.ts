@@ -5,13 +5,8 @@ import {
   type BingoCardNumbers,
   type BingoState,
   type DrawnNumberPayload,
-} from "./types";
-
-interface CardGenerationConfig {
-  BINGO_MIN_NUMBER: number;
-  BINGO_MAX_NUMBER: number;
-  BINGO_CARD_NUMBERS_COUNT: number;
-}
+  type CardGenerationConfig,
+} from "@/lib/store/bingo";
 
 const generateRandomNumbers = (cardConfig: CardGenerationConfig): number[] => {
   const { BINGO_MIN_NUMBER, BINGO_MAX_NUMBER, BINGO_CARD_NUMBERS_COUNT } =

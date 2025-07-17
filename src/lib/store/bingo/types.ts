@@ -16,3 +16,9 @@ export interface DrawnNumberWithTimestamp {
   number: number;
   timestamp: number;
 }
+
+export interface CardGenerationConfig {
+  BINGO_MIN_NUMBER: number;
+  BINGO_MAX_NUMBER: number;
+  BINGO_CARD_NUMBERS_COUNT: number;
+}
