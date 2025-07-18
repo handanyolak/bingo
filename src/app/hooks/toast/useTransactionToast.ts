@@ -54,10 +54,18 @@ export const useTransactionToast = (): UseTransactionToastReturn => {
 
   const showWaitingForEventToast = useCallback(
     (toastId: string, message: string) => {
+      const isWaitingRandomEvent = toastId === "waitingRandomEvent";
+
       toast.update(toastId, {
         render: message,
         type: "info",
         isLoading: true,
+        ...(isWaitingRandomEvent && {
+          style: {
+            backgroundColor: "var(--theme-color-dark)",
+            color: "white",
+          },
+        }),
       });
     },
     []
