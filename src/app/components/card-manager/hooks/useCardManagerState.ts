@@ -1,57 +1,49 @@
 import { useMemo } from "react";
 
-import { useContractReads } from "@/lib/web3/hooks/useContractReads";
-
-import type {
-  UseCardManagerStateProps,
-  UseCardManagerStateReturn,
-} from "../CardManager.types";
+import {
+  type UseCardManagerStateProps,
+  type UseCardManagerStateReturn,
+} from "@/app/components/card-manager";
+import { useContractReads } from "@/lib/web3";
 
 export const useCardManagerState = ({
   isConnected,
   remainingTime,
 }: UseCardManagerStateProps): UseCardManagerStateReturn => {
-  const {
-    data: {
-      isPlayerExists,
-      vrfRequested,
-      isDrawnNumbersFilled,
-      playerDetails,
-      BINGO_CARD_NUMBERS_COUNT,
-    } = {},
-  } = useContractReads({
-    select: (data) => ({
-      isPlayerExists: data.isPlayerExists,
-      vrfRequested: data.vrfRequested,
-      isDrawnNumbersFilled: data.isDrawnNumbersFilled,
-      playerDetails: data.playerDetails,
-      BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
+  const { data } = useContractReads({
+    select: (fullData) => ({
+      isPlayerExists: fullData.isPlayerExists,
+      vrfRequested: fullData.vrfRequested,
+      isDrawnNumbersFilled: fullData.isDrawnNumbersFilled,
+      playerDetails: fullData.playerDetails,
+      BINGO_CARD_NUMBERS_COUNT: fullData.BINGO_CARD_NUMBERS_COUNT,
     }),
   });
 
   const shouldShowBuyCard = useMemo(() => {
-    return isConnected && !isPlayerExists && !vrfRequested;
-  }, [isConnected, isPlayerExists, vrfRequested]);
+    return isConnected && !data?.isPlayerExists && !data?.vrfRequested;
+  }, [isConnected, data?.isPlayerExists, data?.vrfRequested]);
 
   const shouldShowRequestRandom = useMemo(() => {
-    return !!(isPlayerExists && !isDrawnNumbersFilled);
-  }, [isPlayerExists, isDrawnNumbersFilled]);
+    return !!(data?.isPlayerExists && !data?.isDrawnNumbersFilled);
+  }, [data?.isPlayerExists, data?.isDrawnNumbersFilled]);
 
   const shouldShowTimer = useMemo(() => {
-    return !!(isDrawnNumbersFilled && remainingTime > 0);
-  }, [isDrawnNumbersFilled, remainingTime]);
+    return !!(data?.isDrawnNumbersFilled && remainingTime > 0);
+  }, [data?.isDrawnNumbersFilled, remainingTime]);
 
   const shouldShowSubmitCard = useMemo(() => {
     return !!(
-      isDrawnNumbersFilled &&
+      data?.isDrawnNumbersFilled &&
       remainingTime > 0 &&
-      playerDetails?.remainingNumbersCount === BINGO_CARD_NUMBERS_COUNT
+      data?.playerDetails?.remainingNumbersCount ===
+        data?.BINGO_CARD_NUMBERS_COUNT
     );
   }, [
-    isDrawnNumbersFilled,
+    data?.isDrawnNumbersFilled,
     remainingTime,
-    playerDetails?.remainingNumbersCount,
-    BINGO_CARD_NUMBERS_COUNT,
+    data?.playerDetails?.remainingNumbersCount,
+    data?.BINGO_CARD_NUMBERS_COUNT,
   ]);
 
   return {

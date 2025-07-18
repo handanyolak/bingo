@@ -10,23 +10,14 @@ import { useContractReads } from "@/lib/web3";
 export const useCardManagerStep = (): string | null => {
   const { isConnected } = useAccount();
 
-  const {
-    data: {
-      isPlayerExists,
-      vrfRequested,
-      isDrawnNumbersFilled,
-      playerDetails,
-      BINGO_CARD_NUMBERS_COUNT,
-      playersSubmittedTimestamp,
-    } = {},
-  } = useContractReads({
-    select: (data) => ({
-      isPlayerExists: data.isPlayerExists,
-      vrfRequested: data.vrfRequested,
-      isDrawnNumbersFilled: data.isDrawnNumbersFilled,
-      playerDetails: data.playerDetails,
-      BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
-      playersSubmittedTimestamp: data.playersSubmittedTimestamp,
+  const { data } = useContractReads({
+    select: (fullData) => ({
+      isPlayerExists: fullData.isPlayerExists,
+      vrfRequested: fullData.vrfRequested,
+      isDrawnNumbersFilled: fullData.isDrawnNumbersFilled,
+      playerDetails: fullData.playerDetails,
+      BINGO_CARD_NUMBERS_COUNT: fullData.BINGO_CARD_NUMBERS_COUNT,
+      playersSubmittedTimestamp: fullData.playersSubmittedTimestamp,
     }),
   });
 
@@ -36,17 +27,18 @@ export const useCardManagerStep = (): string | null => {
   });
 
   const stepData: CardManagerStepData | undefined =
-    isPlayerExists !== undefined
+    data?.isPlayerExists !== undefined
       ? {
-          isPlayerExists,
-          vrfRequested,
-          isDrawnNumbersFilled,
-          playerDetails: playerDetails
+          isPlayerExists: data?.isPlayerExists,
+          vrfRequested: data?.vrfRequested,
+          isDrawnNumbersFilled: data?.isDrawnNumbersFilled,
+          playerDetails: data?.playerDetails
             ? {
-                remainingNumbersCount: playerDetails.remainingNumbersCount,
+                remainingNumbersCount:
+                  data?.playerDetails.remainingNumbersCount,
               }
             : undefined,
-          BINGO_CARD_NUMBERS_COUNT,
+          BINGO_CARD_NUMBERS_COUNT: data?.BINGO_CARD_NUMBERS_COUNT,
         }
       : undefined;
 
@@ -59,7 +51,10 @@ export const useCardManagerStep = (): string | null => {
       return null;
     }
 
-    if (playersSubmittedTimestamp && playersSubmittedTimestamp > BigInt(0)) {
+    if (
+      data?.playersSubmittedTimestamp &&
+      data?.playersSubmittedTimestamp > BigInt(0)
+    ) {
       return null;
     }
 
@@ -94,7 +89,7 @@ export const useCardManagerStep = (): string | null => {
     stepData?.playerDetails?.remainingNumbersCount,
     stepData?.BINGO_CARD_NUMBERS_COUNT,
     remainingTime,
-    playersSubmittedTimestamp,
+    data?.playersSubmittedTimestamp,
   ]);
 
   return renderComponent;

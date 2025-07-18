@@ -27,7 +27,10 @@ export const Header = () => {
   } = useHeader();
 
   const { isConnected } = useAccount();
-  const { data: contractData, isLoading: gameLoading } = useContractReads();
+
+  const { data, isLoading } = useContractReads<{ targetGameId: bigint }>({
+    select: (fullData) => ({ targetGameId: fullData?.targetGameId }),
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -59,14 +62,12 @@ export const Header = () => {
       <div className={styles.header__bottom}>
         <div className={styles.header__content}>
           <ConnectButton />
-          {mounted && gameLoading && isConnected && (
+          {mounted && isLoading && isConnected && (
             <Loader2 className="global-loader" />
           )}
           <div className={styles.header__gameIdContainer}>
-            {contractData?.targetGameId && (
-              <div className={styles.header__gameId}>
-                #{contractData.targetGameId}
-              </div>
+            {data?.targetGameId && (
+              <div className={styles.header__gameId}>#{data.targetGameId}</div>
             )}
           </div>
         </div>

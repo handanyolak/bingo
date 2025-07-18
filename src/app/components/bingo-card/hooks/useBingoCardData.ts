@@ -16,23 +16,13 @@ import { useContractReads } from "@/lib/web3";
 type PlayerParticipationStatus = "active" | "notPlayed";
 
 export const useBingoCardData = () => {
-  const {
-    data: {
-      isPlayerExists,
-      BINGO_MIN_NUMBER,
-      BINGO_MAX_NUMBER,
-      BINGO_CARD_NUMBERS_COUNT,
-      playerDetails,
-    } = {},
-    isLoading: isContractDataLoading,
-    refetch,
-  } = useContractReads({
-    select: (data) => ({
-      isPlayerExists: data.isPlayerExists,
-      BINGO_MIN_NUMBER: data.BINGO_MIN_NUMBER,
-      BINGO_MAX_NUMBER: data.BINGO_MAX_NUMBER,
-      BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
-      playerDetails: data.playerDetails,
+  const { data, isLoading, refetch } = useContractReads({
+    select: (fullData) => ({
+      isPlayerExists: fullData.isPlayerExists,
+      BINGO_MIN_NUMBER: fullData.BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER: fullData.BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT: fullData.BINGO_CARD_NUMBERS_COUNT,
+      playerDetails: fullData.playerDetails,
     }),
   });
 
@@ -49,64 +39,74 @@ export const useBingoCardData = () => {
   }, [selectedGameId, maxGameId]);
 
   const playerParticipationStatus: PlayerParticipationStatus = useMemo(() => {
-    if (isCurrentGame || isPlayerExists) {
+    if (isCurrentGame || data?.isPlayerExists) {
       return "active";
     }
     return "notPlayed";
-  }, [isCurrentGame, isPlayerExists]);
+  }, [isCurrentGame, data?.isPlayerExists]);
 
   const cardConfig = useMemo(() => {
-    if (BINGO_MIN_NUMBER && BINGO_MAX_NUMBER && BINGO_CARD_NUMBERS_COUNT) {
+    if (
+      data?.BINGO_MIN_NUMBER &&
+      data?.BINGO_MAX_NUMBER &&
+      data?.BINGO_CARD_NUMBERS_COUNT
+    ) {
       return {
-        BINGO_MIN_NUMBER,
-        BINGO_MAX_NUMBER,
-        BINGO_CARD_NUMBERS_COUNT,
+        BINGO_MIN_NUMBER: data.BINGO_MIN_NUMBER,
+        BINGO_MAX_NUMBER: data.BINGO_MAX_NUMBER,
+        BINGO_CARD_NUMBERS_COUNT: data.BINGO_CARD_NUMBERS_COUNT,
       };
     }
     return DEFAULT_BINGO_CONFIG;
-  }, [BINGO_MIN_NUMBER, BINGO_MAX_NUMBER, BINGO_CARD_NUMBERS_COUNT]);
+  }, [
+    data?.BINGO_MIN_NUMBER,
+    data?.BINGO_MAX_NUMBER,
+    data?.BINGO_CARD_NUMBERS_COUNT,
+  ]);
 
   useEffect(() => {
     const areCardsEmpty = cardNumbers.length === 0;
 
     if (
-      !isContractDataLoading &&
-      isPlayerExists &&
-      playerDetails &&
-      playerDetails.cardNumbers &&
-      Array.isArray(playerDetails.cardNumbers) &&
-      playerDetails.cardNumbers.some((n) => n > 0)
+      !isLoading &&
+      data?.isPlayerExists &&
+      data?.playerDetails &&
+      data?.playerDetails.cardNumbers &&
+      Array.isArray(data?.playerDetails.cardNumbers) &&
+      data?.playerDetails.cardNumbers.some((n) => n > 0)
     ) {
-      dispatch(setCardNumbers(playerDetails!.cardNumbers as BingoCardNumbers));
+      dispatch(
+        setCardNumbers(data?.playerDetails!.cardNumbers as BingoCardNumbers)
+      );
     } else if (cardConfig && areCardsEmpty) {
       dispatch(generateCardNumbers(cardConfig));
     }
   }, [
-    isContractDataLoading,
-    isPlayerExists,
-    playerDetails,
+    isLoading,
+    data?.isPlayerExists,
+    data?.playerDetails,
     dispatch,
     cardConfig,
     cardNumbers,
   ]);
 
   useEffect(() => {
-    if (!isContractDataLoading) {
+    if (!isLoading) {
       refetch();
     }
-  }, [selectedGameId, refetch, isContractDataLoading]);
+  }, [selectedGameId, refetch, isLoading]);
 
   return {
     cardNumbers,
     drawnNumbers,
     contractData: {
-      isPlayerExists,
-      BINGO_MIN_NUMBER,
-      BINGO_MAX_NUMBER,
-      BINGO_CARD_NUMBERS_COUNT,
-      playerDetails,
+      isPlayerExists: data?.isPlayerExists,
+      BINGO_MIN_NUMBER: data?.BINGO_MIN_NUMBER,
+      BINGO_MAX_NUMBER: data?.BINGO_MAX_NUMBER,
+      BINGO_CARD_NUMBERS_COUNT: data?.BINGO_CARD_NUMBERS_COUNT,
+      playerDetails: data?.playerDetails,
     },
-    isContractDataLoading,
+    isLoading,
     isCurrentGame,
     playerParticipationStatus,
     cardConfig,

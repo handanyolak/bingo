@@ -13,7 +13,7 @@ export interface PlayersProps {
 }
 
 export interface UseWinnersProps {
-  contractData?: ContractReads;
+  winners?: ContractReads["winners"];
   isGameFinishedInUi: boolean;
   isLoading: boolean;
 }

@@ -4,29 +4,40 @@ import { formatEther } from "viem";
 import { useContractReads } from "@/lib/web3";
 
 export const useBingoPayments = () => {
-  const { data: contractData, isLoading } = useContractReads();
+  const { data, isLoading, error } = useContractReads({
+    select: (fullData) => ({
+      requestRandomnessPayment: fullData.requestRandomnessPayment,
+      requestRandomNumbersRefund: fullData.requestRandomNumbersRefund,
+      prizePoolBalance: fullData.prizePoolBalance ?? BigInt(0),
+    }),
+  });
 
-  const formattedRandomnessPayment = useMemo(() => {
-    return contractData?.requestRandomnessPayment
-      ? formatEther(contractData.requestRandomnessPayment)
-      : null;
-  }, [contractData?.requestRandomnessPayment]);
+  const formattedRandomnessPayment = useMemo(
+    () =>
+      data?.requestRandomnessPayment
+        ? formatEther(data.requestRandomnessPayment)
+        : null,
+    [data?.requestRandomnessPayment]
+  );
 
-  const formattedRandomNumbersRefund = useMemo(() => {
-    return contractData?.requestRandomNumbersRefund
-      ? formatEther(contractData.requestRandomNumbersRefund)
-      : null;
-  }, [contractData?.requestRandomNumbersRefund]);
+  const formattedRandomNumbersRefund = useMemo(
+    () =>
+      data?.requestRandomNumbersRefund
+        ? formatEther(data.requestRandomNumbersRefund)
+        : null,
+    [data?.requestRandomNumbersRefund]
+  );
 
-  const formattedPrizePoolBalance = useMemo(() => {
-    const prizePoolBalance = contractData?.prizePoolBalance ?? BigInt(0);
-    return formatEther(prizePoolBalance);
-  }, [contractData?.prizePoolBalance]);
+  const formattedPrizePoolBalance = useMemo(
+    () => formatEther(data?.prizePoolBalance ?? BigInt(0)),
+    [data?.prizePoolBalance]
+  );
 
   return {
     formattedRandomnessPayment,
     formattedRandomNumbersRefund,
     formattedPrizePoolBalance,
     isLoading,
+    error,
   };
 };

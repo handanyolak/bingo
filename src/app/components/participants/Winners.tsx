@@ -19,7 +19,12 @@ export const Winners = ({
 }: WinnersProps) => {
   const t = useTranslations();
   const { isConnected } = useAccount();
-  const { data: contractData, isLoading } = useContractReads();
+
+  const { data, isLoading } = useContractReads({
+    select: (fullData) => ({
+      winners: fullData.winners,
+    }),
+  });
 
   const {
     handleClaimReward,
@@ -32,7 +37,7 @@ export const Winners = ({
   } = useWinnersClaimLogic();
 
   const { winnerAddresses, isVisible } = useWinners({
-    contractData,
+    winners: data?.winners,
     isGameFinishedInUi,
     isLoading,
   });

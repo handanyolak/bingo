@@ -6,7 +6,7 @@ export const usePlayersData = () => {
   const { isConnected } = useAccount();
 
   const { data: playerAddresses = [], isLoading } = useContractReads({
-    select: (data) => data?.players?.playerAddresses ?? [],
+    select: (fulldata) => fulldata?.players?.playerAddresses ?? [],
   });
 
   const isVisible = playerAddresses.length > 0;

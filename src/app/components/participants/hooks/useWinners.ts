@@ -1,19 +1,16 @@
 import { useMemo } from "react";
 
-import type { UseWinnersProps } from "@/app/components/participants";
+import { type UseWinnersProps } from "@/app/components/participants";
 
 export const useWinners = ({
-  contractData,
+  winners,
   isGameFinishedInUi,
   isLoading,
-}: Pick<
-  UseWinnersProps,
-  "contractData" | "isGameFinishedInUi" | "isLoading"
->) => {
+}: UseWinnersProps) => {
   const winnerAddresses = useMemo(() => {
     if (!isGameFinishedInUi) return [];
-    return contractData?.winners.winnerAddresses || [];
-  }, [isGameFinishedInUi, contractData?.winners.winnerAddresses]);
+    return winners?.winnerAddresses || [];
+  }, [isGameFinishedInUi, winners?.winnerAddresses]);
 
   const isVisible = isGameFinishedInUi && winnerAddresses.length > 0;
 

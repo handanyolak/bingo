@@ -26,30 +26,27 @@ export const useDrawTimer = ({
   const dispatch = useAppDispatch();
   const { isGameOver } = useBingoDrawing();
 
-  const {
-    data: {
-      drawnNumbersTimestamp,
-      finalizationCooldown,
-      isDrawnNumbersFilled,
-    } = {},
-  } = useContractReads({
-    select: (data) => ({
-      drawnNumbersTimestamp: data.drawnNumbersTimestamp,
-      finalizationCooldown: data.finalizationCooldown,
-      isDrawnNumbersFilled: data.isDrawnNumbersFilled,
+  const { data } = useContractReads({
+    select: (fullData) => ({
+      drawnNumbersTimestamp: fullData.drawnNumbersTimestamp,
+      finalizationCooldown: fullData.finalizationCooldown,
+      isDrawnNumbersFilled: fullData.isDrawnNumbersFilled,
     }),
   });
   const [currentTimestamp, setCurrentTimestamp] = useState(getUnixTimestamp());
   const [isTimerActive, setIsTimerActive] = useState(false);
 
   const isDataReady =
-    !isLoading && !isError && drawnNumbersTimestamp && finalizationCooldown;
+    !isLoading &&
+    !isError &&
+    data?.drawnNumbersTimestamp &&
+    data?.finalizationCooldown;
 
   const calculateEndTime = (timestamp: bigint, cooldown: bigint) =>
     Number(timestamp) + Number(cooldown);
 
   const endTime = isDataReady
-    ? calculateEndTime(drawnNumbersTimestamp, finalizationCooldown)
+    ? calculateEndTime(data?.drawnNumbersTimestamp, data?.finalizationCooldown)
     : 0;
 
   const remainingTime = Math.max(0, endTime - currentTimestamp);
@@ -57,12 +54,12 @@ export const useDrawTimer = ({
   const secondsRemaining = getRemainingSeconds(remainingTime);
 
   useEffect(() => {
-    if (isDrawnNumbersFilled && !isGameOver) {
+    if (data?.isDrawnNumbersFilled && !isGameOver) {
       setIsTimerActive(true);
     } else {
       setIsTimerActive(false);
     }
-  }, [isDrawnNumbersFilled, isGameOver]);
+  }, [data?.isDrawnNumbersFilled, isGameOver]);
 
   useEffect(() => {
     if (!isTimerActive) return;
@@ -76,15 +73,15 @@ export const useDrawTimer = ({
 
   useEffect(() => {
     if (
-      isDrawnNumbersFilled &&
+      data?.isDrawnNumbersFilled &&
       !isGameOver &&
-      drawnNumbersTimestamp &&
-      finalizationCooldown
+      data?.drawnNumbersTimestamp &&
+      data?.finalizationCooldown
     ) {
       const currentTime = getUnixTimestamp();
       const cooldownEndTimestamp = calculateEndTime(
-        drawnNumbersTimestamp,
-        finalizationCooldown
+        data?.drawnNumbersTimestamp,
+        data?.finalizationCooldown
       );
 
       if (currentTime >= cooldownEndTimestamp) {
@@ -99,17 +96,17 @@ export const useDrawTimer = ({
       }
     }
   }, [
-    isDrawnNumbersFilled,
-    drawnNumbersTimestamp,
-    finalizationCooldown,
+    data?.isDrawnNumbersFilled,
+    data?.drawnNumbersTimestamp,
+    data?.finalizationCooldown,
     dispatch,
     isGameOver,
   ]);
 
   useEffect(() => {
     if (
-      !isDrawnNumbersFilled ||
-      !finalizationCooldown ||
+      !data?.isDrawnNumbersFilled ||
+      !data?.finalizationCooldown ||
       remainingTime <= 0 ||
       !lottieRef?.current ||
       !timerAnimation
@@ -122,7 +119,7 @@ export const useDrawTimer = ({
     const totalAnimationFrames = timerAnimation.op - timerAnimation.ip;
     const animationFrameRate = timerAnimation.fr || 30;
     const animationNaturalDuration = totalAnimationFrames / animationFrameRate;
-    const totalDuration = Number(finalizationCooldown);
+    const totalDuration = Number(data?.finalizationCooldown);
 
     const speedRatio = animationNaturalDuration / totalDuration;
     lottieAnimation.setSpeed(speedRatio);
@@ -136,8 +133,8 @@ export const useDrawTimer = ({
       lottieAnimation.stop();
     };
   }, [
-    isDrawnNumbersFilled,
-    finalizationCooldown,
+    data?.isDrawnNumbersFilled,
+    data?.finalizationCooldown,
     remainingTime,
     lottieRef,
     timerAnimation,

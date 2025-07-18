@@ -12,7 +12,13 @@ import { useContractReads, useContractWrite } from "@/lib/web3";
 export const useWinnersClaimLogic = () => {
   const t = useTranslations();
   const { address } = useAccount();
-  const { data: contractData, refetch } = useContractReads();
+
+  const { data, refetch } = useContractReads({
+    select: (fullData) => ({
+      rewardByWinner: fullData?.rewardByWinner || BigInt(0),
+      targetGameId: fullData?.targetGameId,
+    }),
+  });
   const { isWinner } = useWinnerStatus();
   const { isViewingOwnCard } = useIsViewingOwnCard();
   const isGameFinishedInUi = useAppSelector(selectIsGameFinishedInUi);
@@ -31,20 +37,20 @@ export const useWinnersClaimLogic = () => {
     dismissToast,
   } = useTransactionToast();
 
-  const userRewardAmount = contractData?.rewardByWinner || BigInt(0);
+  const userRewardAmount = data?.rewardByWinner || BigInt(0);
   const hasClaimableReward = userRewardAmount > BigInt(0);
 
   const handleClaimReward = async () => {
     const toastId = "claimRewardToast";
     try {
-      if (!contractData?.targetGameId) {
+      if (!data?.targetGameId) {
         return;
       }
 
       showInitiatingTransactionToast(toastId);
 
       try {
-        await claimReward(contractData.targetGameId);
+        await claimReward(data?.targetGameId);
       } catch (txError) {
         dismissToast(toastId);
         showErrorToast(txError);

@@ -7,9 +7,9 @@ export const useWinnerStatus = () => {
   const { address } = useAccount();
 
   const { data: isWinner = false } = useContractReads({
-    select: (data) => {
-      if (!address || !data?.winners?.winnerAddresses) return false;
-      return data.winners.winnerAddresses.includes(address as Address);
+    select: (fullData) => {
+      if (!address || !fullData?.winners?.winnerAddresses) return false;
+      return fullData.winners.winnerAddresses.includes(address as Address);
     },
   });
 
