@@ -38,6 +38,8 @@ export const useBingoCardData = () => {
     return selectedGameId === maxGameId;
   }, [selectedGameId, maxGameId]);
 
+  const shouldShowRefreshButton = isCurrentGame && !data?.isPlayerExists;
+
   const playerParticipationStatus: PlayerParticipationStatus = useMemo(() => {
     if (isCurrentGame || data?.isPlayerExists) {
       return "active";
@@ -108,6 +110,7 @@ export const useBingoCardData = () => {
     },
     isLoading,
     isCurrentGame,
+    shouldShowRefreshButton,
     playerParticipationStatus,
     cardConfig,
     isPlayerCardComplete,
