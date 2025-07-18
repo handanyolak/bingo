@@ -6,8 +6,6 @@ export interface AddressListProps {
   renderMode?: "virtualized" | "normal";
   isLoading: boolean;
   isVisible: boolean;
-  className?: string;
-  itemClassName?: string;
   emptyText: string;
   keyPrefix: string;
   estimateSize?: number;

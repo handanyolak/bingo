@@ -3,5 +3,4 @@ export interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   title?: string;
-  className?: string;
 }
