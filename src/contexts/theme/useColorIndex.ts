@@ -1,33 +1,35 @@
-import { useState, useEffect } from "react";
+"use client";
 
-import type { UseColorIndexReturn } from "@/contexts";
+import { useState, useEffect, useCallback } from "react";
+
+import { useLocalStorage, type UseColorIndexReturn } from "@/contexts";
 import { STORAGE_KEYS } from "@/utils";
 
 export const useColorIndex = (
   isViewingOtherPlayer: boolean,
   colors: string[]
 ): UseColorIndexReturn => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [storedIndex, setStoredIndex] = useLocalStorage<number>(
+    STORAGE_KEYS.COLOR_INDEX,
+    0
+  );
+
+  const [currentIndex, setCurrentIndex] = useState<number>(() => {
+    return isViewingOtherPlayer ? 0 : storedIndex;
+  });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (isViewingOtherPlayer) {
-        setCurrentIndex(0);
-      } else {
-        const savedIndex = localStorage.getItem(STORAGE_KEYS.COLOR_INDEX);
-        setCurrentIndex(savedIndex ? Number(savedIndex) : 0);
-      }
-    }
-  }, [isViewingOtherPlayer]);
+    setCurrentIndex(0);
+  }, [isViewingOtherPlayer, colors.length]);
 
-  const cycleColor = () => {
-    if (!colors?.length) return;
-    const nextIndex = (currentIndex + 1) % colors.length;
-    setCurrentIndex(nextIndex);
-    if (typeof window !== "undefined" && !isViewingOtherPlayer) {
-      localStorage.setItem(STORAGE_KEYS.COLOR_INDEX, nextIndex.toString());
+  const cycleColor = useCallback(() => {
+    if (colors.length === 0) return;
+    const next = (currentIndex + 1) % colors.length;
+    setCurrentIndex(next);
+    if (!isViewingOtherPlayer) {
+      setStoredIndex(next);
     }
-  };
+  }, [colors.length, currentIndex, isViewingOtherPlayer, setStoredIndex]);
 
   return { currentIndex, cycleColor };
 };
