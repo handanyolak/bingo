@@ -1,4 +1,4 @@
-import "./globals.css";
+import "@/app/globals.css";
 import { Comfortaa } from "next/font/google";
 import { Suspense } from "react";
 
