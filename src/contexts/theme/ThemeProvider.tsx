@@ -1,6 +1,4 @@
-"use client";
-
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 import {
   ThemeContext,
@@ -18,12 +16,10 @@ export const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
     containerStyle,
   } = useThemeLogic();
 
-  const contextValue = {
-    color: currentColor,
-    lightColor,
-    darkColor,
-    cycleColor,
-  };
+  const contextValue = useMemo(
+    () => ({ color: currentColor, lightColor, darkColor, cycleColor }),
+    [currentColor, lightColor, darkColor, cycleColor]
+  );
 
   if (!mounted) {
     return (
