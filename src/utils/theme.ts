@@ -10,83 +10,58 @@ import {
   THEME_CONSTANTS,
 } from "@/constants";
 
-// Color validation utility
+// Parses an RGB string of the form "rgb(r, g, b)".
+// Returns a tuple [r, g, b] or null if parsing fails.
+const parseRgbString = (color: string): [number, number, number] | null => {
+  const match = color.match(
+    /^rgb\(\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\s*\)$/
+  );
+  return match ? [Number(match[1]), Number(match[2]), Number(match[3])] : null;
+};
+
+// Parses a hex color string of the form "#RRGGBB".
+// Returns a tuple [r, g, b] or null if parsing fails.
+const parseHexColor = (color: string): [number, number, number] | null => {
+  const hex = color.replace("#", "");
+  if (hex.length !== THEME_CONSTANTS.HEX_COLOR_LENGTH) return null;
+  const { RED, GREEN, BLUE } = THEME_CONSTANTS.HEX_INDICES;
+  const r = parseInt(hex.slice(RED.START, RED.END), 16);
+  const g = parseInt(hex.slice(GREEN.START, GREEN.END), 16);
+  const b = parseInt(hex.slice(BLUE.START, BLUE.END), 16);
+  return [r, g, b];
+};
+
+// Returns RGB values for a given color string, or fallback if invalid.
+export const getRGBValues = (color: string): [number, number, number] =>
+  parseRgbString(color) ?? parseHexColor(color) ?? FALLBACK_RGB;
+
+// Checks whether a string is a valid color (non-NaN).
 export const isValidColor = (color?: string): color is string =>
   typeof color === "string" && !color.includes("NaN");
 
-// RGB conversion utility
-export const getRGBValues = (color: string): [number, number, number] => {
-  if (color.startsWith("rgb")) {
-    const rgbMatch = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-    return rgbMatch
-      ? (rgbMatch.slice(1).map(Number) as [number, number, number])
-      : FALLBACK_RGB;
-  }
-  if (color.startsWith("#")) {
-    const hex = color.replace("#", "");
-    if (hex.length === THEME_CONSTANTS.HEX_COLOR_LENGTH) {
-      return [
-        parseInt(
-          hex.substring(
-            THEME_CONSTANTS.HEX_INDICES.RED.START,
-            THEME_CONSTANTS.HEX_INDICES.RED.END
-          ),
-          16
-        ),
-        parseInt(
-          hex.substring(
-            THEME_CONSTANTS.HEX_INDICES.GREEN.START,
-            THEME_CONSTANTS.HEX_INDICES.GREEN.END
-          ),
-          16
-        ),
-        parseInt(
-          hex.substring(
-            THEME_CONSTANTS.HEX_INDICES.BLUE.START,
-            THEME_CONSTANTS.HEX_INDICES.BLUE.END
-          ),
-          16
-        ),
-      ];
-    }
-  }
-  return FALLBACK_RGB;
-};
-
-// Generate deterministic colors from address
+// Generates a deterministic color palette from an Ethereum address.
 export const generateColorsFromAddress = (
-  address: string | null | undefined
+  address?: string | null
 ): string[] => {
-  const addressToUse = address || zeroAddress;
-  const cleanAddress = addressToUse.slice(THEME_CONSTANTS.COLOR_SEGMENT_START);
-  const addressBuffer = Buffer.from(cleanAddress, "hex");
-  const hash = keccak256(addressBuffer);
-  const hexSegment = hash.slice(
+  const raw = (address || zeroAddress).slice(
+    THEME_CONSTANTS.COLOR_SEGMENT_START
+  );
+  const hash = keccak256(Buffer.from(raw, "hex")).slice(
     THEME_CONSTANTS.COLOR_SEGMENT_START,
     THEME_CONSTANTS.COLOR_SEGMENT_END
   );
-
   const colors: string[] = [];
+
   for (let i = 0; i < COLOR_PALETTE_SIZE; i++) {
-    const segment = hexSegment.slice(
-      i * THEME_CONSTANTS.HEX_SEGMENT_LENGTH,
-      i * THEME_CONSTANTS.HEX_SEGMENT_LENGTH +
-        THEME_CONSTANTS.HEX_SEGMENT_LENGTH
+    const start = i * THEME_CONSTANTS.HEX_SEGMENT_LENGTH;
+    const segment = hash.slice(
+      start,
+      start + THEME_CONSTANTS.HEX_SEGMENT_LENGTH
     );
     if (segment.length === THEME_CONSTANTS.HEX_SEGMENT_LENGTH) {
-      const r =
-        parseInt(segment[THEME_CONSTANTS.COLOR_INDICES[0]], 16) *
-          COLOR_MULTIPLIER +
-        COLOR_OFFSET;
-      const g =
-        parseInt(segment[THEME_CONSTANTS.COLOR_INDICES[1]], 16) *
-          COLOR_MULTIPLIER +
-        COLOR_OFFSET;
-      const b =
-        parseInt(segment[THEME_CONSTANTS.COLOR_INDICES[2]], 16) *
-          COLOR_MULTIPLIER +
-        COLOR_OFFSET;
-
+      const [r, g, b] = [0, 1, 2].map(
+        (idx) => parseInt(segment[idx], 16) * COLOR_MULTIPLIER + COLOR_OFFSET
+      ) as [number, number, number];
       colors.push(`rgb(${r}, ${g}, ${b})`);
     }
   }
@@ -94,110 +69,65 @@ export const generateColorsFromAddress = (
   return colors;
 };
 
-// CSS Variables Manager Class for better encapsulation
-export class ThemeStyleManager {
-  private root: HTMLElement;
+// Sets a CSS variable on the document root.
+const setCSSVar = (name: string, value: string): void =>
+  document.documentElement.style.setProperty(name, value);
 
-  constructor() {
-    if (typeof window !== "undefined") {
-      this.root = document.documentElement;
-    } else {
-      // SSR fallback
-      this.root = {} as HTMLElement;
-    }
-  }
+// Sets an RGBA CSS variable from an RGB tuple and alpha.
+const setCSSVarRGBA = (
+  name: string,
+  [r, g, b]: [number, number, number],
+  alpha: number
+): void => setCSSVar(name, `rgba(${r}, ${g}, ${b}, ${alpha})`);
 
-  private setVariable(name: string, value: string): void {
-    if (this.root.style) {
-      this.root.style.setProperty(name, value);
-    }
-  }
+// Updates all theme-related CSS variables based on the given colors and mode.
+export const updateThemeColors = (
+  current: string,
+  light: string,
+  dark: string,
+  mode: "light" | "dark"
+): void => {
+  if (typeof window === "undefined") return;
+  const rgb = getRGBValues(current);
+  const isDarkMode = mode === "dark";
 
-  private setRGBAVariable(
-    name: string,
-    r: number,
-    g: number,
-    b: number,
-    opacity: number
-  ): void {
-    this.setVariable(name, `rgba(${r}, ${g}, ${b}, ${opacity})`);
-  }
+  // Blob colors
+  const baseBlobAlpha = isDarkMode
+    ? THEME_CONSTANTS.BLOB_OPACITY.DARK
+    : THEME_CONSTANTS.BLOB_OPACITY.LIGHT;
+  THEME_CONSTANTS.BLOB_OPACITY.MULTIPLIERS.forEach((m, idx) => {
+    setCSSVarRGBA(`--blob-color-${idx + 1}`, rgb, baseBlobAlpha * m);
+  });
 
-  updateThemeVariables(
-    currentColor: string,
-    lightColor: string,
-    darkColor: string,
-    theme: string
-  ): void {
-    const [r, g, b] = getRGBValues(currentColor);
-    const isDark = theme === "dark";
+  // Core theme colors
+  setCSSVar("--theme-color", current);
+  setCSSVar("--theme-color-light", light);
+  setCSSVar("--theme-color-dark", dark);
+  setCSSVar("--theme-color-rgb", `${rgb.join(", ")}`);
 
-    // Set blob colors
-    const blobOpacity = isDark
-      ? THEME_CONSTANTS.BLOB_OPACITY.DARK
-      : THEME_CONSTANTS.BLOB_OPACITY.LIGHT;
+  // Letter animation colors
+  const baseLetterAlpha = isDarkMode
+    ? THEME_CONSTANTS.LETTER_OPACITY.DARK
+    : THEME_CONSTANTS.LETTER_OPACITY.LIGHT;
+  THEME_CONSTANTS.LETTER_OPACITY.MULTIPLIERS.forEach((m, idx) => {
+    setCSSVarRGBA(`--letter-color-${idx + 1}`, rgb, baseLetterAlpha * m);
+  });
 
-    THEME_CONSTANTS.BLOB_OPACITY.MULTIPLIERS.forEach((multiplier, index) => {
-      this.setRGBAVariable(
-        `--blob-color-${index + 1}`,
-        r,
-        g,
-        b,
-        blobOpacity * multiplier
-      );
-    });
+  // Bordered themed backgrounds
+  const borderAlpha = isDarkMode
+    ? THEME_CONSTANTS.BORDER_OPACITY.DARK
+    : THEME_CONSTANTS.BORDER_OPACITY.LIGHT;
+  document.querySelectorAll<HTMLElement>(".bingo-themed-bg").forEach((el) => {
+    el.style.borderColor = `rgba(${rgb.join(", ")}, ${borderAlpha})`;
+  });
+};
 
-    // Set theme colors
-    this.setVariable("--theme-color", currentColor);
-    this.setVariable("--theme-color-light", lightColor);
-    this.setVariable("--theme-color-dark", darkColor);
-    this.setVariable("--theme-color-rgb", `${r}, ${g}, ${b}`);
-
-    // Set letter colors
-    const letterOpacity = isDark
-      ? THEME_CONSTANTS.LETTER_OPACITY.DARK
-      : THEME_CONSTANTS.LETTER_OPACITY.LIGHT;
-
-    THEME_CONSTANTS.LETTER_OPACITY.MULTIPLIERS.forEach((multiplier, index) => {
-      this.setRGBAVariable(
-        `--letter-color-${index + 1}`,
-        r,
-        g,
-        b,
-        letterOpacity * multiplier
-      );
-    });
-
-    // Update themed backgrounds
-    const borderOpacity = isDark
-      ? THEME_CONSTANTS.BORDER_OPACITY.DARK
-      : THEME_CONSTANTS.BORDER_OPACITY.LIGHT;
-    this.updateThemedBackgrounds(r, g, b, borderOpacity);
-  }
-
-  private updateThemedBackgrounds(
-    r: number,
-    g: number,
-    b: number,
-    opacity: number
-  ): void {
-    if (typeof window !== "undefined") {
-      document.querySelectorAll(".bingo-themed-bg").forEach((el) => {
-        (
-          el as HTMLElement
-        ).style.borderColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      });
-    }
-  }
-}
-
-// Color calculations utilities
+// Calculates lighter and darker variants of a base color.
 export const calculateColorVariants = (color: string) => ({
   light: lighten(COLOR_LIGHTNESS_FACTOR, color),
   dark: darken(COLOR_LIGHTNESS_FACTOR, color),
 });
 
-// Storage key utility
 export const STORAGE_KEYS = {
   COLOR_INDEX: "selectedColorIndex",
 } as const;
