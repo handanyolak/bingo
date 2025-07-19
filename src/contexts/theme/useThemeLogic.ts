@@ -1,19 +1,19 @@
+"use client";
+
 import { useAppKitAccount } from "@reown/appkit/react";
 import { useSearchParams } from "next/navigation";
 import { useTheme as useNextTheme } from "next-themes";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { zeroAddress } from "viem";
 
 import { DEFAULT_COLOR } from "@/constants";
-import type { UseThemeLogicReturn } from "@/contexts";
+import { useColorIndex, type UseThemeLogicReturn } from "@/contexts";
 import {
   generateColorsFromAddress,
   isValidColor,
-  ThemeStyleManager,
   calculateColorVariants,
+  updateThemeColors,
 } from "@/utils";
-
-import { useColorIndex } from "./useColorIndex";
 
 export const useThemeLogic = (): UseThemeLogicReturn => {
   const { theme } = useNextTheme();
@@ -21,7 +21,6 @@ export const useThemeLogic = (): UseThemeLogicReturn => {
   const searchParams = useSearchParams();
   const selectedAddress = searchParams.get("selectedAddress") || zeroAddress;
   const [mounted, setMounted] = useState(false);
-  const styleManagerRef = useRef<ThemeStyleManager | null>(null);
 
   const addressForTheme =
     selectedAddress && selectedAddress !== address ? selectedAddress : address;
@@ -38,24 +37,17 @@ export const useThemeLogic = (): UseThemeLogicReturn => {
     colors
   );
 
-  // Initialize theme system on client-side to prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
-    if (typeof window !== "undefined") {
-      styleManagerRef.current = new ThemeStyleManager();
-    }
   }, []);
 
-  // Select current color from generated palette with fallback
   const currentColor = isValidColor(colors?.[currentIndex])
     ? colors[currentIndex]
     : DEFAULT_COLOR;
 
-  // Generate light/dark variants for current theme color
   const { light: lightColor, dark: darkColor } =
     calculateColorVariants(currentColor);
 
-  // CSS custom properties for inline styling (component-level)
   const containerStyle = useMemo(
     () =>
       ({
@@ -66,17 +58,16 @@ export const useThemeLogic = (): UseThemeLogicReturn => {
     [currentColor, lightColor, darkColor]
   );
 
-  // Apply theme colors to global CSS variables (document-level)
   useEffect(() => {
-    if (typeof window === "undefined" || !styleManagerRef.current) return;
+    if (!mounted) return;
 
-    styleManagerRef.current.updateThemeVariables(
+    updateThemeColors(
       currentColor,
       lightColor,
       darkColor,
-      theme || "light"
+      theme as "light" | "dark"
     );
-  }, [currentColor, lightColor, darkColor, theme]);
+  }, [currentColor, lightColor, darkColor, theme, mounted]);
 
   return {
     mounted,
