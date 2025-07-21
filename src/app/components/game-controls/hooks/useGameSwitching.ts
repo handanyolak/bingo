@@ -23,8 +23,24 @@ export const useGameSwitching = () => {
     await refetch();
   };
 
+  const goToFirstGame = async () => {
+    dismissAllToasts();
+    dispatch(resetStateForNewGame());
+    updateSelectedGameId(BigInt(1));
+    await refetch();
+  };
+
+  const goToCurrentGame = async () => {
+    dismissAllToasts();
+    dispatch(resetStateForNewGame());
+    updateSelectedGameId(maxGameId);
+    await refetch();
+  };
+
   return {
     switchGame,
+    goToFirstGame,
+    goToCurrentGame,
     isDisabledPrevious: selectedGameId === BigInt(1),
     isDisabledNext: selectedGameId === maxGameId || !isGameFinishedInUi,
     isLoading,
