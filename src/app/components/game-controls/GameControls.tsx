@@ -1,32 +1,60 @@
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 import { useGameSwitching } from "@/app/components/game-controls";
 import styles from "@/app/components/game-controls/GameControls.module.scss";
 import { Button } from "@/app/components/ui";
+import { useSelectedGameId } from "@/app/hooks";
 
 export const GameControls = () => {
-  const t = useTranslations("controls");
-  const { switchGame, isDisabledPrevious, isDisabledNext, isLoading } =
-    useGameSwitching();
+  const {
+    switchGame,
+    goToFirstGame,
+    goToCurrentGame,
+    isDisabledPrevious,
+    isDisabledNext,
+    isLoading,
+  } = useGameSwitching();
+  const { selectedGameId } = useSelectedGameId();
 
   return (
     <div className={styles.controls}>
       <Button
-        text={t("previousGame")}
-        contentPosition="left"
-        content={<ChevronsLeft />}
-        className={styles.controls__button}
-        onClick={() => switchGame(-1)}
+        content={<ChevronsLeft size={16} />}
+        onClick={goToFirstGame}
         disabled={isDisabledPrevious || isLoading}
+        className={styles.controls__edgeButton}
+        rounded="full"
       />
       <Button
-        text={t("nextGame")}
-        contentPosition="right"
-        content={<ChevronsRight />}
-        className={styles.controls__button}
+        content={<ChevronLeft size={20} />}
+        onClick={() => switchGame(-1)}
+        disabled={isDisabledPrevious || isLoading}
+        className={styles.controls__navButton}
+        rounded="full"
+      />
+
+      <div className={styles.controls__gameId}>
+        #{selectedGameId.toString()}
+      </div>
+
+      <Button
+        content={<ChevronRight size={20} />}
         onClick={() => switchGame(1)}
         disabled={isDisabledNext || isLoading}
+        className={styles.controls__navButton}
+        rounded="full"
+      />
+      <Button
+        content={<ChevronsRight size={16} />}
+        onClick={goToCurrentGame}
+        disabled={isDisabledNext || isLoading}
+        className={styles.controls__edgeButton}
+        rounded="full"
       />
     </div>
   );
