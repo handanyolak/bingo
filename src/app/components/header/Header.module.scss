@@ -23,10 +23,6 @@
     gap: 1rem;
   }
 
-  &__bottom {
-    @include flex-justify-center;
-  }
-
   &__content {
     @include flex-column-center;
     gap: 1rem;

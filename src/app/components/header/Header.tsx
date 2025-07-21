@@ -1,9 +1,7 @@
 "use client";
 
-import { Loader2, Trophy, Users } from "lucide-react";
+import { Trophy, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 
 import { MenuContent, MobileMenu, useHeader } from "@/app/components/header";
 import { BingoLogo } from "@/app/components/header/BingoLogo";
@@ -11,11 +9,9 @@ import { ConnectButton } from "@/app/components/header/ConnectButton";
 import styles from "@/app/components/header/Header.module.scss";
 import { Players, Winners } from "@/app/components/participants";
 import { Modal, Tab, TabItem } from "@/app/components/ui";
-import { useContractReads } from "@/lib/web3";
 
 export const Header = () => {
   const t = useTranslations();
-  const [mounted, setMounted] = useState(false);
   const {
     isModalOpen,
     isMobileMenuOpen,
@@ -25,16 +21,6 @@ export const Header = () => {
     handleColorChange,
     handleAddressClick,
   } = useHeader();
-
-  const { isConnected } = useAccount();
-
-  const { data, isLoading } = useContractReads<{ targetGameId: bigint }>({
-    select: (fullData) => ({ targetGameId: fullData?.targetGameId }),
-  });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return (
     <header className={styles.header}>
@@ -62,14 +48,6 @@ export const Header = () => {
       <div className={styles.header__bottom}>
         <div className={styles.header__content}>
           <ConnectButton />
-          {mounted && isLoading && isConnected && (
-            <Loader2 className="global-loader" />
-          )}
-          <div className={styles.header__gameIdContainer}>
-            {data?.targetGameId && (
-              <div className={styles.header__gameId}>#{data.targetGameId}</div>
-            )}
-          </div>
         </div>
       </div>
 
