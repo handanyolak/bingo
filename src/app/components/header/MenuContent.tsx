@@ -36,7 +36,7 @@ export const MenuContent = ({
       />
       <LanguageSwitcher />
       <Button
-        text={t("changeCardColor")}
+        text={t("theme")}
         onClick={onColorChange}
         contentPosition="left"
         className={styles.menuContent__button}

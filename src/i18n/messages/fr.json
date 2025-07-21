@@ -20,7 +20,8 @@
     "rewardClaimedMessage": "Récompense réclamée avec succès!",
     "timeRemaining": "Temps Restant:",
     "totalPoolBalance": "Solde Total du Pool: {amount} ETH",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "theme": "Thème"
   },
   "toast": {
     "gameWon": "Félicitations! Vous avez gagné!",

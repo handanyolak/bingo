@@ -20,7 +20,8 @@
     "rewardClaimedMessage": "Ödül başarıyla talep edildi!",
     "timeRemaining": "Kalan Süre:",
     "totalPoolBalance": "Toplam Pool Bakiyesi: {amount} ETH",
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...",
+    "theme": "Tema"
   },
   "toast": {
     "gameWon": "Tebrikler! Kazandınız!",
