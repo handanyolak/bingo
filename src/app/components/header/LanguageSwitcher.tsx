@@ -15,7 +15,7 @@ export const LanguageSwitcher = () => {
     <div className={styles.languageSwitcher} ref={dropdownRef}>
       <Button
         text={LANGUAGES[locale]}
-        contentPosition="right"
+        contentPosition="left"
         className={styles.languageSwitcher__button}
         onClick={toggleDropdown}
         content={
