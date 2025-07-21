@@ -6,10 +6,11 @@ export const NumberCell = ({
   isLatest,
   animationKey,
   index,
+  isInUserCard,
 }: NumberCellProps) => (
   <div
     className={`${styles.numberCell} ${
-      isLatest ? styles.numberCellLatest : ""
+      isLatest && isInUserCard ? styles.numberCellLatest : ""
     }`}
     key={`cell-${number}-${isLatest ? animationKey : index}`}
   >

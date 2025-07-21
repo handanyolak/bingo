@@ -71,20 +71,12 @@ export const useDrawnNumbersDisplay = (): UseDrawnNumbersDisplayReturn => {
     }
   }, [drawnNumbers]);
 
-  const totalCells = 15 * 5;
-  const latestDrawnNumber =
-    drawnNumbers.length > 0 ? drawnNumbers[drawnNumbers.length - 1] : null;
-
   return {
     isVisible,
     currentNumber,
     showingNumber,
     pulseOnce,
     animationKey: animationKey.current,
-    totalCells,
-    latestDrawnNumber,
-    drawnNumbers,
-    isDrawing,
     isGameFinishedInUi,
     isConnected,
   };

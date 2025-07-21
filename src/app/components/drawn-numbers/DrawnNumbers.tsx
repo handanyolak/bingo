@@ -1,10 +1,11 @@
 import { Loader2 } from "lucide-react";
 
-import { useDrawnNumbersDisplay } from "@/app/components/drawn-numbers";
+import {
+  NumberGrid,
+  CenterNumber,
+  useDrawnNumbersDisplay,
+} from "@/app/components/drawn-numbers";
 import styles from "@/app/components/drawn-numbers/DrawnNumbers.module.scss";
-
-import { CenterNumber } from "./CenterNumber";
-import { NumberGrid } from "./NumberGrid";
 
 export const DrawnNumbers = ({ loading }: { loading?: boolean }) => {
   const {
@@ -13,10 +14,6 @@ export const DrawnNumbers = ({ loading }: { loading?: boolean }) => {
     showingNumber,
     pulseOnce,
     animationKey,
-    totalCells,
-    latestDrawnNumber,
-    drawnNumbers,
-    isDrawing,
     isGameFinishedInUi,
     isConnected,
   } = useDrawnNumbersDisplay();
@@ -40,15 +37,7 @@ export const DrawnNumbers = ({ loading }: { loading?: boolean }) => {
       )}
 
       <div className={styles.drawnNumbers__container}>
-        <NumberGrid
-          drawnNumbers={drawnNumbers}
-          latestDrawnNumber={latestDrawnNumber}
-          pulseOnce={pulseOnce}
-          animationKey={animationKey}
-          isGameFinishedInUi={isGameFinishedInUi}
-          isDrawing={isDrawing}
-          totalCells={totalCells}
-        />
+        <NumberGrid pulseOnce={pulseOnce} animationKey={animationKey} />
       </div>
     </div>
   );

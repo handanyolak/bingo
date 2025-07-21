@@ -12,16 +12,18 @@ export interface NumberCellProps {
   isLatest: boolean;
   animationKey: number;
   index: number;
+  isInUserCard: boolean;
 }
 
 export interface NumberGridProps {
-  drawnNumbers: number[];
-  latestDrawnNumber: number | null;
   pulseOnce: boolean;
   animationKey: number;
-  isGameFinishedInUi: boolean;
-  isDrawing: boolean;
+}
+
+export interface UseNumberGridProps {
+  drawnNumbers: number[];
   totalCells: number;
+  isDrawing: boolean;
 }
 
 export interface UseDrawnNumbersDisplayReturn {
@@ -30,10 +32,6 @@ export interface UseDrawnNumbersDisplayReturn {
   showingNumber: boolean;
   pulseOnce: boolean;
   animationKey: number;
-  totalCells: number;
-  latestDrawnNumber: number | null;
-  drawnNumbers: number[];
-  isDrawing: boolean;
   isGameFinishedInUi: boolean;
   isConnected: boolean;
 }

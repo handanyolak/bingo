@@ -1,50 +1,51 @@
 import { Loader2 } from "lucide-react";
 
-import type { NumberGridProps } from "@/app/components/drawn-numbers";
-import { useNumberGrid } from "@/app/components/drawn-numbers/hooks";
+import {
+  NumberGridProps,
+  useNumberGrid,
+  NumberCell,
+} from "@/app/components/drawn-numbers";
 import styles from "@/app/components/drawn-numbers/NumberGrid.module.scss";
 
-import { NumberCell } from "./NumberCell";
-
-const LoadingState = () => (
-  <div key="loading-indicator" className={styles.numberGrid__centered}>
-    <Loader2 className={styles.numberGrid__spinLoader} size={100} />
-  </div>
-);
-
-export const NumberGrid = (props: NumberGridProps) => {
+export const NumberGrid = ({ pulseOnce, animationKey }: NumberGridProps) => {
   const {
     drawnNumbers,
     latestDrawnNumber,
-    pulseOnce,
-    animationKey,
     isGameFinishedInUi,
-  } = props;
-
-  const { placeholderArray, shouldShowLoading } = useNumberGrid(props);
+    userCardNumbers,
+    placeholderArray,
+    shouldShowLoading,
+  } = useNumberGrid();
 
   return (
-    <div className={styles.numberGrid}>
+    <div className={styles.numberGrid} role="grid">
       {drawnNumbers.map((drawnNumber, index) => {
-        const isLatestNumber =
+        const isLatest =
           pulseOnce && drawnNumber === latestDrawnNumber && !isGameFinishedInUi;
+        const isInUserCard = userCardNumbers.includes(drawnNumber);
         return (
           <NumberCell
             key={`number-${drawnNumber}-${index}`}
             number={drawnNumber}
-            isLatest={isLatestNumber}
+            isLatest={isLatest}
             animationKey={animationKey}
             index={index}
+            isInUserCard={isInUserCard}
           />
         );
       })}
 
-      {shouldShowLoading && <LoadingState />}
+      {shouldShowLoading && (
+        <div key="loading-indicator" className={styles.numberGrid__centered}>
+          <Loader2 className={styles.numberGrid__spinLoader} size={100} />
+        </div>
+      )}
 
       {placeholderArray.map((_, index) => (
         <div
           key={`placeholder-${index}`}
           className={styles.numberGrid__placeholder}
+          role="gridcell"
         />
       ))}
     </div>
