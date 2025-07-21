@@ -1,85 +1,27 @@
 @use "@/styles/mixins" as *;
 
 .controls {
+  @include flex-center;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 0.75rem;
 
   &__gameId {
-    background: var(--interactive-background);
-    border: 1px solid var(--interactive-border);
     border-radius: 12px;
-    padding: 12px 24px;
     font-weight: 700;
     font-size: 18px;
-    color: var(--interactive-text);
     min-width: 100px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-
-    &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
   }
 
   &__navButton {
     width: 52px;
     height: 52px;
     padding: 0;
-    @include flex-center;
-    background: var(--theme-color);
-    border-color: var(--theme-color);
-    color: white;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transform-origin: center;
-
-    &:hover {
-      background: var(--theme-color-dark);
-      border-color: var(--theme-color-dark);
-      transform: scale(1.02);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    &:disabled {
-      background: var(--interactive-disabled);
-      border-color: var(--interactive-disabled);
-      transform: none;
-      box-shadow: none;
-    }
   }
 
   &__edgeButton {
     width: 44px;
     height: 44px;
     padding: 0;
-    @include flex-center;
-    background: var(--interactive-background);
-    border-color: var(--interactive-border);
-    color: var(--interactive-text);
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    transform-origin: center;
-
-    &:hover {
-      background: var(--interactive-background-hover);
-      transform: scale(1.02);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    &:disabled {
-      background: var(--interactive-disabled);
-      border-color: var(--interactive-disabled);
-      transform: none;
-      box-shadow: none;
-    }
-  }
-
-  &__button {
-    width: 200px;
   }
 }
 
@@ -92,22 +34,6 @@
       font-size: 16px;
       min-width: 90px;
     }
-
-    &__navButton {
-      width: 48px;
-      height: 48px;
-      transform-origin: center;
-    }
-
-    &__edgeButton {
-      width: 40px;
-      height: 40px;
-      transform-origin: center;
-    }
-
-    &__button {
-      width: 100%;
-    }
   }
 }
 
@@ -119,18 +45,6 @@
       padding: 8px 16px;
       font-size: 14px;
       min-width: 80px;
-    }
-
-    &__navButton {
-      width: 44px;
-      height: 44px;
-      transform-origin: center;
-    }
-
-    &__edgeButton {
-      width: 36px;
-      height: 36px;
-      transform-origin: center;
     }
   }
 }

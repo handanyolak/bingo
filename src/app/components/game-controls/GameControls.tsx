@@ -38,9 +38,10 @@ export const GameControls = () => {
         rounded="full"
       />
 
-      <div className={styles.controls__gameId}>
-        #{selectedGameId.toString()}
-      </div>
+      <Button
+        text={`#${selectedGameId.toString()}`}
+        className={styles.controls__gameId}
+      />
 
       <Button
         content={<ChevronRight size={20} />}
