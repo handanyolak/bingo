@@ -19,8 +19,12 @@ export const useColorIndex = (
   });
 
   useEffect(() => {
-    setCurrentIndex(0);
-  }, [isViewingOtherPlayer, colors.length]);
+    if (isViewingOtherPlayer) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(storedIndex);
+    }
+  }, [isViewingOtherPlayer, storedIndex]);
 
   const cycleColor = useCallback(() => {
     if (colors.length === 0) return;
