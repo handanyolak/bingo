@@ -1,9 +1,9 @@
 export type RoundedSize = "full" | "lg" | "md" | "sm";
 
 export interface ButtonProps {
-  text: string;
+  text?: string;
   content?: React.ReactNode;
-  contentPosition?: "left" | "right";
+  contentPosition?: "left" | "right" | "center";
   disabled?: boolean;
   className?: string;
   rounded?: RoundedSize;

@@ -6,7 +6,7 @@ import styles from "@/app/components/ui/button/Button.module.scss";
 export const Button = ({
   text,
   content,
-  contentPosition = "right",
+  contentPosition = "center",
   disabled = false,
   className = "",
   rounded,
@@ -24,6 +24,7 @@ export const Button = ({
       {contentPosition === "left" && content}
       {text}
       {contentPosition === "right" && content}
+      {contentPosition === "center" && content}
     </button>
   );
 };
