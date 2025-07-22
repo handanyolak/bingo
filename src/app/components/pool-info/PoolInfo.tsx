@@ -12,7 +12,7 @@ export const PoolInfo = () => {
   const t = useTranslations("controls");
 
   return (
-    <Tooltip texts={tooltipTexts} position="top">
+    <Tooltip texts={tooltipTexts} position="bottom">
       {isConnected && (
         <Button
           text={t("totalPoolBalance", { amount: formattedPrizePoolBalance })}
