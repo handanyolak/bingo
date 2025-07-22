@@ -24,14 +24,14 @@ export const GameControls = () => {
   return (
     <div className={styles.controls}>
       <Button
-        content={<ChevronsLeft size={16} />}
+        content={<ChevronsLeft size={14} />}
         onClick={goToFirstGame}
         disabled={isDisabledPrevious || isLoading}
         className={styles.controls__edgeButton}
         rounded="full"
       />
       <Button
-        content={<ChevronLeft size={20} />}
+        content={<ChevronLeft size={16} />}
         onClick={() => switchGame(-1)}
         disabled={isDisabledPrevious || isLoading}
         className={styles.controls__navButton}
@@ -44,14 +44,14 @@ export const GameControls = () => {
       />
 
       <Button
-        content={<ChevronRight size={20} />}
+        content={<ChevronRight size={16} />}
         onClick={() => switchGame(1)}
         disabled={isDisabledNext || isLoading}
         className={styles.controls__navButton}
         rounded="full"
       />
       <Button
-        content={<ChevronsRight size={16} />}
+        content={<ChevronsRight size={14} />}
         onClick={goToCurrentGame}
         disabled={isDisabledNext || isLoading}
         className={styles.controls__edgeButton}
