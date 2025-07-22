@@ -4,29 +4,24 @@
 .drawnNumbers {
   position: relative;
 
-  &__container {
-    @include flex-column-center;
-    margin-top: 20px;
-    width: 100%;
-  }
-
   &__centerNumber {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 100%;
-    width: 150px;
-    height: 150px;
+    width: 9.375rem;
+    height: 9.375rem;
     @include flex-center;
     background-color: var(--theme-color);
     color: var(--text-light);
     font-size: 4rem;
     font-weight: bold;
     z-index: 100;
-    box-shadow: inset 0px 5px 10px rgba(255, 255, 255, 0.3),
-      inset 0px -5px 10px rgba(0, 0, 0, 0.3), 0px 10px 20px rgba(0, 0, 0, 0.5);
-    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0.3125rem 0.625rem rgba(255, 255, 255, 0.3),
+      inset 0 -0.3125rem 0.625rem rgba(0, 0, 0, 0.3),
+      0 0.625rem 1.25rem rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0.125rem 0.125rem rgba(0, 0, 0, 0.3);
     animation: appearCenter 2s ease-out forwards;
     animation-play-state: running;
     pointer-events: none;
@@ -67,20 +62,66 @@
   }
 }
 
-@include mobile {
+@include tablet {
   .drawnNumbers {
     &__container {
-      margin: 10px 0;
+      margin: 0.9375rem 0;
     }
 
     &__centerNumber {
-      width: 100px;
-      height: 100px;
+      width: 7.5rem;
+      height: 7.5rem;
+      font-size: 3.5rem;
+
+      &::after {
+        height: 35%;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .drawnNumbers {
+    &__container {
+      margin: 0.625rem 0;
+    }
+
+    &__centerNumber {
+      width: 6.25rem;
+      height: 6.25rem;
       font-size: 3rem;
 
       &::after {
         height: 30%;
       }
+    }
+  }
+}
+
+@include small-mobile {
+  .drawnNumbers {
+    &__container {
+      margin: 0.5rem 0;
+    }
+
+    &__centerNumber {
+      width: 5rem;
+      height: 5rem;
+      font-size: 2.5rem;
+    }
+  }
+}
+
+@include tiny-mobile {
+  .drawnNumbers {
+    &__container {
+      margin: 0.375rem 0;
+    }
+
+    &__centerNumber {
+      width: 4.375rem;
+      height: 4.375rem;
+      font-size: 2rem;
     }
   }
 }

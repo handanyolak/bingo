@@ -3,13 +3,12 @@
 .gameTimer {
   &__container {
     @include flex-column-center;
-    gap: 1rem;
   }
 
   &__animation {
-    width: 160px;
+    width: 10rem;
     @include mobile {
-      width: 100px;
+      width: 6.25rem;
     }
   }
 
@@ -17,8 +16,9 @@
     margin: 1rem auto;
     text-align: center;
     font-weight: 600;
+    font-size: 1rem;
     @include mobile {
-      font-size: 14px;
+      font-size: 0.75rem;
     }
   }
 }

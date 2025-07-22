@@ -2,49 +2,112 @@
 
 .controls {
   @include flex-center;
-  width: 100%;
   gap: 0.75rem;
 
   &__gameId {
-    border-radius: 12px;
+    border-radius: 0.75rem;
     font-weight: 700;
-    font-size: 18px;
-    min-width: 100px;
+    font-size: 1.125rem;
+    min-width: 6.25rem;
   }
 
   &__navButton {
-    width: 52px;
-    height: 52px;
+    width: 3.25rem;
+    height: 3.25rem;
     padding: 0;
   }
 
   &__edgeButton {
-    width: 44px;
-    height: 44px;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
+  }
+}
+
+@include tablet {
+  .controls {
+    gap: 0.6rem;
+
+    &__gameId {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      min-width: 5.3125rem;
+    }
+
+    &__navButton {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    &__edgeButton {
+      width: 2.375rem;
+      height: 2.375rem;
+    }
   }
 }
 
 @include mobile {
   .controls {
-    gap: 0.5rem;
+    gap: 0.4rem;
 
     &__gameId {
-      padding: 10px 20px;
-      font-size: 16px;
-      min-width: 90px;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+      min-width: 4.375rem;
+    }
+
+    &__navButton {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    &__edgeButton {
+      width: 2rem;
+      height: 2rem;
     }
   }
 }
 
-@media screen and (max-width: 480px) {
+@include small-mobile {
   .controls {
-    gap: 0.375rem;
+    gap: 0.3rem;
 
     &__gameId {
-      padding: 8px 16px;
-      font-size: 14px;
-      min-width: 80px;
+      padding: 0.3125rem 0.625rem;
+      font-size: 0.75rem;
+      min-width: 3.75rem;
+    }
+
+    &__navButton {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    &__edgeButton {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+  }
+}
+
+@include tiny-mobile {
+  .controls {
+    gap: 0.25rem;
+
+    &__gameId {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.6875rem;
+      min-width: 3.125rem;
+    }
+
+    &__navButton {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+
+    &__edgeButton {
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
 }

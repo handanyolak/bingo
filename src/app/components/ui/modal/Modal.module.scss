@@ -16,26 +16,27 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--background-container);
-    border-radius: 10px;
+    border-radius: 0.625rem;
     box-shadow: var(--shadow-medium);
     z-index: 101;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   &__title {
     @include heading-large;
     color: var(--text);
+    margin-top: 1rem;
   }
 
   &__closeIcon {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 4px;
+    top: 0.625rem;
+    right: 0.625rem;
+    padding: 0.25rem;
     background-color: var(--interactive-background);
     border-radius: 50%;
     box-shadow: var(--shadow-medium);
-    border: 1px solid var(--interactive-border);
+    border: 0.0625rem solid var(--interactive-border);
     transition: background-color 0.2s ease;
     color: var(--text);
     cursor: pointer;
@@ -46,11 +47,84 @@
   }
 }
 
+@include tablet {
+  .modal {
+    &__container {
+      width: 70%;
+      height: 75%;
+    }
+
+    &__title {
+      font-size: 1.5rem;
+    }
+
+    &__closeIcon {
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.1875rem;
+      size: 1.75rem;
+    }
+  }
+}
+
 @include mobile {
   .modal {
     &__container {
       width: 90%;
-      height: 80%;
+      height: 85%;
+      border-radius: 0.5rem;
+    }
+
+    &__title {
+      font-size: 1.25rem;
+    }
+
+    &__closeIcon {
+      top: 0.375rem;
+      right: 0.375rem;
+      padding: 0.125rem;
+      size: 1.5rem;
+    }
+  }
+}
+
+@include small-mobile {
+  .modal {
+    &__container {
+      width: 92%;
+      height: 88%;
+      border-radius: 0.375rem;
+    }
+
+    &__title {
+      font-size: 1.125rem;
+    }
+
+    &__closeIcon {
+      top: 0.25rem;
+      right: 0.25rem;
+      padding: 0.0625rem;
+      size: 1.25rem;
+    }
+  }
+}
+
+@include tiny-mobile {
+  .modal {
+    &__container {
+      width: 94%;
+      height: 90%;
+      border-radius: 0.25rem;
+    }
+
+    &__title {
+      font-size: 1rem;
+    }
+
+    &__closeIcon {
+      top: 0.1875rem;
+      right: 0.1875rem;
+      size: 1.125rem;
     }
   }
 }

@@ -63,7 +63,7 @@
   }
 }
 
-@mixin hover-lift($scale: 1.05, $translateY: -2px) {
+@mixin hover-lift($scale: 1.05, $translateY: -0.125rem) {
   &:hover {
     transform: translateY($translateY) scale($scale);
   }
@@ -107,7 +107,7 @@
 
 @mixin scrollbar-styling {
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0.25rem;
   }
 
   &::-webkit-scrollbar-track {
@@ -116,7 +116,7 @@
 
   &::-webkit-scrollbar-thumb {
     background: var(--interactive-border);
-    border-radius: 2px;
+    border-radius: 0.125rem;
   }
 }
 

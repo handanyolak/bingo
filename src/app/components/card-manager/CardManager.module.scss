@@ -1,12 +1,6 @@
 @use "@/styles/mixins" as *;
 
 .cardManager {
-  &__container {
-    width: 100%;
-    @include flex-column-center;
-    gap: 1rem;
-  }
-
   &__loading {
     @include loading-spinner;
   }

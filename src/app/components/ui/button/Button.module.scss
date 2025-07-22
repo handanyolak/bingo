@@ -1,10 +1,10 @@
 @use "@/styles/mixins" as *;
 
 $rounded-sizes: (
-  "full": 999px,
-  "lg": 8px,
-  "md": 6px,
-  "sm": 4px,
+  "full": 62.43rem,
+  "lg": 0.5rem,
+  "md": 0.37rem,
+  "sm": 0.25rem,
 );
 
 @keyframes borderPulse {
@@ -21,16 +21,16 @@ $rounded-sizes: (
 
 .button {
   @include flex-center;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--interactive-border);
+  padding: 0.5rem 1rem;
+  border-radius: 62.43rem;
+  border: 0.06rem solid var(--interactive-border);
   background-color: var(--interactive-background);
   color: var(--interactive-text);
   font-weight: 600;
   cursor: pointer;
   transition: all var(--animation-duration-normal) ease;
   &:active {
-    transform: translateY(1px);
+    transform: translateY(0.06rem);
   }
 
   &:hover {
@@ -43,8 +43,8 @@ $rounded-sizes: (
     pointer-events: none;
   }
   gap: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  font-size: 16px;
+  box-shadow: 0 0.06rem 0.12rem 0 rgb(0 0 0 / 0.05);
+  font-size: 1rem;
 
   &:hover {
     background-color: var(--interactive-background-hover);
@@ -68,10 +68,34 @@ $rounded-sizes: (
   }
 }
 
+@include tablet {
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 0.87rem;
+    gap: 0.37rem;
+  }
+}
+
 @include mobile {
   .button {
-    padding: 4px 10px;
-    font-size: 13px;
+    padding: 0.37rem 0.75rem;
+    font-size: 0.75rem;
     gap: 0.25rem;
+  }
+}
+
+@include small-mobile {
+  .button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.68rem;
+    gap: 0.2rem;
+  }
+}
+
+@include tiny-mobile {
+  .button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6rem;
+    gap: 0.15rem;
   }
 }

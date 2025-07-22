@@ -8,14 +8,14 @@
 
   &__header {
     @include flex-justify-center;
-    border-bottom: 1px solid var(--interactive-border);
+    border-bottom: 0.06rem solid var(--interactive-border);
   }
 
   &__button {
     padding: 0.5rem 1rem;
     width: 50%;
     font-weight: 500;
-    font-size: 0.875rem;
+    font-size: 0.87rem;
     color: var(--interactive-text);
     transition: all 0.2s ease;
 
@@ -29,7 +29,7 @@
 
     &Active {
       color: var(--theme-color);
-      border-bottom: 1px solid var(--theme-color-dark);
+      border-bottom: 0.06rem solid var(--theme-color-dark);
     }
   }
 
@@ -52,5 +52,85 @@
   &__content {
     @include flex-column-center;
     height: 100%;
+  }
+}
+
+@include tablet {
+  .tab {
+    padding: 0.75rem;
+
+    &__button {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    &__buttonContent {
+      gap: 0.4rem;
+    }
+
+    &__panel {
+      padding: 0.5rem 0;
+      height: 88%;
+    }
+  }
+}
+
+@include mobile {
+  .tab {
+    padding: 0.75rem;
+
+    &__button {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.75rem;
+    }
+
+    &__buttonContent {
+      gap: 0.3rem;
+    }
+
+    &__panel {
+      padding: 0.5rem 0;
+      height: 85%;
+    }
+  }
+}
+
+@include small-mobile {
+  .tab {
+    padding: 0.6rem;
+
+    &__button {
+      padding: 0.35rem 0.5rem;
+      font-size: 0.7rem;
+    }
+
+    &__buttonContent {
+      gap: 0.25rem;
+    }
+
+    &__panel {
+      padding: 0.4rem 0;
+      height: 82%;
+    }
+  }
+}
+
+@include tiny-mobile {
+  .tab {
+    padding: 0.5rem;
+
+    &__button {
+      padding: 0.3rem 0.4rem;
+      font-size: 0.65rem;
+    }
+
+    &__buttonContent {
+      gap: 0.2rem;
+    }
+
+    &__panel {
+      padding: 0.35rem 0;
+      height: 80%;
+    }
   }
 }

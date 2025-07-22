@@ -11,14 +11,14 @@
     @include flex-center;
     gap: 0.1rem;
     transition: transform var(--animation-duration-normal) ease;
-    transform: scale(1.02) translateY(-1px);
+    transform: scale(1.02) translateY(-0.06rem);
 
     &:hover {
-      transform: scale(1.08) translateY(-2px);
+      transform: scale(1.08) translateY(-0.12rem);
     }
 
     &:active {
-      transform: scale(1.04) translateY(-1px);
+      transform: scale(1.04) translateY(-0.06rem);
     }
   }
 
@@ -27,16 +27,36 @@
     font-weight: 700;
     font-size: 2.5rem;
     line-height: 1;
-    letter-spacing: 2px;
+    letter-spacing: 0.12rem;
     color: var(--theme-color);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0.12rem 0.12rem 0.25rem rgba(0, 0, 0, 0.3);
     transition: all var(--animation-duration-normal) ease;
     display: flex;
     align-items: center;
 
     @include mobile {
       font-size: 2rem;
-      letter-spacing: 1.5px;
+      letter-spacing: 0.09rem;
+    }
+  }
+
+  &__fiText {
+    font-family: "Comfortaa", sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1;
+    letter-spacing: 0.12rem;
+    color: var(--theme-color);
+    text-shadow: 0.12rem 0.12rem 0.25rem rgba(0, 0, 0, 0.3);
+    transition: all var(--animation-duration-normal) ease;
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+
+    @include mobile {
+      font-size: 2rem;
+      letter-spacing: 0.09rem;
+      margin-left: 0.4rem;
     }
   }
 
@@ -44,15 +64,16 @@
     @include flex-center;
     border-radius: 100%;
     transition: all var(--animation-duration-normal) ease;
-    height: 40px;
-    width: 40px;
+    height: 2.5rem;
+    width: 2.5rem;
     background-color: var(--theme-color);
     will-change: transform, background-color;
-    box-shadow: inset 0px 2px 3px rgba(255, 255, 255, 0.3),
-      inset 0px -2px 3px rgba(0, 0, 0, 0.3), 0px 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0.12rem 0.18rem rgba(255, 255, 255, 0.3),
+      inset 0 -0.12rem 0.18rem rgba(0, 0, 0, 0.3),
+      0 0.18rem 0.31rem rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: visible;
-    transform: translateY(-3px);
+    transform: translateY(-0.18rem);
 
     &::after {
       content: "";
@@ -73,10 +94,10 @@
     &::before {
       content: "";
       position: absolute;
-      top: -6px;
-      left: -6px;
-      right: -6px;
-      bottom: -6px;
+      top: -0.37rem;
+      left: -0.37rem;
+      right: -0.37rem;
+      bottom: -0.37rem;
       background: radial-gradient(
         circle,
         rgba(var(--theme-color-rgb), 0.4) 0%,
@@ -93,12 +114,17 @@
   @include mobile {
     &__bingText {
       font-size: 2rem;
-      letter-spacing: 1.5px;
+      letter-spacing: 0.09rem;
+    }
+
+    &__fiText {
+      font-size: 2rem;
+      letter-spacing: 0.09rem;
     }
 
     &__oCell {
-      height: 35px;
-      width: 35px;
+      height: 2rem;
+      width: 2rem;
 
       &::after {
         height: 30%;
@@ -106,31 +132,43 @@
     }
   }
 
-  @media screen and (max-width: 480px) {
+  @include small-mobile {
     &__container {
       gap: 0.1rem;
     }
 
     &__bingText {
       font-size: 1.5rem;
-      letter-spacing: 1px;
+      letter-spacing: 0.06rem;
+    }
+
+    &__fiText {
+      font-size: 1.5rem;
+      letter-spacing: 0.06rem;
+      margin-left: 0.3rem;
     }
 
     &__oCell {
-      height: 30px;
-      width: 30px;
+      height: 1.5rem;
+      width: 1.5rem;
     }
   }
 
-  @media screen and (max-width: 360px) {
+  @include tiny-mobile {
     &__bingText {
       font-size: 1.2rem;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.03rem;
+    }
+
+    &__fiText {
+      font-size: 1.2rem;
+      letter-spacing: 0.03rem;
+      margin-left: 0.25rem;
     }
 
     &__oCell {
-      height: 28px;
-      width: 28px;
+      height: 1.2rem;
+      width: 1.2rem;
     }
   }
 }
@@ -138,18 +176,18 @@
 @keyframes logoEntrance {
   0% {
     opacity: 0;
-    transform: translateY(-20px) scale(0.8);
+    transform: translateY(-1.25rem) scale(0.8);
   }
   30% {
     opacity: 0.8;
-    transform: translateY(-2px) scale(1.05);
+    transform: translateY(-0.12rem) scale(1.05);
   }
   50% {
     opacity: 1;
-    transform: translateY(1px) scale(1.1);
+    transform: translateY(0.06rem) scale(1.1);
   }
   70% {
-    transform: translateY(-1px) scale(0.98);
+    transform: translateY(-0.06rem) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -163,16 +201,16 @@
   &::before {
     content: "";
     position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
+    top: -0.31rem;
+    left: -0.31rem;
+    right: -0.31rem;
+    bottom: -0.31rem;
     background: radial-gradient(
       ellipse at center,
       rgba(var(--theme-color-rgb), 0.2) 0%,
       transparent 70%
     );
-    border-radius: 15px;
+    border-radius: 0.93rem;
     z-index: -1;
     opacity: 0;
     transition: opacity var(--animation-duration-normal) ease;
