@@ -38,8 +38,27 @@
   justify-content: center;
 }
 
+// Responsive Breakpoint Mixins
 @mixin mobile {
   @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin small-mobile {
+  @media screen and (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tiny-mobile {
+  @media screen and (max-width: 360px) {
     @content;
   }
 }
