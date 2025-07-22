@@ -19,7 +19,7 @@ export const Modal = ({ children, title, isOpen, onClose }: ModalProps) => {
         <X
           onClick={onClose}
           className={styles.modal__closeIcon}
-          size={32}
+          size={24}
           strokeWidth={2.75}
         />
       </div>
