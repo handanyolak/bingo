@@ -15,7 +15,7 @@ export const useBingoPayments = () => {
   const formattedRandomnessPayment = useMemo(
     () =>
       data?.requestRandomnessPayment
-        ? formatEther(data.requestRandomnessPayment)
+        ? Number(formatEther(data.requestRandomnessPayment)).toFixed(8)
         : null,
     [data?.requestRandomnessPayment]
   );
@@ -23,13 +23,13 @@ export const useBingoPayments = () => {
   const formattedRandomNumbersRefund = useMemo(
     () =>
       data?.requestRandomNumbersRefund
-        ? formatEther(data.requestRandomNumbersRefund)
+        ? Number(formatEther(data.requestRandomNumbersRefund)).toFixed(8)
         : null,
     [data?.requestRandomNumbersRefund]
   );
 
   const formattedPrizePoolBalance = useMemo(
-    () => formatEther(data?.prizePoolBalance ?? BigInt(0)),
+    () => Number(formatEther(data?.prizePoolBalance ?? BigInt(0))).toFixed(8),
     [data?.prizePoolBalance]
   );
 
