@@ -7,7 +7,6 @@ import {
   RequestRandomButton,
   SubmitCardButton,
 } from "@/app/components/card-manager";
-import styles from "@/app/components/card-manager/CardManager.module.scss";
 
 export const CardManager = () => {
   const renderComponent = useCardManagerStep();
@@ -36,7 +35,5 @@ export const CardManager = () => {
     }
   };
 
-  return (
-    <div className={styles.cardManager__container}>{renderCurrentStep()}</div>
-  );
+  return <div>{renderCurrentStep()}</div>;
 };
