@@ -17,11 +17,9 @@ import {
 export const useDrawTimer = ({
   isLoading = false,
   isError = false,
-  lottieRef,
-  timerAnimation,
 }: Omit<
   UseDrawTimerProps,
-  "contractData" | "isGameOver"
+  "contractData" | "isGameOver" | "lottieRef" | "timerAnimation"
 >): UseDrawTimerReturn => {
   const dispatch = useAppDispatch();
   const { isGameOver } = useBingoDrawing();
@@ -103,47 +101,13 @@ export const useDrawTimer = ({
     isGameOver,
   ]);
 
-  useEffect(() => {
-    if (
-      !data?.isDrawnNumbersFilled ||
-      !data?.finalizationCooldown ||
-      remainingTime <= 0 ||
-      !lottieRef?.current ||
-      !timerAnimation
-    )
-      return;
-
-    const lottieAnimation = lottieRef.current.animationItem;
-    if (!lottieAnimation) return;
-
-    const totalAnimationFrames = timerAnimation.op - timerAnimation.ip;
-    const animationFrameRate = timerAnimation.fr || 30;
-    const animationNaturalDuration = totalAnimationFrames / animationFrameRate;
-    const totalDuration = Number(data?.finalizationCooldown);
-
-    const speedRatio = animationNaturalDuration / totalDuration;
-    lottieAnimation.setSpeed(speedRatio);
-
-    const progress = 1 - remainingTime / totalDuration;
-    const frame = Math.floor(progress * totalAnimationFrames);
-
-    lottieAnimation.goToAndPlay(frame, true);
-
-    return () => {
-      lottieAnimation.stop();
-    };
-  }, [
-    data?.isDrawnNumbersFilled,
-    data?.finalizationCooldown,
-    remainingTime,
-    lottieRef,
-    timerAnimation,
-  ]);
-
   return {
     remainingTime,
     minutesRemaining,
     secondsRemaining,
     endTime,
+    totalDuration: data?.finalizationCooldown
+      ? Number(data.finalizationCooldown)
+      : 0,
   };
 };

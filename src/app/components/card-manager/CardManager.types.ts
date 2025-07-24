@@ -1,5 +1,4 @@
 import { LottieRefCurrentProps } from "lottie-react";
-
 export interface UseCardPurchaseReturn {
   handleBuyCard: () => Promise<void>;
   isBuyCardLoading: boolean;
@@ -57,4 +56,16 @@ export interface UseDrawTimerReturn {
   minutesRemaining: number;
   secondsRemaining: number;
   endTime: number;
+  totalDuration: number;
+}
+
+export interface UseLottieTimerProps {
+  animationData: LottieAnimationData;
+  remainingTime: number;
+}
+
+export interface LottieTimerProps {
+  animationData?: LottieAnimationData;
+  remainingTime: number;
+  className?: string;
 }

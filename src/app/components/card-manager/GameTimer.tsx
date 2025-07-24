@@ -1,25 +1,16 @@
-import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useDrawTimer } from "@/app/components/card-manager";
+import { LottieTimer, useDrawTimer } from "@/app/components/card-manager";
 import styles from "@/app/components/card-manager/GameTimer.module.scss";
-
-import timerAnimation from "../../../../public/animations/timer.json";
-
-const Lottie = dynamic(() => import("lottie-react"), {
-  ssr: false,
-});
 
 export const GameTimer = () => {
   const [mounted, setMounted] = useState(false);
   const t = useTranslations();
-  const lottieAnimationRef = useRef(null);
 
-  const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer({
-    lottieRef: lottieAnimationRef,
-    timerAnimation,
-  });
+  const { remainingTime, minutesRemaining, secondsRemaining } = useDrawTimer(
+    {}
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -30,12 +21,7 @@ export const GameTimer = () => {
   return (
     <div className={styles.gameTimer__container}>
       <div className={styles.gameTimer__animation}>
-        <Lottie
-          lottieRef={lottieAnimationRef}
-          animationData={timerAnimation}
-          loop={false}
-          autoplay={false}
-        />
+        <LottieTimer remainingTime={remainingTime} />
       </div>
       <div className={styles.gameTimer__time}>
         {t("controls.timeRemaining")}{" "}

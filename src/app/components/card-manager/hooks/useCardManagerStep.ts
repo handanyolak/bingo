@@ -1,10 +1,8 @@
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
-import {
-  useDrawTimer,
-  type CardManagerStepData,
-} from "@/app/components/card-manager";
+import { type CardManagerStepData } from "@/app/components/card-manager";
+import { useDrawTimer } from "@/app/components/card-manager/hooks/useDrawTimer";
 import { useContractReads } from "@/lib/web3";
 
 export const useCardManagerStep = (): string | null => {
@@ -21,10 +19,7 @@ export const useCardManagerStep = (): string | null => {
     }),
   });
 
-  const { remainingTime } = useDrawTimer({
-    lottieRef: undefined,
-    timerAnimation: undefined,
-  });
+  const { remainingTime } = useDrawTimer({});
 
   const stepData: CardManagerStepData | undefined =
     data?.isPlayerExists !== undefined
