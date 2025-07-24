@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import StoreProvider from "@/app/StoreProvider";
+import { toastConfig } from "@/config/toast";
 import { LocaleProvider, type AppProvidersProps } from "@/contexts";
 import { ThemeProvider } from "@/contexts";
 import { queryClient } from "@/lib/queryClient";
@@ -26,19 +27,7 @@ export const Providers = ({ messages, children }: AppProvidersProps) => {
               <ReownProvider
                 cookies={typeof window !== "undefined" ? document.cookie : null}
               >
-                <ToastContainer
-                  autoClose={5000}
-                  hideProgressBar={true}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  pauseOnHover
-                  theme="dark"
-                  toastStyle={{
-                    backgroundColor: "transparent",
-                    color: "var(--text)",
-                  }}
-                />
+                <ToastContainer {...toastConfig} />
                 {children}
               </ReownProvider>
             </LocaleProvider>
