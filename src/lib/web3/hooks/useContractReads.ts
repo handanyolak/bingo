@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { getContract, isAddress, Address } from "viem";
 import { useAccount } from "wagmi";
 
-import { env } from "@/config/env";
+import { env } from "@/config";
 import {
   abi,
   publicClient,

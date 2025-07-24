@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { Address, Log, decodeEventLog } from "viem";
 
-import { env } from "@/config/env";
+import { env } from "@/config";
 import {
   abi,
   publicClient,

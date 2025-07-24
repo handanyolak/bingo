@@ -5,7 +5,7 @@ import { Hash } from "viem";
 import { useWaitForTransactionReceipt } from "wagmi";
 import { sepolia } from "wagmi/chains";
 
-import { env } from "@/config/env";
+import { env } from "@/config";
 import { selectCardNumbers } from "@/lib/store/bingo";
 import { useAppSelector } from "@/lib/store/hooks";
 import {

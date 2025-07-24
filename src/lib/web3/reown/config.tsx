@@ -3,7 +3,7 @@ import type { AppKitNetwork } from "@reown/appkit/networks";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { cookieStorage, createStorage } from "wagmi";
 
-import { env } from "@/config/env";
+import { env } from "@/config";
 
 // Get projectId from https://cloud.reown.com
 export const projectId = env.projectId;
