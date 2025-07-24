@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import StoreProvider from "@/app/StoreProvider";
-import { toastConfig } from "@/config/toast";
+import { toastConfig, nextThemeConfig } from "@/config";
 import { LocaleProvider, type AppProvidersProps } from "@/contexts";
 import { ThemeProvider } from "@/contexts";
 import { queryClient } from "@/lib/queryClient";
@@ -16,12 +16,7 @@ export const Providers = ({ messages, children }: AppProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <NextThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
+        <NextThemeProvider {...nextThemeConfig}>
           <ThemeProvider>
             <LocaleProvider messages={messages}>
               <ReownProvider
